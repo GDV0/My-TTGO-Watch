@@ -30,7 +30,7 @@ void gestionJeuTMC( int G, int P, int max, int diff );
 void gestionSet(int G, int P, int max, int diff);
 void gestionSetTMC( int G, int P, int max, int diff );
 void gestionMatch( void );
-lv_obj_t* displayScore( uint32_t tile_num );
+lv_obj_t* displayScore( uint32_t tile_num, uint8_t state );
 lv_obj_t* displayScoreFinal ( uint32_t tile_num );
 
 static void exit_tennis_time_event_cb( lv_obj_t * obj, lv_event_t event );
@@ -83,6 +83,20 @@ static lv_obj_t *item2_lab;
 static lv_obj_t *item3_lab;
 static lv_obj_t *item4_lab;
 static lv_obj_t *item5_lab;
+
+static lv_style_t Batt_style;
+static lv_obj_t *Batt1;
+static lv_style_t line_style;
+static lv_obj_t *line1;
+static lv_obj_t *imgBall;
+static lv_obj_t *imgChg;
+static lv_style_t Jeu_style;
+static lv_style_t NoAdd_style;
+static lv_obj_t *Score1;
+static lv_obj_t *Score2;
+static lv_style_t set_style;
+static lv_obj_t *Set1;
+static lv_obj_t *Set2;
 
 LV_FONT_DECLARE(liquidCrystal_nor_24);
 LV_FONT_DECLARE(liquidCrystal_nor_32);
@@ -153,21 +167,21 @@ uint8_t tennis_loop( uint32_t tile_num, uint8_t init  )
   if (init > 1)
   {
     menuItem = 0;
-//    appStep = 0;
     appExit = 0;
     menuSelect = false;
     wifictl_off();
     blectl_off();
   } 
-TENNIS_INFO_LOG("appStep = %d ", appStep);
+//TENNIS_INFO_LOG("appStep = %d ", appStep);
   
-  // Gestion du timer sauvegarde batterie
+  // Gestion du timer de sauvegarde batterie
   TTGOClass *ttgo = TTGOClass::getWatch();
   // Test si temps écoulé
   if (backlightTime > 0)
   {
-    // Décrémentation du timer, backlight on et fréquence CPU 
+    // Affichage: décrémentation du timer, backlight on et augmentation fréquence CPU 
     backlightTime --;
+    ttgo->displayWakeup();
     ttgo->bl->on();
     setCpuFrequencyMhz(240);
   }
@@ -175,8 +189,10 @@ TENNIS_INFO_LOG("appStep = %d ", appStep);
   {
     // temps écoulé: backlight off et reduction fréquence CPU
     ttgo->bl->off();
+    ttgo->displaySleep();
     setCpuFrequencyMhz(80);
   }
+TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  ttgo->power->getVbusCurrent(), ESP.getFreeHeap());
 
   switch (appStep)
   {
@@ -265,7 +281,7 @@ TENNIS_INFO_LOG("appStep = %d ", appStep);
 
             // Initialisation et affichage ecran match
             gestionMatch();
-            displayScore( tile_num );
+            displayScore( tile_num, 0);
             appStep = 5;
             break;
     case 5: // Gestion score pendant le match
@@ -299,7 +315,7 @@ TENNIS_INFO_LOG("appStep = %d ", appStep);
           }
           gestDir = -1;
           if (!exitScore)
-            displayScore( tile_num );              
+            displayScore( tile_num, 1 );              
         }
         else
         {
@@ -949,140 +965,158 @@ void gestionMatch(void)
 /**************************************************************************//**
 * Affichage score match en cours
 ******************************************************************************/
-lv_obj_t* displayScore( uint32_t tile_num )
+lv_obj_t* displayScore( uint32_t tile_num, uint8_t state )
 {
-//  if (mainbar_get_tile_obj( tile_num ) != NULL)
-//    lv_obj_clean( mainbar_get_tile_obj( tile_num ));
-//  else
-//  {
-  lv_style_init( &cont_style );
-  lv_style_set_radius( &cont_style, LV_OBJ_PART_MAIN, 0 );
-  lv_style_set_bg_color( &cont_style, LV_OBJ_PART_MAIN, LV_COLOR_BLACK );
-  lv_style_set_bg_opa( &cont_style, LV_OBJ_PART_MAIN, LV_OPA_COVER );
-  lv_style_set_border_width( &cont_style, LV_OBJ_PART_MAIN, 0 );
+  if (state == 0)
+  {
+    lv_style_init( &cont_style );
+    lv_style_set_radius( &cont_style, LV_OBJ_PART_MAIN, 0 );
+    lv_style_set_bg_color( &cont_style, LV_OBJ_PART_MAIN, LV_COLOR_BLACK );
+    lv_style_set_bg_opa( &cont_style, LV_OBJ_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_border_width( &cont_style, LV_OBJ_PART_MAIN, 0 );
 
-  view = mainbar_get_tile_obj( tile_num );
-  lv_obj_clean( view );
+    view = mainbar_get_tile_obj( tile_num );
+    lv_obj_clean( view );
 
-  lv_obj_add_style( view, LV_OBJ_PART_MAIN, &cont_style );
-  //lv_event_send_func(scr_event_cb, view, LV_EVENT_GESTURE, NULL);
-  lv_obj_set_event_cb( view, scr_event_cb );
-//  }
+    lv_obj_add_style( view, LV_OBJ_PART_MAIN, &cont_style );
+    //lv_event_send_func(scr_event_cb, view, LV_EVENT_GESTURE, NULL);
+    lv_obj_set_event_cb( view, scr_event_cb );
 
-  //Affichage etat batterie
-  static lv_style_t Batt_style;
-  lv_style_init(&Batt_style);
-  lv_style_set_text_color(&Batt_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_text_font(&Batt_style, LV_STATE_DEFAULT, &liquidCrystal_nor_24);
-  
-  static lv_obj_t *Batt1;
-  Batt1 = lv_label_create(view, nullptr);
-  lv_obj_add_style(Batt1, LV_OBJ_PART_MAIN, &Batt_style);
-  lv_label_set_text_fmt(Batt1, "%d", pmu_get_battery_percent( ));
-  lv_obj_align(Batt1, NULL, LV_ALIGN_CENTER, 80, -100);
-
-  // Ligne centrale
-  static lv_style_t line_style;
-  lv_style_init(&line_style);
-  lv_style_set_line_color(&line_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_width(&line_style, LV_STATE_DEFAULT, 1);
-  lv_style_set_line_rounded(&line_style, LV_STATE_DEFAULT, 1);
-  static lv_point_t line_points[] = { {0, 0}, {240, 0} };
-
-  lv_obj_t *line1;
-  line1 = lv_line_create(view, NULL);
-  lv_line_set_points(line1, line_points, 2);     /*Set the points*/
-  lv_obj_add_style(line1, LV_OBJ_PART_MAIN, &line_style);
-  lv_obj_align(line1, NULL, LV_ALIGN_CENTER, 0, 0);
-
-  // Affichage Service
-  lv_obj_t *img1 = lv_img_create(view, NULL);
-  // Choix de la couleur de balle
-  if (currentScore == indexScore)
-    lv_img_set_src( img1, &ball_25 );
-  else    
-    lv_img_set_src( img1, &redball_25 );
+    //Affichage etat batterie
+    lv_style_init(&Batt_style);
+    lv_style_set_text_color(&Batt_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+    lv_style_set_text_font(&Batt_style, LV_STATE_DEFAULT, &liquidCrystal_nor_24);
     
-  // Positionnement de la balle
-  if (Result[currentScore].server)
-  {
-    lv_obj_align( img1, view, LV_ALIGN_IN_LEFT_MID, 40, -80 );
-  }
-  else
-  {
-    lv_obj_align( img1, view, LV_ALIGN_IN_LEFT_MID, 40, 80 );
-  }
+    Batt1 = lv_label_create(view, nullptr);
+    lv_obj_add_style(Batt1, LV_OBJ_PART_MAIN, &Batt_style);
+    lv_label_set_text_fmt(Batt1, "%d", pmu_get_battery_percent( ));
+    lv_obj_align(Batt1, NULL, LV_ALIGN_CENTER, 80, -100);
 
-  // Affichage changement terrain
-  if (Result[currentScore].chgtCote)
-  {
-    lv_obj_t *img2 = lv_img_create(view, NULL);
-    lv_img_set_src(img2, &fleche1_40);
-    lv_obj_align(img2, view, LV_ALIGN_IN_RIGHT_MID, -20, 0);
-  }
+    // Ligne centrale
+    lv_style_init(&line_style);
+    lv_style_set_line_color(&line_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+    lv_style_set_line_width(&line_style, LV_STATE_DEFAULT, 1);
+    lv_style_set_line_rounded(&line_style, LV_STATE_DEFAULT, 1);
+    static lv_point_t line_points[] = { {0, 0}, {240, 0} };
+
+    imgBall = lv_img_create(view, NULL);
+    lv_obj_align( imgBall, view, LV_ALIGN_IN_LEFT_MID, 40, -80 );
+    lv_obj_set_hidden(imgBall, true);
+
+    imgChg = lv_img_create(view, NULL);
+    lv_img_set_src(imgChg, &fleche1_40);
+    lv_obj_align(imgChg, view, LV_ALIGN_IN_RIGHT_MID, -20, 0);
+    lv_obj_set_hidden(imgChg, true);
  
-  //Affichage du score jeu en cours
-  static lv_style_t Jeu_style;
-  lv_style_init(&Jeu_style);
-  lv_style_set_text_font(&Jeu_style, LV_STATE_DEFAULT, &TwentySeven_80);
-  // Coloration des scores si tiebreak
-  if (Result[currentScore].tiebreak)
-    lv_style_set_text_color(&Jeu_style, LV_STATE_DEFAULT, LV_COLOR_YELLOW);  
-  else
-    lv_style_set_text_color(&Jeu_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  
-  static lv_style_t NoAdd_style;
-  lv_style_init(&NoAdd_style);
-  lv_style_set_text_font(&NoAdd_style, LV_STATE_DEFAULT, &TwentySeven_80);
-  lv_style_set_text_color(&NoAdd_style, LV_STATE_DEFAULT, LV_COLOR_ORANGE);  
+    line1 = lv_line_create(view, NULL);
+    lv_line_set_points(line1, line_points, 2);     /*Set the points*/
+    lv_obj_add_style(line1, LV_OBJ_PART_MAIN, &line_style);
+    lv_obj_align(line1, NULL, LV_ALIGN_CENTER, 0, 0);
 
-  //Jeu Score Moi/Nous
-  lv_obj_t *Score1 = lv_label_create(view, nullptr);
-  if (Result[currentScore].noAdd && !Result[currentScore].server )
-    lv_obj_add_style(Score1, LV_OBJ_PART_MAIN, &NoAdd_style);
-  else
+    lv_style_init(&Jeu_style);
+    lv_style_set_text_font(&Jeu_style, LV_STATE_DEFAULT, &TwentySeven_80);
+    
+    lv_style_init(&NoAdd_style);
+    lv_style_set_text_font(&NoAdd_style, LV_STATE_DEFAULT, &TwentySeven_80);
+    lv_style_set_text_color(&NoAdd_style, LV_STATE_DEFAULT, LV_COLOR_ORANGE);
+
+    //Jeu Score Moi/Nous
+    Score1 = lv_label_create(view, nullptr);
     lv_obj_add_style(Score1, LV_OBJ_PART_MAIN, &Jeu_style);
-  lv_label_set_text(Score1, ScoreJeu[Result[currentScore].score[0]]);
-  lv_obj_align(Score1, view, LV_ALIGN_CENTER, 10, -70);
- 
-  //Jeu Score Lui-Elle/Eux
-  lv_obj_t *Score2 = lv_label_create(view, nullptr);
-  if (Result[currentScore].noAdd && Result[currentScore].server)
-    lv_obj_add_style(Score2, LV_OBJ_PART_MAIN, &NoAdd_style);
-  else
+    lv_label_set_text(Score1, ScoreJeu[Result[currentScore].score[0]]);
+    lv_obj_align(Score1, view, LV_ALIGN_CENTER, 10, -70);
+
+    //Jeu Score Lui-Elle/Eux
+    Score2 = lv_label_create(view, nullptr);
     lv_obj_add_style(Score2, LV_OBJ_PART_MAIN, &Jeu_style);
-  lv_label_set_text(Score2, ScoreJeu[Result[currentScore].score[1]]);
-  lv_obj_align(Score2, view, LV_ALIGN_CENTER, 10, 70);
+    lv_label_set_text(Score2, ScoreJeu[Result[currentScore].score[1]]);
+    lv_obj_align(Score2, view, LV_ALIGN_CENTER, 10, 70);
 
-  //Affichage Score des sets
-  static lv_style_t set_style;
-  lv_style_init(&set_style);
-  lv_style_set_text_color(&set_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_text_font(&set_style, LV_STATE_DEFAULT, &liquidCrystal_nor_32);
+    //Affichage Score des sets
+    lv_style_init(&set_style);
+    lv_style_set_text_color(&set_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+    lv_style_set_text_font(&set_style, LV_STATE_DEFAULT, &liquidCrystal_nor_32);
   
-  // Score Sets Moi/Nous
-  lv_obj_t *Set1 = lv_label_create(view, nullptr);
-  lv_obj_add_style(Set1, LV_OBJ_PART_MAIN, &set_style);
-  
-  if (Result[currentScore].set == 0)
-    lv_label_set_text_fmt(Set1, "%s",ScoreSet[Result[currentScore].sets[0][0]]);
-  if (Result[currentScore].set == 1)
-    lv_label_set_text_fmt(Set1, "%s  %s",ScoreSet[Result[currentScore].sets[0][0]],ScoreSet[Result[currentScore].sets[0][1]]);
-  if (Result[currentScore].set == 2)
-    lv_label_set_text_fmt(Set1, "%s  %s  %s",ScoreSet[Result[currentScore].sets[0][0]],ScoreSet[Result[currentScore].sets[0][1]],ScoreSet[Result[currentScore].sets[0][2]]);
-  lv_obj_align(Set1, view, LV_ALIGN_IN_LEFT_MID, 10, -20);
+    // Score Sets Moi/Nous
+    Set1 = lv_label_create(view, nullptr);
+    lv_obj_add_style(Set1, LV_OBJ_PART_MAIN, &set_style);
+    lv_obj_align(Set1, view, LV_ALIGN_IN_LEFT_MID, 10, -20);
 
-  // Score Sets Lui-Elle/Eux
-  lv_obj_t *Set2 = lv_label_create(view, nullptr);
-  lv_obj_add_style(Set2, LV_OBJ_PART_MAIN, &set_style);
+    // Score Sets Lui-Elle/Eux
+    Set2 = lv_label_create(view, nullptr);
+    lv_obj_add_style(Set2, LV_OBJ_PART_MAIN, &set_style);
+    lv_obj_align(Set2, view, LV_ALIGN_IN_LEFT_MID, 10, 20);
+  }
+  else
+  {
+    //Affichage etat batterie
+    lv_label_set_text_fmt(Batt1, "%d", pmu_get_battery_percent( ));
 
-  if (Result[currentScore].set == 0)
-    lv_label_set_text_fmt(Set2, "%s",ScoreSet[Result[currentScore].sets[1][0]]);
-  if (Result[currentScore].set == 1)
-    lv_label_set_text_fmt(Set2, "%s  %s",ScoreSet[Result[currentScore].sets[1][0]],ScoreSet[Result[currentScore].sets[1][1]]);
-  if (Result[currentScore].set == 2)
-    lv_label_set_text_fmt(Set2, "%s  %s  %s",ScoreSet[Result[currentScore].sets[1][0]],ScoreSet[Result[currentScore].sets[1][1]],ScoreSet[Result[currentScore].sets[1][2]]);
-  lv_obj_align(Set2, view, LV_ALIGN_IN_LEFT_MID, 10, 20);
+    // Affichage Service
+    // Choix de la couleur de balle
+    if (currentScore == indexScore)
+      lv_img_set_src( imgBall, &ball_25 );
+    else    
+      lv_img_set_src( imgBall, &redball_25 );
+
+    // Positionnement de la balle
+    if (Result[currentScore].server)
+    {
+      lv_obj_align( imgBall, view, LV_ALIGN_IN_LEFT_MID, 40, -80 );
+    }
+    else
+    {
+      lv_obj_align( imgBall, view, LV_ALIGN_IN_LEFT_MID, 40, 80 );
+    }
+    lv_obj_set_hidden(imgBall, false);
+
+    // Affichage changement terrain
+    if (Result[currentScore].chgtCote)
+    {
+      lv_obj_set_hidden(imgChg, false);
+    }
+    else
+      lv_obj_set_hidden(imgChg, true);
+
+
+    // Coloration des scores si tiebreak
+    if (Result[currentScore].tiebreak)
+      lv_style_set_text_color(&Jeu_style, LV_STATE_DEFAULT, LV_COLOR_YELLOW);  
+    else
+      lv_style_set_text_color(&Jeu_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+
+    //Affichage du score jeu en cours
+    //Jeu Score Moi/Nous
+    if (Result[currentScore].noAdd && !Result[currentScore].server )
+      lv_obj_add_style(Score1, LV_OBJ_PART_MAIN, &NoAdd_style);
+    else
+      lv_obj_add_style(Score1, LV_OBJ_PART_MAIN, &Jeu_style);
+    lv_label_set_text(Score1, ScoreJeu[Result[currentScore].score[0]]);
+ 
+    //Jeu Score Lui-Elle/Eux
+    if (Result[currentScore].noAdd && Result[currentScore].server)
+      lv_obj_add_style(Score2, LV_OBJ_PART_MAIN, &NoAdd_style);
+    else
+      lv_obj_add_style(Score2, LV_OBJ_PART_MAIN, &Jeu_style);
+    lv_label_set_text(Score2, ScoreJeu[Result[currentScore].score[1]]);
+
+    //Affichage Score des sets
+    // Score Sets Moi/Nous
+    if (Result[currentScore].set == 0)
+      lv_label_set_text_fmt(Set1, "%s",ScoreSet[Result[currentScore].sets[0][0]]);
+    if (Result[currentScore].set == 1)
+      lv_label_set_text_fmt(Set1, "%s  %s",ScoreSet[Result[currentScore].sets[0][0]],ScoreSet[Result[currentScore].sets[0][1]]);
+    if (Result[currentScore].set == 2)
+      lv_label_set_text_fmt(Set1, "%s  %s  %s",ScoreSet[Result[currentScore].sets[0][0]],ScoreSet[Result[currentScore].sets[0][1]],ScoreSet[Result[currentScore].sets[0][2]]);
+
+    // Score Sets Lui-Elle/Eux
+    if (Result[currentScore].set == 0)
+      lv_label_set_text_fmt(Set2, "%s",ScoreSet[Result[currentScore].sets[1][0]]);
+    if (Result[currentScore].set == 1)
+      lv_label_set_text_fmt(Set2, "%s  %s",ScoreSet[Result[currentScore].sets[1][0]],ScoreSet[Result[currentScore].sets[1][1]]);
+    if (Result[currentScore].set == 2)
+      lv_label_set_text_fmt(Set2, "%s  %s  %s",ScoreSet[Result[currentScore].sets[1][0]],ScoreSet[Result[currentScore].sets[1][1]],ScoreSet[Result[currentScore].sets[1][2]]);
+  }
 
   gestDir = -1;
   return view;
