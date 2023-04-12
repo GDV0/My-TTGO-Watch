@@ -215,14 +215,14 @@ void powermgm_loop( void ) {
          * print some memory stats
          */
         #ifndef NATIVE_64BIT
-            log_d("Free heap: %d", ESP.getFreeHeap());
-            log_d("Free PSRAM heap: %d", ESP.getFreePsram());
+            log_i("Free heap: %d", ESP.getFreeHeap());
+            log_i("Free PSRAM heap: %d", ESP.getFreePsram());
             log_i("%s uptime: %d", HARDWARE_NAME, millis() / 1000 );
         #endif
 
         if ( standby ) {
             log_i("go standby");
-            /*
+                    /*
              * set cpu speed
              * 
              * note:    direct after change the CPU clock, we go to light sleep.
@@ -233,7 +233,8 @@ void powermgm_loop( void ) {
 
             #else
                 setCpuFrequencyMhz( 80 );
-                log_d("CPU speed = 80MHz, start light sleep");
+                log_i("CPU speed = 80MHz, start light sleep");
+                delay( 100 ); // GDV add
                 /*
                 * from here, the consumption is round about 2.5mA
                 * total standby time is 152h (6days) without use?
