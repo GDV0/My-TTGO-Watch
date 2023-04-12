@@ -103,13 +103,14 @@ void sdcard_setup( void ) {
     #elif defined( WT32_SC01 )
     #endif
 #endif
+//if (sdcard_mounted) //GDV
     powermgm_register_cb( POWERMGM_SILENCE_WAKEUP | POWERMGM_STANDBY | POWERMGM_WAKEUP, sdcard_powermgm_event_cb, "sdcard powermgm" );
 }
 
 bool sdcard_powermgm_event_cb( EventBits_t event, void *arg ) {
     bool retval = false;
 
-    if( sdcard_mount_failed )
+    if( sdcard_mount_failed || !sdcard_mounted )
         return( true );
 
     #if defined( M5PAPER )
@@ -193,6 +194,8 @@ bool sdcard_powermgm_event_cb( EventBits_t event, void *arg ) {
                     retval = true;
                     break;
             }
+//        #else
+//            retval = true; // GDV
         #endif
     #elif defined( LILYGO_WATCH_2021 )   
         retval = true;
