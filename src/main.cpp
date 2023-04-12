@@ -24,6 +24,7 @@
 #include "app/IRController/IRController.h"
 #include "app/alarm_clock/alarm_clock.h"
 #include "app/compass/compass_app.h"
+#include "app/tennis/tennis.h"
 
 #if defined( NATIVE_64BIT )
     /**
@@ -51,27 +52,28 @@ void setup() {
     /**
      * apps here
      */
-    osmmap_app_setup();
-    weather_app_setup();
+    tennis_setup();
+//   osmmap_app_setup();
+ //   weather_app_setup();
     compass_app_setup();
     stopwatch_app_setup();
-    tracker_app_setup();
+ //   tracker_app_setup();
     alarm_clock_setup();
     activity_app_setup();
-    calendar_app_setup();
-    astro_app_setup();
-    mail_app_setup();
-    gps_status_setup();
-    IRController_setup();
-    sailing_setup();
-    osmand_app_setup();
-    fxrates_app_setup();
-    powermeter_app_setup();
-    FindPhone_setup();
-    wifimon_app_setup();
-    calc_app_setup();
-    kodi_remote_app_setup();
-    /**
+ //   calendar_app_setup();
+ //   astro_app_setup();
+ //   mail_app_setup();
+ //   gps_status_setup();
+ //   IRController_setup();
+ //   sailing_setup();
+ //   osmand_app_setup();
+ //   fxrates_app_setup();
+ //   powermeter_app_setup();
+ //   FindPhone_setup();
+ //   wifimon_app_setup();
+ //   calc_app_setup();
+ //   kodi_remote_app_setup();
+     /**
      * post hardware setup
      */
     hardware_post_setup();
