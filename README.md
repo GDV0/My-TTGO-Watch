@@ -43,6 +43,7 @@ A GUI named hedge for smartwatch like devices based on ESP32. Currently support 
   * Weather
   * Calendar
   * IR remote
+  * Tennis
   * ...
 
 * Companion apps: Gadgetbridge
