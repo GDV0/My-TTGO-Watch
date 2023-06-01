@@ -19,22 +19,24 @@
 
 #include "lvgl.h"
 
+//#define TIMERBATT
+
 void ringMenu( uint32_t tile_num, int itemMax, char** itemName, char** itemHelp, int state );
 void initScore( void );
 void copieScore( void );
 void gestionJeu( int G, int P );
-void gestionJeuAdd(int G, int P, int max, int diff);
-void gestionJeuNoAdd(int G, int P, int max, int diff);
-void gestionSuperTBreak(int G, int P, int max, int diff);
+void gestionJeuAdd( int G, int P, int max, int diff );
+void gestionJeuNoAdd( int G, int P, int max, int diff) ;
+void gestionSuperTBreak( int G, int P, int max, int diff) ;
 void gestionJeuTMC( int G, int P, int max, int diff );
-void gestionSet(int G, int P, int max, int diff);
+void gestionSet( int G, int P, int max, int diff );
 void gestionSetTMC( int G, int P, int max, int diff );
 void gestionMatch( void );
 lv_obj_t* displayScore( uint32_t tile_num, uint8_t state );
 lv_obj_t* displayScoreFinal ( uint32_t tile_num );
 
-static void exit_tennis_time_event_cb( lv_obj_t * obj, lv_event_t event );
 static void enter_tennis_time_event_cb( lv_obj_t * obj, lv_event_t event );
+static void exit_tennis_time_event_cb( lv_obj_t * obj, lv_event_t event );
 
 static bool blockMaintile;
 static bool blockWatchface;
@@ -129,7 +131,7 @@ int menuItem = 0;
 /**************************************************************************//**
 * Callback gesture
 ******************************************************************************/
-void scr_event_cb(lv_obj_t * obj, lv_event_t e)
+void scr_event_cb( lv_obj_t * obj, lv_event_t e )
 {
   TENNIS_INFO_LOG("Scr event = %d", e);
   changement = false;
@@ -164,17 +166,20 @@ void scr_event_cb(lv_obj_t * obj, lv_event_t e)
 ******************************************************************************/
 uint8_t tennis_loop( uint32_t tile_num, uint8_t init  )
 {
-  if (init > 1)
+  if (init == 0)
   {
     menuItem = 0;
     appExit = 0;
     menuSelect = false;
-    wifictl_off();
-    blectl_off();
+//    wifictl_off();
+#ifndef NO_BLUETOOTH    
+//    blectl_off();
+#endif
   } 
 //TENNIS_INFO_LOG("appStep = %d ", appStep);
   
   // Gestion du timer de sauvegarde batterie
+  #ifdef TIMERBATT
   TTGOClass *ttgo = TTGOClass::getWatch();
   // Test si temps écoulé
   if (backlightTime > 0)
@@ -192,7 +197,9 @@ uint8_t tennis_loop( uint32_t tile_num, uint8_t init  )
     ttgo->displaySleep();
     setCpuFrequencyMhz(80);
   }
-TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  ttgo->power->getVbusCurrent(), ESP.getFreeHeap());
+  #endif //TIMERBATT
+
+//TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  ttgo->power->getVbusCurrent(), ESP.getFreeHeap());
 
   switch (appStep)
   {
@@ -277,8 +284,11 @@ TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  t
 
             // Memorisation valeur timeout écran
             scrTimeout = display_get_timeout();
+#ifdef TIMERBATT
             display_set_timeout (300);
-
+#else
+            display_set_timeout (3);
+#endif            
             // Initialisation et affichage ecran match
             gestionMatch();
             displayScore( tile_num, 0);
@@ -325,7 +335,9 @@ TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  t
         break;
     case 6: // Affichage score final
         appExit = false;
+        #ifdef TIMERBATT
         ttgo->bl->on();
+        #endif
         displayScoreFinal(tile_num); 
         appStep = 7;
         break;
@@ -334,6 +346,7 @@ TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  t
         switch (gestDir)
         {
           case LV_GESTURE_DIR_TOP:
+          case LV_GESTURE_DIR_RIGHT:
                   Quit = 0;
                   break;
           case LV_GESTURE_DIR_BOTTOM:
@@ -358,9 +371,6 @@ TENNIS_INFO_LOG("Freq: %d, cons.: %f mA Heap size: %d", getCpuFrequencyMhz(),  t
                   {
                     Quit = 0;
                   }
-                  break;
-          case LV_GESTURE_DIR_RIGHT:
-                  Quit = 0;
                   break;
         }
         gestDir = -1;
@@ -487,7 +497,7 @@ void ringMenu( uint32_t tile_num, int itemMax, char** itemName, char** itemHelp,
 /**************************************************************************//**
 * Initialisation de l'historique du match
 ******************************************************************************/
-void initScore(void)
+void initScore( void )
 {
   indexScore = 0;
   currentScore = 0;
@@ -518,7 +528,7 @@ void initScore(void)
 /**************************************************************************//**
 * Préparation item suivant de l'historique
 ******************************************************************************/
-void copieScore(void)
+void copieScore( void )
 {
   if (currentScore > 0)
   {
@@ -818,7 +828,14 @@ void gestionSet( int G, int P, int max, int diff )
       matchSetType[Result[currentScore].set] = 0;
     }
     else
+    {
       Result[currentScore].set +=1;
+      // Colorise le score en cas de Super Tiebreak
+      if (matchSetType[Result[currentScore].set] == 3)
+        Result[currentScore].tiebreak = true;
+    }
+      Result[currentScore].set +=1;
+
   }
 
   if ((Result[currentScore].sets[G][Result[currentScore].set] == (max + 1)) and Result[currentScore].sets[P][Result[currentScore].set] == max)
@@ -905,7 +922,7 @@ void gestionSetTMC( int G, int P, int max, int diff )
 /**************************************************************************//**
 * Initialisation du match
 ******************************************************************************/
-void gestionMatch(void)
+void gestionMatch( void )
 {
   initScore();
 

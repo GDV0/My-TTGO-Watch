@@ -168,7 +168,7 @@ typedef int16_t lv_coord_t;
 
 
 /* Gesture threshold in pixels */
-#define LV_INDEV_DEF_GESTURE_LIMIT        50
+#define LV_INDEV_DEF_GESTURE_LIMIT        100 //50
 
 /* Gesture min velocity at release before swipe (pixels)*/
 #define LV_INDEV_DEF_GESTURE_MIN_VELOCITY 3

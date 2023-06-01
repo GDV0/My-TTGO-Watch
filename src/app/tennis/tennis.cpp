@@ -20,14 +20,11 @@ icon_t *tennis = NULL;
 
 // declare your images or fonts you need
 LV_IMG_DECLARE(tennis_64px);
-//LV_IMG_DECLARE(info_1_16px);
 
 uint32_t tennis_main_tile_num;
 uint32_t tennis_result_tile_num;
 
-uint32_t tennis_app_main_tile_num;
-
-// app and widget icon
+// app and widget icons
 icon_t *tennis_app = NULL;
 icon_t *tennis_widget = NULL;
 
@@ -37,7 +34,7 @@ static void enter_tennis_event_cb( lv_obj_t * obj, lv_event_t event );
 /*
  *
  */
-void tennis_setup(void)
+void tennis_setup( void )
 {
     #if defined( ONLY_ESSENTIAL )
         return;
@@ -75,6 +72,9 @@ uint32_t tennis_get_app_result_tile_num( void )
     return( tennis_result_tile_num );
 }
 
+/*
+ *
+ */
 void tennis_app_hide_app_icon_info( bool show )
 {
     if ( !show ) {

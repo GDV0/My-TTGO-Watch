@@ -82,7 +82,7 @@ void tennis_activate_cb( void )
     tennis_add_widget();
 
     // Execute l'initialisation de la boucle principale de l'application tennis
-    tennis_loop( tennis_get_app_main_tile_num(), 2 );
+    tennis_loop( tennis_get_app_main_tile_num(), 0 );
 
     // Creation de la tache cyclique (200ms) d'appel de la boucle de l'application tennis
     if( !_tennis_app_task )
@@ -90,7 +90,7 @@ void tennis_activate_cb( void )
 }
 
 /**************************************************************************//**
-* Callback appelée à l' hibernation de l'application
+* Callback appelée à l'hibernation de l'application
 ******************************************************************************/
 void tennis_hibernate_cb( void ) 
 {
