@@ -167,7 +167,8 @@ static void toggle_searching ()
 		REM(false);
 		gadgetbridge_send_msg( (char*)"\r\n{t:\"findPhone\", n:\"false\"}\r\n" );
 		searching_phone = false;
-	}else {
+	}
+    else {
 	    if ( _FindPhone_PhoneSearch_task == nullptr) {
             _FindPhone_PhoneSearch_task = lv_task_create( FindPhone_PhoneSearch_task, 1000, LV_TASK_PRIO_MID, NULL);
 		    searching_phone = true;

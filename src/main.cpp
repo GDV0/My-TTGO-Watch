@@ -17,7 +17,7 @@
 //#include "app/astro/astro_app.h"
 //#include "app/wifimon/wifimon_app.h"
 #include "app/calendar/calendar.h"
-//#include "app/weather/weather.h"
+#include "app/weather/weather.h"
 #include "app/activity/activity.h"
 //#include "app/tracker/tracker_app.h"
 //#include "app/fx_rates/fx_rates.h"
@@ -54,7 +54,7 @@ void setup() {
      */
     tennis_setup();
     //osmmap_app_setup();
-    //weather_app_setup();
+    weather_app_setup();
     //compass_app_setup();
     stopwatch_app_setup();
     //tracker_app_setup();

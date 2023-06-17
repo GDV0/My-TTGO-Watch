@@ -36,11 +36,8 @@
 #else
     #include "esp_err.h"
     #include "esp_pm.h"
-    #include "esp_wifi.h"
     #include <Arduino.h>
     #include <Ticker.h>
-#include "hardware/wifictl.h"
-#include "hardware/blectl.h"
 
 
     Ticker *powermgm_tickTicker = nullptr;
@@ -162,6 +159,12 @@ void powermgm_loop( void ) {
         else {
             log_i("go wakeup");
             /**
+             * set wakeup status/request and send events
+             */
+            powermgm_clear_event( POWERMGM_WAKEUP_REQUEST );
+            powermgm_set_event( POWERMGM_WAKEUP );
+            powermgm_send_event_cb( POWERMGM_WAKEUP );
+            /**
              * set cpu speed
              * 
              * note:    CONFIG_PM_ENABLE comes from the arduino IDF and is only use when
@@ -169,7 +172,6 @@ void powermgm_loop( void ) {
              *          extra features like dynamic frequency scaling. Otherwise normal arduino function
              *          will be used.
              */
-            setCpuFrequencyMhz(240);
             #if CONFIG_PM_ENABLE
                 pm_config.max_freq_mhz = 240;
                 pm_config.min_freq_mhz = 80;
@@ -182,13 +184,6 @@ void powermgm_loop( void ) {
                     log_d("CPU speed = 240MHz");
                 #endif
             #endif
-            /**
-             * set wakeup status/request and send events
-             */
-            powermgm_clear_event( POWERMGM_WAKEUP_REQUEST );
-            powermgm_set_event( POWERMGM_WAKEUP );
-            powermgm_send_event_cb( POWERMGM_WAKEUP );
-
         }
         #ifndef NATIVE_64BIT
             log_d("Free heap: %d", ESP.getFreeHeap());
@@ -221,8 +216,8 @@ void powermgm_loop( void ) {
          * print some memory stats
          */
         #ifndef NATIVE_64BIT
-            log_i("Free heap: %d", ESP.getFreeHeap());
-            log_i("Free PSRAM heap: %d", ESP.getFreePsram());
+            log_d("Free heap: %d", ESP.getFreeHeap());
+            log_d("Free PSRAM heap: %d", ESP.getFreePsram());
             log_i("%s uptime: %d", HARDWARE_NAME, millis() / 1000 );
         #endif
 
@@ -238,23 +233,12 @@ void powermgm_loop( void ) {
             #ifdef NATIVE_64BIT
 
             #else
-                esp_chip_info_t chip_info;
-                esp_chip_info( &chip_info );
-                log_i("ESP model: %s", CONFIG_IDF_TARGET);
-                log_i("ESP cores: %d", chip_info.cores);
-                unsigned major_rev = chip_info.revision / 100;
-                unsigned minor_rev = chip_info.revision % 100;
-                log_i("silicon revision v%d.%d", major_rev, minor_rev);
-                log_i("ESP_IDF version: %s", esp_get_idf_version());
+                setCpuFrequencyMhz( 80 );
+                log_d("CPU speed = 80MHz, start light sleep");
                   /*
                 * from here, the consumption is round about 2.5mA
                 * total standby time is 152h (6days) without use?
                 */
-                esp_bt_controller_disable();
-                esp_wifi_stop();
-                log_d("CPU speed = 80MHz, start light sleep");
-                setCpuFrequencyMhz( 80 );
-                delay( 50 ); // GDV add
                 esp_light_sleep_start();
                  /**
                  * check wakeup source
@@ -282,8 +266,8 @@ void powermgm_loop( void ) {
                     log_i("custom arduino-esp32 framework detected, enable PM/DFS support, %d/%dMHz %s light sleep (%d)", pm_config.max_freq_mhz, pm_config.min_freq_mhz, lighsleep ? "without" : "with", lighsleep );
                 #else
                     #ifndef NATIVE_64BIT
-//                        setCpuFrequencyMhz(240);
-//                        log_d("CPU speed = 240MHz");
+                        setCpuFrequencyMhz(240);
+                        log_d("CPU speed = 240MHz");
                     #endif
                 #endif
             #endif
