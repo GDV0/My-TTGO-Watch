@@ -43,25 +43,32 @@ static bool blockWatchface;
 static uint8_t scrTimeout;
 
 const int maxFormat = 9;                                                                                                                                                                                                                                             // number of match formats
-char* FormatMenu[maxFormat] = { "1", "2", "3", "4", "5", "6", "7", "8", "Q" };                                                                                                                                                                                       // Tennis format names
-char* FormatHelp[maxFormat] = { "Format  1\n\n3 sets 6 jeux\navec JD 6-6\n", 
-                                "Format  2\n\n2 sets 6 jeux\navec JD 6-6\nSet 3: SJD 10pts", 
-                                "Format  3\n\n2 sets 4 jeux NoAdd\navec JD 4-4\nSet 3: SJD 10pts", 
-                                "Format  4\n\n2 sets 6 jeux NoAdd\navec JD 6-6\nSet 3: SJD 10pts", 
-                                "Format  5\n\n2 sets 3 jeux NoAdd\navec JD 2-2\nSet 3: SJD 10pts", 
-                                "Format  6\n\n2 sets 4 jeux NoAdd\navec JD 3-3\nSet 3: SJD 10pts",  
-                                "Format  7\n\n2 sets 5 jeux NoAdd\navec JD 4-4\nSet 3: SJD 10pts", 
-                                "Format  8\n\n3 sets Super JD\n", 
-                                "Quitte" };  // Tennis format help
+char* FormatMenu[maxFormat] = { (char*)"1", (char*)"2", (char*)"3", (char*)"4", (char*)"5", (char*)"6", (char*)"7", (char*)"8", (char*)"Q" };                                                                                                                                                                                       // Tennis format names
+char* FormatHelp[maxFormat] = { (char*)"Format  1\n\n3 sets 6 jeux\navec JD 6-6\n", 
+                                (char*)"Format  2\n\n2 sets 6 jeux\navec JD 6-6\nSet 3: SJD 10pts", 
+                                (char*)"Format  3\n\n2 sets 4 jeux NoAdd\navec JD 4-4\nSet 3: SJD 10pts", 
+                                (char*)"Format  4\n\n2 sets 6 jeux NoAdd\navec JD 6-6\nSet 3: SJD 10pts", 
+                                (char*)"Format  5\n\n2 sets 3 jeux NoAdd\navec JD 2-2\nSet 3: SJD 10pts", 
+                                (char*)"Format  6\n\n2 sets 4 jeux NoAdd\navec JD 3-3\nSet 3: SJD 10pts",  
+                                (char*)"Format  7\n\n2 sets 5 jeux NoAdd\navec JD 4-4\nSet 3: SJD 10pts", 
+                                (char*)"Format  8\n\n3 sets Super JD\n", 
+                                (char*)"Quitte" };  // Tennis format help
 
 const int maxService = 3;                                             // Number of item in Service menu
-char* ServiceMenu[maxService] = { "S", "R", "Q" };                    // Service item names
-char* ServiceHelp[maxService] = { "Serveur", "Receveur", "Quitte" };  // Service item help texts
+char* ServiceMenu[maxService] = { (char*)"S", (char*)"R", (char*)"Q" };                    // Service item names
+char* ServiceHelp[maxService] = { (char*)"Serveur", (char*)"Receveur", (char*)"Quitte" };  // Service item help texts
 
 uint16_t x, y;
 uint16_t indexScore, currentScore;
-char* ScoreJeu[51] = { " O", "15", "3O", "4O", "Ad", "-", " ", " ", " ", " ", " O", " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", " 1O", " 11", " 12", " 13", " 14", " 15", " 16", " 17", " 18", " 19", " 2O", " 21", " 22", " 23", " 24", " 25", " 26", " 27", " 28", " 29", " 3O", " 31", " 32", " 33", " 34", " 35", " 36", " 37", " 38", " 39", " 4O" };
-char* ScoreSet[8] = { "O", "1", "2", "3", "4", "5", "6", "7" };
+char* ScoreJeu[51] = { (char*)" O", (char*)"15", (char*)"3O", (char*)"4O", (char*)"Ad", (char*)"-", 
+                        (char*)" ", (char*)" ", (char*)" ", (char*)" ", 
+                        (char*)" O", (char*)" 1", (char*)" 2", (char*)" 3", (char*)" 4", (char*)" 5", (char*)" 6", (char*)" 7", 
+                        (char*)" 8", (char*)" 9", (char*)" 1O", (char*)" 11", (char*)" 12", (char*)" 13", (char*)" 14", (char*)" 15", 
+                        (char*)" 16", (char*)" 17", (char*)" 18", (char*)" 19", (char*)" 2O", (char*)" 21", (char*)" 22", (char*)" 23", 
+                        (char*)" 24", (char*)" 25", (char*)" 26", (char*)" 27", (char*)" 28", (char*)" 29", (char*)" 3O", (char*)" 31", 
+                        (char*)" 32", (char*)" 33", (char*)" 34", (char*)" 35", (char*)" 36", (char*)" 37", (char*)" 38", (char*)" 39", (char*
+                        )" 4O" };
+char* ScoreSet[8] = { (char*)"O", (char*)"1", (char*)"2", (char*)"3", (char*)"4", (char*)"5", (char*)"6", (char*)"7" };
 
 int maxSets = 3;
 int maxJeu, diffJeu;
