@@ -238,6 +238,7 @@ void powermgm_loop( void ) {
                 * from here, the consumption is round about 2.5mA
                 * total standby time is 152h (6days) without use?
                 */
+                delay(10); // Added to have time to display the "go standby" message
                 esp_light_sleep_start();
                 /**
                  * check wakeup source
