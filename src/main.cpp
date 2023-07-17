@@ -5,9 +5,9 @@
 #include "hardware/powermgm.h"
 
 //#include "app/calc/calc_app.h"
-#include "app/FindPhone/FindPhone.h"
+//#include "app/FindPhone/FindPhone.h"
 //#include "app/gps_status/gps_status.h"
-#include "app/kodi_remote/kodi_remote_app.h"
+//#include "app/kodi_remote/kodi_remote_app.h"
 //#include "app/osmand/osmand_app.h"
 //#include "app/powermeter/powermeter_app.h"
 //#include "app/osmmap/osmmap_app.h"
@@ -60,7 +60,7 @@ void setup() {
     //tracker_app_setup();
     alarm_clock_setup();
     activity_app_setup();
-    calendar_app_setup();
+    //calendar_app_setup();
     //astro_app_setup();
     //mail_app_setup();
     //gps_status_setup();
@@ -69,10 +69,10 @@ void setup() {
     //osmand_app_setup();
     //fxrates_app_setup();
     //powermeter_app_setup();
-    FindPhone_setup();
+    //FindPhone_setup();
     //wifimon_app_setup();
     //calc_app_setup();
-    kodi_remote_app_setup();
+    //kodi_remote_app_setup();
     /**
      * post hardware setup
      */

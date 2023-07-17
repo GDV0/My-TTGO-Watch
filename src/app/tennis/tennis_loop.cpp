@@ -60,14 +60,16 @@ char* ServiceHelp[maxService] = { (char*)"Serveur", (char*)"Receveur", (char*)"Q
 
 uint16_t x, y;
 uint16_t indexScore, currentScore;
-char* ScoreJeu[51] = { (char*)" O", (char*)"15", (char*)"3O", (char*)"4O", (char*)"Ad", (char*)"-", 
-                        (char*)" ", (char*)" ", (char*)" ", (char*)" ", 
-                        (char*)" O", (char*)" 1", (char*)" 2", (char*)" 3", (char*)" 4", (char*)" 5", (char*)" 6", (char*)" 7", 
-                        (char*)" 8", (char*)" 9", (char*)" 1O", (char*)" 11", (char*)" 12", (char*)" 13", (char*)" 14", (char*)" 15", 
-                        (char*)" 16", (char*)" 17", (char*)" 18", (char*)" 19", (char*)" 2O", (char*)" 21", (char*)" 22", (char*)" 23", 
-                        (char*)" 24", (char*)" 25", (char*)" 26", (char*)" 27", (char*)" 28", (char*)" 29", (char*)" 3O", (char*)" 31", 
-                        (char*)" 32", (char*)" 33", (char*)" 34", (char*)" 35", (char*)" 36", (char*)" 37", (char*)" 38", (char*)" 39", (char*
-                        )" 4O" };
+
+char* ScoreJeu[51] = { (char*)" O", (char*)"15", (char*)"3O", (char*)"4O", (char*)"Ad", (char*)"-",
+                      (char*)" ", (char*)" ", (char*)" ", (char*)" ",
+                      (char*)" O", (char*)" 1", (char*)" 2", (char*)" 3", (char*)" 4", (char*)" 5", (char*)" 6", 
+                      (char*)" 7", (char*)" 8", (char*)" 9", (char*)"1O", (char*)"11", (char*)"12", (char*)"13",
+                      (char*)"14", (char*)"15", (char*)"16", (char*)"17", (char*)"18", (char*)"19", (char*)"2O",
+                      (char*)"21", (char*)"22", (char*)"23", (char*)"24", (char*)"25", (char*)"26", (char*)"27",
+                      (char*)"28", (char*)"29", (char*)"3O", (char*)"31", (char*)"32", (char*)"33", (char*)"34",
+                      (char*)"35", (char*)"36", (char*)"37", (char*)"38", (char*)"39", (char*)"4O" };
+                      
 char* ScoreSet[8] = { (char*)"O", (char*)"1", (char*)"2", (char*)"3", (char*)"4", (char*)"5", (char*)"6", (char*)"7" };
 
 int maxSets = 3;

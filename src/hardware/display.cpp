@@ -151,6 +151,7 @@ static bool display_powermgm_loop_cb( EventBits_t event, void *arg ) {
              * check if backlight adjust has change
              */
             if ( dest_brightness != brightness ) {
+                log_d("dest brightness: %d - brigthness: %d", dest_brightness, brightness);
                 if ( brightness < dest_brightness ) {
                     brightness++;
                     ttgo->bl->adjust( brightness );
