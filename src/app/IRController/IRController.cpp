@@ -70,10 +70,10 @@
                 irConfig.load();
 
             AppPage& main = irController.mainPage();
-            lv_obj_t *desks = lv_tileview_create(main.handle(), NULL);
+            lv_obj_t *desks = lv_tileview_create(main.handle());
             lv_obj_set_size(desks, LV_HOR_RES, LV_VER_RES);
             lv_page_set_scrollbar_mode(desks, LV_SCROLLBAR_MODE_OFF);
-            lv_obj_add_style(desks, LV_OBJ_PART_MAIN, ws_get_mainbar_style());
+            lv_obj_add_style(desks, LV_PART_MAIN, ws_get_mainbar_style());
 
             valid_pos = ( lv_point_t * )MALLOC_ASSERT( sizeof( lv_point_t ) * irConfig.pageCount, "valid_pos allocation failed" );
             for (lv_coord_t i = 0; i < irConfig.pageCount; i++)
@@ -84,22 +84,22 @@
             
             for (size_t i = 0; i < irConfig.pageCount; i++)
             {
-                lv_obj_t * tile = lv_obj_create(desks, NULL);
+                lv_obj_t * tile = lv_obj_create(desks);
                 lv_obj_set_size(tile, LV_HOR_RES, LV_VER_RES);
                 lv_obj_set_pos(tile, valid_pos[i].x * LV_HOR_RES, valid_pos[i].y * LV_VER_RES);
-                lv_obj_add_style(tile, LV_OBJ_PART_MAIN, ws_get_mainbar_style());
+                lv_obj_add_style(tile, LV_PART_MAIN, ws_get_mainbar_style());
 
-                lv_obj_t * desk = lv_cont_create(tile, NULL);
+                lv_obj_t * desk = lv_cont_create(tile);
                 lv_obj_set_size(desk, LV_HOR_RES, LV_VER_RES - 42);
                 lv_cont_set_layout(desk, LV_LAYOUT_PRETTY_MID);
 
                 lv_style_copy(&irDeskStyle, ws_get_mainbar_style());
                 lv_style_set_pad_inner(&irDeskStyle, LV_STATE_DEFAULT, irConfig.defSpacing);
                 lv_style_set_pad_top(&irDeskStyle, LV_STATE_DEFAULT, 7);
-                lv_style_set_pad_bottom(&irDeskStyle, LV_STATE_DEFAULT, 7);
+                lv_style_set_pad_bottom(&irDeskStyle, 7);
                 lv_style_set_pad_left(&irDeskStyle, LV_STATE_DEFAULT, 16);
                 lv_style_set_pad_right(&irDeskStyle, LV_STATE_DEFAULT, 16);
-                lv_obj_add_style(desk, LV_OBJ_PART_MAIN, &irDeskStyle);
+                lv_obj_add_style(desk, LV_PART_MAIN, &irDeskStyle);
 
                 for (int j = 0; j < irConfig.totalCount(); j++)
                 {
@@ -112,7 +112,7 @@
                         continue;
                     }
                     
-                    lv_obj_t * button = lv_btn_create(desk, NULL);
+                    lv_obj_t * button = lv_btn_create(desk);
                     lv_label_create(button, NULL);
 
                     Button btn(button);

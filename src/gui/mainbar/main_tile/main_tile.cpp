@@ -137,35 +137,35 @@ void main_tile_setup( void ) {
 
     clock_cont = mainbar_obj_create( main_cont );
     lv_obj_set_size( clock_cont, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) / 2 );
-    lv_obj_add_style( clock_cont, LV_OBJ_PART_MAIN, style );
-    lv_obj_align( clock_cont, main_cont, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_style( clock_cont, LV_PART_MAIN, style );
+    lv_obj_align_to( clock_cont, main_cont, LV_ALIGN_CENTER, 0, 0 );
     
     timelabel = lv_label_create( clock_cont , NULL);
     lv_label_set_text(timelabel, "00:00");
-    lv_obj_reset_style_list( timelabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( timelabel, LV_OBJ_PART_MAIN, &timestyle );
-    lv_obj_align(timelabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_reset_style_list( timelabel, LV_PART_MAIN );
+    lv_obj_add_style( timelabel, LV_PART_MAIN, &timestyle );
+    lv_obj_align_to(timelabel, NULL, LV_ALIGN_CENTER, 0, 0);
 
     datelabel = lv_label_create( clock_cont , NULL);
     lv_label_set_text(datelabel, "1.Jan 1970");
-    lv_obj_reset_style_list( datelabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( datelabel, LV_OBJ_PART_MAIN, &datestyle );
-    lv_obj_align( datelabel, clock_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_obj_reset_style_list( datelabel, LV_PART_MAIN );
+    lv_obj_add_style( datelabel, LV_PART_MAIN, &datestyle );
+    lv_obj_align_to( datelabel, clock_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
 
     infolabel = lv_label_create( clock_cont , NULL);
     lv_label_set_text(infolabel, "battery: n/a");
-    lv_obj_reset_style_list( infolabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( infolabel, LV_OBJ_PART_MAIN, &infostyle );
-    lv_obj_align( infolabel, datelabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
+    lv_obj_reset_style_list( infolabel, LV_PART_MAIN );
+    lv_obj_add_style( infolabel, LV_PART_MAIN, &infostyle );
+    lv_obj_align_to( infolabel, datelabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
 
     templabel = lv_label_create( clock_cont , NULL);
     lv_label_set_text(templabel, "temp/humidity: n/a");
-    lv_obj_reset_style_list( templabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( templabel, LV_OBJ_PART_MAIN, &tempstyle );
-    lv_obj_align( templabel, infolabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
+    lv_obj_reset_style_list( templabel, LV_PART_MAIN );
+    lv_obj_add_style( templabel, LV_PART_MAIN, &tempstyle );
+    lv_obj_align_to( templabel, infolabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
     
     if ( !sensor_get_available() )
-        lv_obj_set_hidden( templabel, true );
+        lv_obj_add_flag( templabel, LV_OBJ_FLAG_HIDDEN );
 
     main_tile_update_time( true );
 
@@ -173,62 +173,62 @@ void main_tile_setup( void ) {
         widget_entry[ widget ].active = false;
 
         widget_entry[ widget ].icon_cont = mainbar_obj_create( main_cont );
-        lv_obj_reset_style_list( widget_entry[ widget ].icon_cont, LV_OBJ_PART_MAIN );
-        lv_obj_add_style( widget_entry[ widget ].icon_cont, LV_OBJ_PART_MAIN, style );
+        lv_obj_reset_style_list( widget_entry[ widget ].icon_cont, LV_PART_MAIN );
+        lv_obj_add_style( widget_entry[ widget ].icon_cont, LV_PART_MAIN, style );
         lv_obj_set_size( widget_entry[ widget ].icon_cont, WIDGET_X_SIZE, WIDGET_Y_SIZE );
-        lv_obj_set_hidden( widget_entry[ widget ].icon_cont, true );
+        lv_obj_add_flag( widget_entry[ widget ].icon_cont, LV_OBJ_FLAG_HIDDEN );
         // create app label
         widget_entry[ widget ].label = lv_label_create( widget_entry[ widget ].icon_cont , NULL );
         mainbar_add_slide_element( widget_entry[ widget ].label);
-        lv_obj_reset_style_list( widget_entry[ widget ].label, LV_OBJ_PART_MAIN );
-        lv_obj_add_style( widget_entry[ widget ].label, LV_OBJ_PART_MAIN, &iconstyle );
+        lv_obj_reset_style_list( widget_entry[ widget ].label, LV_PART_MAIN );
+        lv_obj_add_style( widget_entry[ widget ].label, LV_PART_MAIN, &iconstyle );
         lv_obj_set_size( widget_entry[ widget ].label, WIDGET_X_SIZE, WIDGET_LABEL_Y_SIZE );
-        lv_obj_align( widget_entry[ widget ].label , widget_entry[ widget ].icon_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+        lv_obj_align_to( widget_entry[ widget ].label , widget_entry[ widget ].icon_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
         // create app label
         widget_entry[ widget ].ext_label = lv_label_create( widget_entry[ widget ].icon_cont , NULL );
         mainbar_add_slide_element( widget_entry[ widget ].ext_label);
-        lv_obj_reset_style_list( widget_entry[ widget ].ext_label, LV_OBJ_PART_MAIN );
-        lv_obj_add_style( widget_entry[ widget ].ext_label, LV_OBJ_PART_MAIN, &iconstyle );
+        lv_obj_reset_style_list( widget_entry[ widget ].ext_label, LV_PART_MAIN );
+        lv_obj_add_style( widget_entry[ widget ].ext_label, LV_PART_MAIN, &iconstyle );
         lv_obj_set_size( widget_entry[ widget ].ext_label, WIDGET_X_SIZE, WIDGET_LABEL_Y_SIZE );
-        lv_obj_align( widget_entry[ widget ].ext_label , widget_entry[ widget ].label, LV_ALIGN_OUT_TOP_MID, 0, 0 );
+        lv_obj_align_to( widget_entry[ widget ].ext_label , widget_entry[ widget ].label, LV_ALIGN_OUT_TOP_MID, 0, 0 );
         // create img and indicator
         widget_entry[ widget ].icon_img = lv_imgbtn_create( widget_entry[ widget ].icon_cont , NULL );
         widget_entry[ widget ].icon_indicator = lv_img_create( widget_entry[ widget ].icon_cont, NULL );
         // hide all
-        lv_obj_set_hidden( widget_entry[ widget ].icon_cont, true );
-        lv_obj_set_hidden( widget_entry[ widget ].icon_img, true );
-        lv_obj_set_hidden( widget_entry[ widget ].icon_indicator, true );
-        lv_obj_set_hidden( widget_entry[ widget ].label, true );
-        lv_obj_set_hidden( widget_entry[ widget ].ext_label, true );
+        lv_obj_add_flag( widget_entry[ widget ].icon_cont, LV_OBJ_FLAG_HIDDEN );
+        lv_obj_add_flag( widget_entry[ widget ].icon_img, LV_OBJ_FLAG_HIDDEN );
+        lv_obj_add_flag( widget_entry[ widget ].icon_indicator, LV_OBJ_FLAG_HIDDEN );
+        lv_obj_add_flag( widget_entry[ widget ].label, LV_OBJ_FLAG_HIDDEN );
+        lv_obj_add_flag( widget_entry[ widget ].ext_label, LV_OBJ_FLAG_HIDDEN );
     }
 
     info_cont = mainbar_obj_create( clock_cont );
     lv_obj_set_size( info_cont, lv_disp_get_hor_res( NULL ) , 16 );
-    lv_obj_add_style( info_cont, LV_OBJ_PART_MAIN, style );
-    lv_obj_align( info_cont, clock_cont, LV_ALIGN_IN_TOP_MID, 0, 8 );
+    lv_obj_add_style( info_cont, LV_PART_MAIN, style );
+    lv_obj_align_to( info_cont, clock_cont, LV_ALIGN_IN_TOP_MID, 0, 8 );
 
     batteryicon = lv_img_create( info_cont , NULL);
     lv_img_set_src( batteryicon, LV_SYMBOL_BATTERY_FULL );
-    lv_obj_align( batteryicon, info_cont, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( batteryicon, info_cont, LV_ALIGN_CENTER, 0, 0 );
 
     wifiicon = lv_img_create( info_cont , NULL);
     lv_img_set_src( wifiicon, LV_SYMBOL_WIFI );
-    lv_obj_align( wifiicon, batteryicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( wifiicon, batteryicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
 
     bluetoothicon = lv_img_create( info_cont , NULL);
     lv_img_set_src( bluetoothicon, LV_SYMBOL_BLUETOOTH );
-    lv_obj_align( bluetoothicon, wifiicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( bluetoothicon, wifiicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
 
     batterylabel = lv_label_create( info_cont , NULL);
     lv_label_set_text(batterylabel, "100%" );
-    lv_obj_reset_style_list( batterylabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( batterylabel, LV_OBJ_PART_MAIN, &datestyle );
-    lv_obj_align(batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0);
+    lv_obj_reset_style_list( batterylabel, LV_PART_MAIN );
+    lv_obj_add_style( batterylabel, LV_PART_MAIN, &datestyle );
+    lv_obj_align_to(batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0);
 
     lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
     lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
-    lv_obj_set_hidden( wifiicon, true );
-    lv_obj_set_hidden( bluetoothicon, true );
+    lv_obj_add_flag( wifiicon, LV_OBJ_FLAG_HIDDEN );
+    lv_obj_add_flag( bluetoothicon, LV_OBJ_FLAG_HIDDEN );
 
     main_tile_task = lv_task_create( main_tile_update_task, 500, LV_TASK_PRIO_MID, NULL );
 
@@ -242,10 +242,10 @@ void main_tile_setup( void ) {
     styles_register_cb( STYLE_CHANGE, main_tile_style_event_cb, "main tile style event" );
 
     #ifndef ROUND_DISPLAY
-        lv_obj_set_hidden( info_cont, true );
+        lv_obj_add_flag( info_cont, LV_OBJ_FLAG_HIDDEN );
     #endif
     #ifndef M5PAPER
-        lv_obj_set_hidden( infolabel, true );
+        lv_obj_add_flag( infolabel, LV_OBJ_FLAG_HIDDEN );
     #endif
 
     maintile_init = true;
@@ -257,7 +257,7 @@ static bool mainbar_pmu_event_cb( EventBits_t event, void *arg ) {
                 int32_t pmu_info = *(int32_t*)arg;
                 int32_t percent = pmu_info & PMUCTL_STATUS_PERCENT;
                 wf_label_printf( batterylabel, "%d%%", percent );
-                lv_obj_align(batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0);
+                lv_obj_align_to(batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0);
                 if( pmu_info & PMUCTL_STATUS_CHARGING ) {
                     lv_obj_set_style_local_image_recolor( batteryicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN );
                     lv_img_set_src( batteryicon, LV_SYMBOL_CHARGE );
@@ -291,12 +291,12 @@ static bool mainbar_blectl_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case BLECTL_ON:
             blectl_state = true;
-            lv_obj_set_hidden( bluetoothicon, false );
+            lv_obj_clear_flag( bluetoothicon, LV_OBJ_FLAG_HIDDEN );
             lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
             break;
         case BLECTL_OFF:
             blectl_state = false;
-            lv_obj_set_hidden( bluetoothicon, true );
+            lv_obj_add_flag( bluetoothicon, LV_OBJ_FLAG_HIDDEN );
             lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
             break;
         case BLECTL_CONNECT:
@@ -318,12 +318,12 @@ static bool mainbar_wifictl_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case WIFICTL_ON:
             wifictl_state = true;
-            lv_obj_set_hidden( wifiicon, false );
+            lv_obj_clear_flag( wifiicon, LV_OBJ_FLAG_HIDDEN );
             lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
             break;
         case WIFICTL_OFF:
             wifictl_state = false;
-            lv_obj_set_hidden( wifiicon, true );
+            lv_obj_add_flag( wifiicon, LV_OBJ_FLAG_HIDDEN );
             lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
             break;
         case WIFICTL_CONNECT:
@@ -376,7 +376,7 @@ static bool main_tile_sensor_event_cb( EventBits_t event, void *arg ) {
     char sensor_str[128] = "";
     snprintf( sensor_str, sizeof( sensor_str ), "temp/humidity: %0.1f°C/%.0f%%", temp, humidity );
     lv_label_set_text( templabel, sensor_str );
-    lv_obj_align( templabel, infolabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
+    lv_obj_align_to( templabel, infolabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
 
     return( true );
 }
@@ -431,7 +431,7 @@ lv_obj_t *main_tile_register_widget( void ) {
     for( int widget = 0 ; widget < MAX_WIDGET_NUM ; widget++ ) {
         if ( widget_entry[ widget ].active == false ) {
             widget_entry[ widget ].active = true;
-            lv_obj_set_hidden( widget_entry[ widget ].icon_cont, false );
+            lv_obj_clear_flag( widget_entry[ widget ].icon_cont, LV_OBJ_FLAG_HIDDEN );
             main_tile_align_widgets();
             return( widget_entry[ widget ].icon_cont );
         }
@@ -453,7 +453,7 @@ icon_t *main_tile_get_free_widget_icon( void ) {
      */
     for( int widget = 0 ; widget < MAX_WIDGET_NUM ; widget++ ) {
         if ( widget_entry[ widget ].active == false ) {
-            lv_obj_set_hidden( widget_entry[ widget ].icon_cont, false );
+            lv_obj_clear_flag( widget_entry[ widget ].icon_cont, LV_OBJ_FLAG_HIDDEN );
             return( &widget_entry[ widget ] );
         }
     }
@@ -479,21 +479,21 @@ void main_tile_align_widgets( void ) {
         if ( widget_entry[ widget ].active )
         active_widgets++;
     }
-    lv_obj_align( batteryicon, info_cont, LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_align( wifiicon, batteryicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
-    lv_obj_align( bluetoothicon, wifiicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
-    lv_obj_align( batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( batteryicon, info_cont, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( wifiicon, batteryicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( bluetoothicon, wifiicon, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0 );
     /**
      * if we habe zero active widget, realign with no widgets
      */
     if ( active_widgets == 0 ) {
-        lv_obj_align( clock_cont, main_cont, LV_ALIGN_CENTER, 0, 0 );
+        lv_obj_align_to( clock_cont, main_cont, LV_ALIGN_CENTER, 0, 0 );
         return;
     };
     /**
      * set clock container to the top
      */
-    lv_obj_align( clock_cont, main_cont, LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_align_to( clock_cont, main_cont, LV_ALIGN_IN_TOP_MID, 0, 0 );
     /**
      * align the widgets
      */
@@ -501,7 +501,7 @@ void main_tile_align_widgets( void ) {
     active_widgets = 0;
     for ( int widget = 0 ; widget < MAX_WIDGET_NUM ; widget++ ) {
         if ( widget_entry[ widget ].active ) {
-            lv_obj_align( widget_entry[ widget ].icon_cont , main_cont, LV_ALIGN_IN_BOTTOM_MID, xpos + ( WIDGET_X_SIZE * active_widgets ) + ( active_widgets * WIDGET_X_CLEARENCE ) + 32 , - ( ( lv_disp_get_ver_res( NULL ) / 4 ) -32 ) );
+            lv_obj_align_to( widget_entry[ widget ].icon_cont , main_cont, LV_ALIGN_IN_BOTTOM_MID, xpos + ( WIDGET_X_SIZE * active_widgets ) + ( active_widgets * WIDGET_X_CLEARENCE ) + 32 , - ( ( lv_disp_get_ver_res( NULL ) / 4 ) -32 ) );
             active_widgets++;
         }
     }
@@ -554,7 +554,7 @@ void main_tile_update_time( bool force ) {
         timesync_get_current_timestring( time_str, sizeof(time_str) );
         log_d("renew time: %s", time_str );
         lv_label_set_text( timelabel, time_str );
-        lv_obj_align( timelabel, clock_cont, LV_ALIGN_CENTER, 0, 0 );
+        lv_obj_align_to( timelabel, clock_cont, LV_ALIGN_CENTER, 0, 0 );
         /*
          * Date:
          * only update while date changes
@@ -563,12 +563,12 @@ void main_tile_update_time( bool force ) {
             strftime( time_str, sizeof(time_str), "%a %d.%b %Y", &info );
             log_d("renew date: %s", time_str );
             lv_label_set_text( datelabel, time_str );
-            lv_obj_align( datelabel, clock_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+            lv_obj_align_to( datelabel, clock_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
         }
 
         snprintf( info_str, sizeof( info_str ),"battery: %d%%", pmu_get_battery_percent() );
         lv_label_set_text( infolabel, info_str );
-        lv_obj_align( infolabel, datelabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
+        lv_obj_align_to( infolabel, datelabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
         /*
          * Save for next loop
          */

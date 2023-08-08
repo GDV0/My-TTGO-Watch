@@ -46,10 +46,10 @@ void gps_status_setup_setup( uint32_t tile_num ) {
     gps_status_setup_tile = mainbar_get_tile_obj( tile_num );
 
     lv_obj_t *header = wf_add_settings_header( gps_status_setup_tile, "gps status setup" );
-    lv_obj_align( header, gps_status_setup_tile, LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_align_to( header, gps_status_setup_tile, LV_ALIGN_IN_TOP_MID, 0, 0 );
 
     lv_obj_t *gps_status_foobar_switch_cont = wf_add_labeled_switch( gps_status_setup_tile, "foo bar", &gps_status_foobar_switch, false, gps_status_foobar_switch_event_cb, SETUP_STYLE );
-    lv_obj_align( gps_status_foobar_switch_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
+    lv_obj_align_to( gps_status_foobar_switch_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 }
 
 static void gps_status_foobar_switch_event_cb( lv_obj_t * obj, lv_event_t event ) {

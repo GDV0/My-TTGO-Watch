@@ -75,14 +75,14 @@ void note_tile_setup( void ) {
     style = ws_get_mainbar_style();
 
     lv_style_copy( &notestyle, style);
-    lv_style_set_text_opa( &notestyle, LV_OBJ_PART_MAIN, LV_OPA_30);
+    lv_style_set_text_opa( &notestyle, LV_PART_MAIN, LV_OPA_30);
     lv_style_set_text_font( &notestyle, LV_STATE_DEFAULT, &Ubuntu_72px);
 
     notelabel = lv_label_create( note_cont, NULL);
     lv_label_set_text( notelabel, "note");
-    lv_obj_reset_style_list( notelabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( notelabel, LV_OBJ_PART_MAIN, &notestyle );
-    lv_obj_align( notelabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_reset_style_list( notelabel, LV_PART_MAIN );
+    lv_obj_add_style( notelabel, LV_PART_MAIN, &notestyle );
+    lv_obj_align_to( notelabel, NULL, LV_ALIGN_CENTER, 0, 0);
 
     mainbar_add_tile_button_cb( note_tile_num, note_tile_button_event_cb );
 

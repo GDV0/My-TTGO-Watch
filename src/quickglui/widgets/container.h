@@ -33,7 +33,7 @@ public:
   /** Create from lvgl object */
   Container(lv_obj_t* handle);
 
-  void autoLayout(lv_layout_t value);
+  void autoLayout(uint32_t value);
 
   constexpr static const char* TypeName = "lv_cont";
 

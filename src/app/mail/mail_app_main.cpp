@@ -105,25 +105,25 @@ void mail_app_main_setup( uint32_t tile_num ) {
      * build header
      */
     lv_obj_t *mail_main_exit_btn = wf_add_exit_button( mail_main_tile );
-    lv_obj_align( mail_main_exit_btn, mail_main_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
-    mail_main_header_label = lv_label_create( mail_main_tile, NULL );
+    lv_obj_align_to( mail_main_exit_btn, mail_main_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    mail_main_header_label = lv_label_create( mail_main_tile );
     lv_label_set_text( mail_main_header_label, "mail" );
-    lv_obj_add_style( mail_main_header_label, LV_OBJ_PART_MAIN, APP_STYLE );
-    lv_obj_align( mail_main_header_label, mail_main_exit_btn, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0 );
+    lv_obj_add_style( mail_main_header_label, LV_PART_MAIN, APP_STYLE );
+    lv_obj_align_to( mail_main_header_label, mail_main_exit_btn, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0 );
     lv_obj_t *mail_main_refresh_btn = wf_add_refresh_button( mail_main_tile, mail_main_refresh_event_cb );
-    lv_obj_align( mail_main_refresh_btn, mail_main_tile, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( mail_main_refresh_btn, mail_main_tile, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING, THEME_PADDING );
     lv_obj_t *mail_main_setup_btn = wf_add_setup_button( mail_main_tile, mail_main_setup_event_cb );
-    lv_obj_align( mail_main_setup_btn, mail_main_refresh_btn, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( mail_main_setup_btn, mail_main_refresh_btn, LV_ALIGN_OUT_LEFT_MID, -THEME_PADDING, 0 );
     /**
      * create mail main overview
      */
-    mail_main_overview_page = lv_page_create( mail_main_tile, NULL);
+    mail_main_overview_page = lv_obj_create( mail_main_tile);
     lv_obj_set_size( mail_main_overview_page, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - THEME_ICON_SIZE );
-    lv_obj_add_style( mail_main_overview_page, LV_OBJ_PART_MAIN, &mail_main_cell_style );
+    lv_obj_add_style( mail_main_overview_page, LV_PART_MAIN, &mail_main_cell_style );
     lv_page_set_scrlbar_mode( mail_main_overview_page, LV_SCRLBAR_MODE_AUTO );
-    lv_obj_align( mail_main_overview_page, mail_main_tile, LV_ALIGN_IN_TOP_MID, 0, THEME_ICON_SIZE );
+    lv_obj_align_to( mail_main_overview_page, mail_main_tile, LV_ALIGN_IN_TOP_MID, 0, THEME_ICON_SIZE );
     mail_main_overview = lv_table_create( mail_main_overview_page, NULL );
-    lv_obj_add_style( mail_main_overview, LV_OBJ_PART_MAIN, &mail_main_cell_style );
+    lv_obj_add_style( mail_main_overview, LV_PART_MAIN, &mail_main_cell_style );
     lv_page_glue_obj(mail_main_overview, true);
     lv_obj_set_event_cb( mail_main_overview, mail_main_selected_mail_event_cb );
     mail_main_clear_overview();
@@ -326,7 +326,7 @@ void mail_main_clear_overview( void ) {
     lv_table_set_cell_value( mail_main_overview, 0, 1, "TIME");
     lv_table_set_col_width( mail_main_overview, 0, ( lv_page_get_width_fit(mail_main_overview_page) / 16 ) * 11 - THEME_PADDING );
     lv_table_set_col_width( mail_main_overview, 1, ( lv_page_get_width_fit(mail_main_overview_page) / 16 ) * 5 );
-    lv_obj_align( mail_main_overview, mail_main_overview_page, LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_align_to( mail_main_overview, mail_main_overview_page, LV_ALIGN_IN_TOP_MID, 0, 0 );
 }
 
 void mail_main_add_mail_entry( const char *from, const char *date ) {

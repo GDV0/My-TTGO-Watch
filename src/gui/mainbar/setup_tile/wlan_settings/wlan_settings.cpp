@@ -85,23 +85,23 @@ void wlan_settings_tile_setup( void ) {
     setup_hide_indicator( wifi_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( wifi_settings_tile, "wlan" );
-    lv_obj_align( header, wifi_settings_tile, LV_ALIGN_IN_TOP_LEFT, THEME_ICON_PADDING, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
+    lv_obj_align_to( header, wifi_settings_tile, LV_ALIGN_IN_TOP_LEFT, THEME_ICON_PADDING, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
 
     lv_obj_t *setup_btn = wf_add_setup_button( wifi_settings_tile, enter_wifi_setup_event_cb, SETUP_STYLE );
-    lv_obj_align( setup_btn, wifi_settings_tile, LV_ALIGN_IN_TOP_RIGHT, -THEME_ICON_PADDING, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
+    lv_obj_align_to( setup_btn, wifi_settings_tile, LV_ALIGN_IN_TOP_RIGHT, -THEME_ICON_PADDING, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
 
     /*Copy the first switch and turn it ON*/    
     wifi_onoff = wf_add_switch( wifi_settings_tile, false );
-    lv_obj_align( wifi_onoff, setup_btn, LV_ALIGN_OUT_LEFT_MID, -THEME_ICON_PADDING, 0 );
+    lv_obj_align_to( wifi_onoff, setup_btn, LV_ALIGN_OUT_LEFT_MID, -THEME_ICON_PADDING, 0 );
     lv_obj_set_event_cb( wifi_onoff, wifi_onoff_event_handler);
 
     wifiname_list = lv_list_create( wifi_settings_tile, NULL);
     lv_obj_set_size( wifiname_list, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - STATUSBAR_HEIGHT - THEME_ICON_SIZE );
     lv_style_init( &wifi_list_style  );
-    lv_style_set_border_width( &wifi_list_style , LV_OBJ_PART_MAIN, 0);
-    lv_style_set_radius( &wifi_list_style , LV_OBJ_PART_MAIN, 0);
-    lv_obj_add_style( wifiname_list, LV_OBJ_PART_MAIN, &wifi_list_style  );
-    lv_obj_align( wifiname_list, wifi_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_style_set_border_width( &wifi_list_style , LV_PART_MAIN, 0);
+    lv_style_set_radius( &wifi_list_style , LV_PART_MAIN, 0);
+    lv_obj_add_style( wifiname_list, LV_PART_MAIN, &wifi_list_style  );
+    lv_obj_align_to( wifiname_list, wifi_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
 
     wlan_password_tile_setup( wifi_password_tile_num );
     wlan_setup_tile_setup( wifi_setup_tile_num );
@@ -169,7 +169,7 @@ void wlan_password_tile_setup( uint32_t wifi_password_tile_num ) {
     wifi_password_tile = mainbar_get_tile_obj( wifi_password_tile_num );
 
     lv_obj_t *header = wf_add_settings_header( wifi_password_tile, "wlan setting", exit_wifi_password_event_cb );
-    lv_obj_align( header, wifi_password_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
+    lv_obj_align_to( header, wifi_password_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
     
     wifi_password_name_label = wf_get_settings_header_title(header);
 
@@ -179,13 +179,13 @@ void wlan_password_tile_setup( uint32_t wifi_password_tile_num ) {
     lv_textarea_set_one_line( wifi_password_pass_textfield, true);
     lv_textarea_set_cursor_hidden( wifi_password_pass_textfield, true);
     lv_obj_set_width( wifi_password_pass_textfield, lv_disp_get_hor_res( NULL ) - THEME_ICON_PADDING * 2 );
-    lv_obj_align( wifi_password_pass_textfield, header, LV_ALIGN_OUT_BOTTOM_MID, THEME_ICON_PADDING, THEME_ICON_PADDING );
+    lv_obj_align_to( wifi_password_pass_textfield, header, LV_ALIGN_OUT_BOTTOM_MID, THEME_ICON_PADDING, THEME_ICON_PADDING );
     lv_obj_set_event_cb( wifi_password_pass_textfield, wlan_password_event_cb );
 
     lv_obj_t *mac_label = lv_label_create( wifi_password_tile, NULL);
     lv_obj_add_style( mac_label, LV_IMGBTN_PART_MAIN, &wifi_password_style );
     lv_obj_set_width( mac_label, lv_disp_get_hor_res( NULL ) );
-    lv_obj_align( mac_label, wifi_password_tile, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+    lv_obj_align_to( mac_label, wifi_password_tile, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 #ifdef NATIVE_64BIT
     lv_label_set_text_fmt( mac_label, "MAC:" );
 #else
@@ -193,10 +193,10 @@ void wlan_password_tile_setup( uint32_t wifi_password_tile_num ) {
 #endif
 
     lv_obj_t *apply_btn = wf_add_check_button( wifi_password_tile, apply_wifi_password_event_cb, &wifi_password_style );
-    lv_obj_align( apply_btn, wifi_password_pass_textfield, LV_ALIGN_OUT_BOTTOM_RIGHT, -10, 10 );
+    lv_obj_align_to( apply_btn, wifi_password_pass_textfield, LV_ALIGN_OUT_BOTTOM_RIGHT, -10, 10 );
 
     lv_obj_t *delete_btn = wf_add_trash_button( wifi_password_tile, delete_wifi_password_event_cb, &wifi_password_style );
-    lv_obj_align( delete_btn, wifi_password_pass_textfield, LV_ALIGN_OUT_BOTTOM_LEFT, 10, 10 );
+    lv_obj_align_to( delete_btn, wifi_password_pass_textfield, LV_ALIGN_OUT_BOTTOM_LEFT, 10, 10 );
 }
 
 static void apply_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
@@ -249,32 +249,32 @@ void wlan_setup_tile_setup( uint32_t wifi_setup_tile_num ) {
     wifi_setup_tile = mainbar_get_tile_obj( wifi_setup_tile_num );
 
     lv_obj_t *header = wf_add_settings_header( wifi_setup_tile, "wlan settings" );
-    lv_obj_align( header, wifi_setup_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
+    lv_obj_align_to( header, wifi_setup_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + THEME_ICON_PADDING );
 
     lv_obj_t *wifi_autoon_onoff_cont = wf_add_labeled_switch( wifi_setup_tile, "enable on wakeup", &wifi_autoon_onoff, wifictl_get_autoon(), wifi_autoon_onoff_event_handler,SETUP_STYLE );
-    lv_obj_align( wifi_autoon_onoff_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
+    lv_obj_align_to( wifi_autoon_onoff_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 
     lv_obj_t *wifi_enabled_on_standby_onoff_cont = wf_add_labeled_switch( wifi_setup_tile, "enable on standby", &wifi_enabled_on_standby_onoff, wifictl_get_enable_on_standby(), wifi_enabled_on_standby_onoff_event_handler, SETUP_STYLE );
-    lv_obj_align( wifi_enabled_on_standby_onoff_cont, wifi_autoon_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
+    lv_obj_align_to( wifi_enabled_on_standby_onoff_cont, wifi_autoon_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 
     lv_obj_t *wifi_webserver_onoff_cont = wf_add_labeled_switch( wifi_setup_tile, "enable webserver", &wifi_webserver_onoff, wifictl_get_webserver(), wifi_webserver_onoff_event_handler, SETUP_STYLE );
-    lv_obj_align( wifi_webserver_onoff_cont, wifi_enabled_on_standby_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
+    lv_obj_align_to( wifi_webserver_onoff_cont, wifi_enabled_on_standby_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 
     lv_obj_t *wifi_ftpserver_onoff_cont = wf_add_labeled_switch( wifi_setup_tile, "enable ftpserver", &wifi_ftpserver_onoff, wifictl_get_ftpserver(), wifi_ftpserver_onoff_event_handler, SETUP_STYLE );
-    lv_obj_align( wifi_ftpserver_onoff_cont, wifi_webserver_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
+    lv_obj_align_to( wifi_ftpserver_onoff_cont, wifi_webserver_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 
-    lv_obj_t *wps_btn = lv_btn_create( wifi_setup_tile, NULL);
+    lv_obj_t *wps_btn = lv_btn_create( wifi_setup_tile);
     lv_obj_set_event_cb( wps_btn, wps_start_event_handler );
     lv_obj_add_style( wps_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
-    lv_obj_t *wps_btn_label = lv_label_create( wps_btn, NULL );
+    lv_obj_t *wps_btn_label = lv_label_create( wps_btn );
     lv_label_set_text( wps_btn_label, "start WPS");
-    lv_obj_align( wps_btn, wifi_ftpserver_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_align_to( wps_btn, wifi_ftpserver_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
 
     #ifndef ENABLE_WEBSERVER
-        lv_obj_set_hidden( wifi_webserver_onoff_cont, true );
+        lv_obj_add_flag( wifi_webserver_onoff_cont, LV_OBJ_FLAG_HIDDEN );
     #endif
     #ifndef ENABLE_FTPSERVER
-        lv_obj_set_hidden( wifi_ftpserver_onoff_cont, true );
+        lv_obj_add_flag( wifi_ftpserver_onoff_cont, LV_OBJ_FLAG_HIDDEN );
     #endif
 
     gadgetbridge_register_cb( GADGETBRIDGE_JSON_MSG, wifi_setup_bluetooth_message_event_cb, "wifi settings" );

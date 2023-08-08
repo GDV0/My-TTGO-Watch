@@ -60,30 +60,30 @@ void touch_settings_tile_setup( void ) {
     touch_tile_num = mainbar_add_setup_tile( 1, 1, "touch settings" );
     touch_settings_tile = mainbar_get_tile_obj( touch_tile_num );
 
-    lv_obj_add_style( touch_settings_tile, LV_OBJ_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( touch_settings_tile, LV_PART_MAIN, ws_get_setup_tile_style() );
 
     icon_t *touch_setup_icon = setup_register( "touch", &touch_64px, enter_touch_setup_event_cb );
     setup_hide_indicator( touch_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( touch_settings_tile, "touch settings", exit_touch_setup_event_cb );
-    lv_obj_align( header, touch_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, touch_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     calibrate_btn = lv_btn_create( touch_settings_tile, NULL);
     lv_obj_set_event_cb( calibrate_btn, touch_settings_calibration_btn_cb );
     lv_obj_add_style( calibrate_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
-    lv_obj_align( calibrate_btn, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
+    lv_obj_align_to( calibrate_btn, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
     lv_obj_t *calibrate_btn_label = lv_label_create( calibrate_btn, NULL );
     lv_label_set_text( calibrate_btn_label, "calibrate");
 
     touch_scale_label = lv_label_create( touch_settings_tile, NULL);
-    lv_obj_add_style( touch_scale_label, LV_OBJ_PART_MAIN, SETUP_STYLE  );
+    lv_obj_add_style( touch_scale_label, LV_PART_MAIN, SETUP_STYLE  );
     lv_label_set_text( touch_scale_label, "" );
-    lv_obj_align( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 
     touch_coor_label = lv_label_create( touch_settings_tile, NULL);
-    lv_obj_add_style( touch_coor_label, LV_OBJ_PART_MAIN, SETUP_STYLE  );
+    lv_obj_add_style( touch_coor_label, LV_PART_MAIN, SETUP_STYLE  );
     lv_label_set_text( touch_coor_label, "" );
-    lv_obj_align( touch_coor_label, touch_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
+    lv_obj_align_to( touch_coor_label, touch_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
 
     mainbar_add_tile_activate_cb( touch_tile_num, touch_settings_activate_cb );
     mainbar_add_tile_hibernate_cb( touch_tile_num, touch_settings_hibernate_cb );
@@ -102,7 +102,7 @@ void touch_settings_activate_cb( void ) {
     char scale_label[64]="";
     snprintf( scale_label, sizeof( scale_label ), "x/y scale: %.2f/%.2f", touch_x_scale, touch_y_scale );
     lv_label_set_text( touch_scale_label, scale_label );
-    lv_obj_align( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 
     touch_active = true;
 }
@@ -114,7 +114,7 @@ void touch_settings_hibernate_cb( void ) {
     char scale_label[64]="";
     snprintf( scale_label, sizeof( scale_label ), "x/y scale: %.2f/%.2f", touch_x_scale, touch_y_scale );
     lv_label_set_text( touch_scale_label, scale_label );
-    lv_obj_align( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 
     touch_active = false;
 }
@@ -131,7 +131,7 @@ bool touch_settings_event_cb( EventBits_t event, void *arg ) {
                 char touch_label[64]="";
                 snprintf( touch_label, sizeof( touch_label ), "x/y coor: %d/%d/%s", touch->x_coor, touch->y_coor, touch->touched ? "pressed":"release" );
                 lv_label_set_text( touch_coor_label, touch_label );
-                lv_obj_align( touch_coor_label, touch_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
+                lv_obj_align_to( touch_coor_label, touch_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
             }
             break;
     }
@@ -156,7 +156,7 @@ static void enter_touch_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
             char scale_label[64]="";
             snprintf( scale_label, sizeof( scale_label ), "x/y scale: %.2f/%.2f", touch_x_scale, touch_y_scale );
             lv_label_set_text( touch_scale_label, scale_label );
-            lv_obj_align( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+            lv_obj_align_to( touch_scale_label, calibrate_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
             touch_active = true;
             break;
     }

@@ -8,6 +8,7 @@
 #include "style.h"
 
 Style::Style(lv_style_t* handle, bool copy) {
+  lv_style_init(&native);
   if (copy)
   {
     lv_style_copy(&native, handle);
@@ -34,20 +35,20 @@ lv_style_t* Style::handle() const {
 }
 
 Style& Style::background(lv_color_t color, lv_opa_t opacity) {
-  lv_style_set_bg_color(&native, LV_OBJ_PART_MAIN, color);
-  lv_style_set_bg_opa(&native, LV_OBJ_PART_MAIN, opacity);
+  lv_style_set_bg_color(&native, LV_PART_MAIN, color);
+  lv_style_set_bg_opa(&native, LV_PART_MAIN, opacity);
   return *this;
 }
 
 Style& Style::border(int width) {
-  lv_style_set_border_width(&native, LV_OBJ_PART_MAIN, 0);
+  lv_style_set_border_width(&native, LV_PART_MAIN, 0);
   return *this;
 }
 
 Style& Style::border(int width, lv_color_t color, lv_opa_t opacity) {
-  lv_style_set_border_width(&native, LV_OBJ_PART_MAIN, 0);
-  lv_style_set_border_color(&native, LV_OBJ_PART_MAIN, color);
-  lv_style_set_border_opa(&native, LV_OBJ_PART_MAIN, opacity);
+  lv_style_set_border_width(&native, LV_PART_MAIN, 0);
+  lv_style_set_border_color(&native, LV_PART_MAIN, color);
+  lv_style_set_border_opa(&native, LV_PART_MAIN, opacity);
   return *this;
 }
 
@@ -70,6 +71,6 @@ Style& Style::textFont(lv_font_t* font) {
 }
 
 Style& Style::textOpacity(lv_opa_t value) {
-  lv_style_set_text_opa(&native, LV_OBJ_PART_MAIN, value);
+  lv_style_set_text_opa(&native, LV_PART_MAIN, value);
   return *this;
 }

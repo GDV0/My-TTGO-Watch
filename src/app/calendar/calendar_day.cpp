@@ -108,27 +108,27 @@ void calendar_day_build_ui( void ) {
      * set style for day date list
      */
     lv_style_init( &calendar_day_list_style );
-    lv_style_set_border_width( &calendar_day_list_style , LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_radius( &calendar_day_list_style , LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_text_font( &calendar_day_list_style , LV_OBJ_PART_MAIN, daylist_font );
-    lv_style_set_bg_opa( &calendar_day_list_style, LV_OBJ_PART_MAIN, LV_OPA_80 );
+    lv_style_set_border_width( &calendar_day_list_style , LV_PART_MAIN, 0 );
+    lv_style_set_radius( &calendar_day_list_style , LV_PART_MAIN, 0 );
+    lv_style_set_text_font( &calendar_day_list_style , LV_PART_MAIN, daylist_font );
+    lv_style_set_bg_opa( &calendar_day_list_style, LV_PART_MAIN, LV_OPA_80 );
     /**
      * day date list
      */
     calendar_day_list = lv_list_create( calendar_day_tile, NULL );
     lv_obj_set_size( calendar_day_list, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - THEME_ICON_SIZE );
-    lv_obj_align( calendar_day_list, calendar_day_tile, LV_ALIGN_IN_TOP_MID, 0, 0);
-    lv_obj_add_style( calendar_day_list, LV_OBJ_PART_MAIN, &calendar_day_list_style  );
+    lv_obj_align_to( calendar_day_list, calendar_day_tile, LV_ALIGN_IN_TOP_MID, 0, 0);
+    lv_obj_add_style( calendar_day_list, LV_PART_MAIN, &calendar_day_list_style  );
     /**
      * add exit button
      */
     lv_obj_t *exit_button = wf_add_exit_button( calendar_day_tile, calendar_day_exit_event_cb );
-    lv_obj_align( exit_button, calendar_day_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( exit_button, calendar_day_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
     /**
      * add exit button
      */
     lv_obj_t *create_button = wf_add_add_button( calendar_day_tile, calendar_day_create_event_cb );
-    lv_obj_align( create_button, calendar_day_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( create_button, calendar_day_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
 }
 
 static void calendar_day_exit_event_cb( lv_obj_t * obj, lv_event_t event ) {

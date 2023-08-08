@@ -58,7 +58,7 @@ lv_obj_t *powermeter_main_tile = NULL;
 lv_style_t powermeter_main_style;
 lv_style_t powermeter_id_style;
 
-lv_task_t * _powermeter_main_task;
+lv_timer_t * _powermeter_main_task;
 
 lv_obj_t *id_cont = NULL;
 lv_obj_t *id_label = NULL;
@@ -76,7 +76,7 @@ LV_FONT_DECLARE(Ubuntu_48px);
 bool powermeter_style_change_event_cb( EventBits_t event, void *arg );
 bool powermeter_wifictl_event_cb( EventBits_t event, void *arg );
 static void enter_powermeter_setup_event_cb( lv_obj_t * obj, lv_event_t event );
-void powermeter_main_task( lv_task_t * task );
+void powermeter_main_task( lv_timer_t * task );
 
 #ifdef NATIVE_64BIT
     void on_connect(struct mosquitto *mosq, void *obj, int reason_code) {
@@ -141,10 +141,10 @@ void powermeter_main_task( lv_task_t * task );
             wf_label_printf( current_label, "%0.1f%s", atof( doc["channel0"]["current"] ), unit );
         }
 
-        lv_obj_align( id_label, id_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
-        lv_obj_align( power_label, power_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
-        lv_obj_align( voltage_label, voltage_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
-        lv_obj_align( current_label, current_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+        lv_obj_align_to( id_label, id_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+        lv_obj_align_to( power_label, power_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+        lv_obj_align_to( voltage_label, voltage_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+        lv_obj_align_to( current_label, current_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
     }
 
     doc.clear();
@@ -157,68 +157,68 @@ void powermeter_main_tile_setup( uint32_t tile_num ) {
 
     lv_style_copy( &powermeter_main_style, APP_STYLE );
     lv_style_set_text_font( &powermeter_main_style, LV_STATE_DEFAULT, &Ubuntu_48px);
-    lv_obj_add_style( powermeter_main_tile, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_add_style( powermeter_main_tile, LV_PART_MAIN, &powermeter_main_style );
 
     lv_style_copy( &powermeter_id_style, APP_STYLE );
     lv_style_set_text_font( &powermeter_id_style, LV_STATE_DEFAULT, &Ubuntu_16px);
 
     lv_obj_t * exit_btn = wf_add_exit_button( powermeter_main_tile, SYSTEM_ICON_STYLE );
-    lv_obj_align(exit_btn, powermeter_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
+    lv_obj_align_to(exit_btn, powermeter_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
 
     lv_obj_t * setup_btn = wf_add_setup_button( powermeter_main_tile, enter_powermeter_setup_event_cb, SYSTEM_ICON_STYLE );
-    lv_obj_align(setup_btn, powermeter_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -10 );
+    lv_obj_align_to(setup_btn, powermeter_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -10 );
 
-    id_cont = lv_obj_create( powermeter_main_tile, NULL );
+    id_cont = lv_obj_create( powermeter_main_tile);
     lv_obj_set_size( id_cont, lv_disp_get_hor_res( NULL ), 20 );
-    lv_obj_add_style( id_cont, LV_OBJ_PART_MAIN, &powermeter_id_style );
-    lv_obj_align( id_cont, powermeter_main_tile, LV_ALIGN_IN_TOP_MID, 0, 0 );
-    lv_obj_t * id_info_label = lv_label_create( id_cont, NULL );
-    lv_obj_add_style( id_info_label, LV_OBJ_PART_MAIN, &powermeter_id_style );
+    lv_obj_add_style( id_cont, LV_PART_MAIN, &powermeter_id_style );
+    lv_obj_align_to( id_cont, powermeter_main_tile, LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_t * id_info_label = lv_label_create( id_cont );
+    lv_obj_add_style( id_info_label, LV_PART_MAIN, &powermeter_id_style );
     lv_label_set_text( id_info_label, "ID:" );
-    lv_obj_align( id_info_label, id_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
+    lv_obj_align_to( id_info_label, id_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
     id_label = lv_label_create( id_cont, NULL );
-    lv_obj_add_style( id_label, LV_OBJ_PART_MAIN, &powermeter_id_style );
+    lv_obj_add_style( id_label, LV_PART_MAIN, &powermeter_id_style );
     lv_label_set_text( id_label, "n/a" );
-    lv_obj_align( id_label, id_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( id_label, id_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
-    voltage_cont = lv_obj_create( powermeter_main_tile, NULL );
+    voltage_cont = lv_obj_create( powermeter_main_tile);
     lv_obj_set_size( voltage_cont, lv_disp_get_hor_res( NULL ), 56 );
-    lv_obj_add_style( voltage_cont, LV_OBJ_PART_MAIN, &powermeter_main_style );
-    lv_obj_align( voltage_cont, id_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
-    lv_obj_t * voltage_info_label = lv_label_create( voltage_cont, NULL );
-    lv_obj_add_style( voltage_info_label, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_add_style( voltage_cont, LV_PART_MAIN, &powermeter_main_style );
+    lv_obj_align_to( voltage_cont, id_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_t * voltage_info_label = lv_label_create( voltage_cont );
+    lv_obj_add_style( voltage_info_label, LV_PART_MAIN, &powermeter_main_style );
     lv_label_set_text( voltage_info_label, "U =" );
-    lv_obj_align( voltage_info_label, voltage_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
-    voltage_label = lv_label_create( voltage_cont, NULL );
-    lv_obj_add_style( voltage_label, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_align_to( voltage_info_label, voltage_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
+    voltage_label = lv_label_create( voltage_cont );
+    lv_obj_add_style( voltage_label, LV_PART_MAIN, &powermeter_main_style );
     lv_label_set_text( voltage_label, "n/a" );
-    lv_obj_align( voltage_label, voltage_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( voltage_label, voltage_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
-    current_cont = lv_obj_create( powermeter_main_tile, NULL );
+    current_cont = lv_obj_create( powermeter_main_tile);
     lv_obj_set_size( current_cont, lv_disp_get_hor_res( NULL ), 56 );
-    lv_obj_add_style( current_cont, LV_OBJ_PART_MAIN, &powermeter_main_style );
-    lv_obj_align( current_cont, voltage_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( current_cont, LV_PART_MAIN, &powermeter_main_style );
+    lv_obj_align_to( current_cont, voltage_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t * current_info_label = lv_label_create( current_cont, NULL );
-    lv_obj_add_style( current_info_label, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_add_style( current_info_label, LV_PART_MAIN, &powermeter_main_style );
     lv_label_set_text( current_info_label, "I =" );
-    lv_obj_align( current_info_label, current_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
-    current_label = lv_label_create( current_cont, NULL );
-    lv_obj_add_style( current_label, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_align_to( current_info_label, current_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
+    current_label = lv_label_create( current_cont);
+    lv_obj_add_style( current_label, LV_PART_MAIN, &powermeter_main_style );
     lv_label_set_text( current_label, "n/a" );
-    lv_obj_align( current_label, current_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( current_label, current_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
-    power_cont = lv_obj_create( powermeter_main_tile, NULL );
+    power_cont = lv_obj_create( powermeter_main_tile );
     lv_obj_set_size( power_cont, lv_disp_get_hor_res( NULL ), 56 );
-    lv_obj_add_style( power_cont, LV_OBJ_PART_MAIN, &powermeter_main_style );
-    lv_obj_align( power_cont, current_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
-    lv_obj_t * power_info_label = lv_label_create( power_cont, NULL );
-    lv_obj_add_style( power_info_label, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_add_style( power_cont, LV_PART_MAIN, &powermeter_main_style );
+    lv_obj_align_to( power_cont, current_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_t * power_info_label = lv_label_create( power_cont);
+    lv_obj_add_style( power_info_label, LV_PART_MAIN, &powermeter_main_style );
     lv_label_set_text( power_info_label, "P =" );
-    lv_obj_align( power_info_label, power_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
+    lv_obj_align_to( power_info_label, power_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
     power_label = lv_label_create( power_cont, NULL );
-    lv_obj_add_style( power_label, LV_OBJ_PART_MAIN, &powermeter_main_style );
+    lv_obj_add_style( power_label, LV_PART_MAIN, &powermeter_main_style );
     lv_label_set_text( power_label, "n/a" );
-    lv_obj_align( power_label, power_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( power_label, power_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
 #ifdef NATIVE_64BIT
     mosquitto_lib_init();
@@ -232,7 +232,7 @@ void powermeter_main_tile_setup( uint32_t tile_num ) {
     wifictl_register_cb( WIFICTL_CONNECT_IP | WIFICTL_OFF_REQUEST | WIFICTL_OFF | WIFICTL_DISCONNECT , powermeter_wifictl_event_cb, "powermeter" );
     styles_register_cb( STYLE_CHANGE, powermeter_style_change_event_cb, "powermeter style event ");
     // create an task that runs every secound
-    _powermeter_main_task = lv_task_create( powermeter_main_task, 250, LV_TASK_PRIO_MID, NULL );
+    _powermeter_main_task = lv_timer_create( powermeter_main_task, 250, NULL );
 }
 
 bool powermeter_style_change_event_cb( EventBits_t event, void *arg ) {
@@ -309,7 +309,7 @@ static void enter_powermeter_setup_event_cb( lv_obj_t * obj, lv_event_t event ) 
     }
 }
 
-void powermeter_main_task( lv_task_t * task ) {
+void powermeter_main_task( lv_timer_t * task ) {
     // put your code her
 #ifdef NATIVE_64BIT
     mosquitto_loop( mosq, 60, 10 );

@@ -54,7 +54,7 @@ lv_obj_t *astro_app_main_exit_btn = NULL;
 
 lv_style_t astro_app_main_astrostyle;
 
-lv_task_t * _astro_app_task = NULL;
+lv_timer_t * _astro_app_task = NULL;
 
 LV_FONT_DECLARE(Ubuntu_72px);
 LV_FONT_DECLARE(Ubuntu_32px);
@@ -67,7 +67,7 @@ static void start_astro_app_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void stop_astro_app_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void reset_astro_app_main_event_cb( lv_obj_t * obj, lv_event_t event );
 
-void astro_app_task( lv_task_t * task );
+void astro_app_task( lv_timer_t * task );
 
 extern "C" {
   extern void sunrise_display_callback( char *buf, int len, int flags );
@@ -83,27 +83,27 @@ void astro_app_main_setup( uint32_t tile_num ) {
 
     lv_obj_t * astro_cont = mainbar_obj_create( astro_app_main_tile );
     lv_obj_set_size( astro_cont, LV_HOR_RES , LV_VER_RES - 100 );
-    lv_obj_add_style( astro_cont, LV_OBJ_PART_MAIN, APP_STYLE );
-    lv_obj_align( astro_cont, astro_app_main_tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_style( astro_cont, APP_STYLE, LV_PART_MAIN );
+    lv_obj_align_to( astro_cont, astro_app_main_tile, LV_ALIGN_CENTER, 0, 0 );
 
-    astro_app_main_astrolabel = lv_label_create( astro_cont , NULL);
+    astro_app_main_astrolabel = lv_label_create( astro_cont );
     lv_label_set_text(astro_app_main_astrolabel, "(press start)");
-    lv_obj_reset_style_list( astro_app_main_astrolabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( astro_app_main_astrolabel, LV_OBJ_PART_MAIN, &astro_app_main_astrostyle );
-    lv_obj_align(astro_app_main_astrolabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_reset_style_list( astro_app_main_astrolabel, LV_PART_MAIN );
+    lv_obj_add_style( astro_app_main_astrolabel, &astro_app_main_astrostyle, LV_PART_MAIN );
+    lv_obj_align_to(astro_app_main_astrolabel, NULL, LV_ALIGN_CENTER, 0, 0);
 
     astro_app_main_start_btn = wf_add_play_button( astro_app_main_tile, start_astro_app_main_event_cb );
-    lv_obj_align(astro_app_main_start_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
+    lv_obj_align_to(astro_app_main_start_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
 
     astro_app_main_stop_btn = wf_add_stop_button( astro_app_main_tile, stop_astro_app_main_event_cb );
-    lv_obj_align(astro_app_main_stop_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
-    lv_obj_set_hidden(astro_app_main_stop_btn, true);
+    lv_obj_align_to(astro_app_main_stop_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
+    lv_obj_add_flag(astro_app_main_stop_btn, LV_OBJ_FLAG_HIDDEN);
 
     astro_app_main_reset_btn = wf_add_eject_button( astro_app_main_tile, reset_astro_app_main_event_cb );
-    lv_obj_align(astro_app_main_reset_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to(astro_app_main_reset_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING );
 
     astro_app_main_exit_btn = wf_add_exit_button( astro_app_main_tile, exit_astro_app_main_event_cb );
-    lv_obj_align( astro_app_main_exit_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to( astro_app_main_exit_btn, astro_app_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
 
     styles_register_cb( STYLE_CHANGE, astro_style_change_event_cb, "astro style change" );
     mainbar_add_tile_button_cb( tile_num, astro_button_event_cb );
@@ -140,7 +140,7 @@ static void astro_app_main_update_astrolabel()
     sunrise_display_callback(msg, 100, timesync_get_timezone());
 
     lv_label_set_text(astro_app_main_astrolabel, msg);
-    lv_obj_align(astro_app_main_astrolabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align_to(astro_app_main_astrolabel, NULL, LV_ALIGN_CENTER, 0, 0);
     lv_label_set_align( astro_app_main_astrolabel, LV_LABEL_ALIGN_CENTER);
     astro_app_update_widget_label( msg );
 }
@@ -152,9 +152,9 @@ static void start_astro_app_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
         case( LV_EVENT_CLICKED ):       // create an task that runs every secound
                                         prev_time = time(0);
                                         if( !_astro_app_task )
-                                            _astro_app_task = lv_task_create( astro_app_task, 1000, LV_TASK_PRIO_MID, NULL );
-                                        lv_obj_set_hidden(astro_app_main_start_btn, true);
-                                        lv_obj_set_hidden(astro_app_main_stop_btn, false);
+                                            _astro_app_task = lv_timer_create( astro_app_task, 1000, NULL );
+                                        lv_obj_add_flag(astro_app_main_start_btn, LV_OBJ_FLAG_HIDDEN);
+                                        lv_obj_clear_flag(astro_app_main_stop_btn, LV_OBJ_FLAG_HIDDEN);
                                         astro_add_widget();
                                         astro_app_hide_app_icon_info( false );
                                         break;
@@ -165,10 +165,10 @@ static void stop_astro_app_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       // create an task that runs every secound
                                         if( _astro_app_task )
-                                            lv_task_del(_astro_app_task);
+                                            lv_timer_del(_astro_app_task);
                                         _astro_app_task = NULL;
-                                        lv_obj_set_hidden(astro_app_main_start_btn, false);
-                                        lv_obj_set_hidden(astro_app_main_stop_btn, true);
+                                        lv_obj_clear_flag(astro_app_main_start_btn, LV_OBJ_FLAG_HIDDEN);
+                                        lv_obj_add_flag(astro_app_main_stop_btn, LV_OBJ_FLAG_HIDDEN);
                                         astro_remove_widget();
                                         astro_app_hide_app_icon_info( true );
                                         break;
@@ -192,7 +192,7 @@ static void exit_astro_app_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
     }
 }
 
-void astro_app_task( lv_task_t * task ) {
+void astro_app_task( lv_timer_t * task ) {
     time_t now = time(0);
     double dif_seconds = difftime(now, prev_time);
 

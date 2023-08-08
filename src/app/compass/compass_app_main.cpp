@@ -66,11 +66,11 @@ void compass_app_main_setup( uint32_t tile ) {
      * add exit, menu and setup button to the main app tile
      */
     compass_exit_btn = wf_add_exit_button( mainbar_get_tile_obj( tile ) );
-    lv_obj_align( compass_exit_btn, mainbar_get_tile_obj( tile ), LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to( compass_exit_btn, mainbar_get_tile_obj( tile ), LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
 
-    compass_needle_img = lv_img_create( mainbar_get_tile_obj( tile ), NULL);
+    compass_needle_img = lv_img_create( mainbar_get_tile_obj( tile ));
     lv_img_set_src( compass_needle_img, &compass_needle_200px);
-    lv_obj_align( compass_needle_img, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( compass_needle_img, NULL, LV_ALIGN_CENTER, 0, 0 );
 
     wf_label_printf( wf_add_label( mainbar_get_tile_obj( tile ), "", APP_ICON_LABEL_STYLE ), mainbar_get_tile_obj( tile ), LV_ALIGN_IN_TOP_MID, 0, THEME_PADDING, "N" );
     wf_label_printf( wf_add_label( mainbar_get_tile_obj( tile ), "", APP_ICON_LABEL_STYLE ), mainbar_get_tile_obj( tile ), LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0, "E" );

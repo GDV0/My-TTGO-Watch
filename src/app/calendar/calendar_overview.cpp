@@ -127,18 +127,18 @@ static void calendar_overview_build_ui( void ) {
      * copy mainbar style and set it to calendar
      */
     lv_style_copy( &calendar_overview_style, APP_STYLE );
-    lv_style_set_radius( &calendar_overview_style, LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_border_width( &calendar_overview_style, LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_bg_color( &calendar_overview_style, LV_OBJ_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_bg_opa( &calendar_overview_style, LV_OBJ_PART_MAIN, LV_OPA_80 );
+    lv_style_set_radius( &calendar_overview_style, LV_PART_MAIN, 0 );
+    lv_style_set_border_width( &calendar_overview_style, LV_PART_MAIN, 0 );
+    lv_style_set_bg_color( &calendar_overview_style, LV_PART_MAIN, LV_COLOR_WHITE );
+    lv_style_set_bg_opa( &calendar_overview_style, LV_PART_MAIN, LV_OPA_80 );
     /**
      * create calendar object
      */
     calendar_overview = lv_calendar_create( calendar_overview_tile, NULL);
     lv_obj_set_size( calendar_overview, lv_disp_get_hor_res( NULL ) - THEME_ICON_SIZE, lv_disp_get_ver_res( NULL ) );
-    lv_obj_align( calendar_overview, calendar_overview_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+    lv_obj_align_to( calendar_overview, calendar_overview_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_obj_set_event_cb( calendar_overview, calendar_overview_date_event_cb );
-    lv_obj_add_style( calendar_overview, LV_OBJ_PART_MAIN, &calendar_overview_style );
+    lv_obj_add_style( calendar_overview, LV_PART_MAIN, &calendar_overview_style );
     /**
      * Make the date number smaller to be sure they fit into their area
      */
@@ -152,7 +152,7 @@ static void calendar_overview_build_ui( void ) {
      * add exit button
      */
     lv_obj_t *exit_button = wf_add_exit_button( calendar_overview_tile, calendar_overview_exit_event_cb );
-    lv_obj_align( exit_button, calendar_overview_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( exit_button, calendar_overview_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
 }
 
 void calendar_overview_refresh_showed_ui( void ) {

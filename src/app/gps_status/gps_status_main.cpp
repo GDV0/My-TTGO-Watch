@@ -71,7 +71,7 @@ LV_FONT_DECLARE(Ubuntu_16px);
 bool style_change_event_cb( EventBits_t event, void *arg );
 bool gpsctl_gps_status_event_cb( EventBits_t event, void *arg );
 static void enter_gps_status_setup_event_cb(lv_obj_t *obj, lv_event_t event);
-void gps_status_task(lv_task_t *task);
+void gps_status_task(lv_timer_t *task);
 void gps_status_hibernate_cb(void);
 void gps_status_activate_cb(void);
 
@@ -80,16 +80,16 @@ void gps_status_main_setup(uint32_t tile_num) {
     lv_style_copy(&gps_status_main_style, ws_get_mainbar_style());
 
     lv_obj_t * exit_btn = wf_add_exit_button( gps_status_main_tile );
-    lv_obj_align(exit_btn, gps_status_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING);
+    lv_obj_align_to(exit_btn, gps_status_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING);
 
     lv_obj_t *setup_btn = wf_add_setup_button(gps_status_main_tile, enter_gps_status_setup_event_cb );
-    lv_obj_align(setup_btn, gps_status_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING);
-    lv_obj_set_hidden(setup_btn, true);
+    lv_obj_align_to(setup_btn, gps_status_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING);
+    lv_obj_add_flag(setup_btn, LV_OBJ_FLAG_HIDDEN);
 
     lv_style_copy(&gps_status_value_style, ws_get_mainbar_style());
-    lv_style_set_bg_color(&gps_status_value_style, LV_OBJ_PART_MAIN, LV_COLOR_BLACK);
-    lv_style_set_bg_opa(&gps_status_value_style, LV_OBJ_PART_MAIN, LV_OPA_0);
-    lv_style_set_border_width(&gps_status_value_style, LV_OBJ_PART_MAIN, 0);
+    lv_style_set_bg_color(&gps_status_value_style, LV_PART_MAIN, LV_COLOR_BLACK);
+    lv_style_set_bg_opa(&gps_status_value_style, LV_PART_MAIN, LV_OPA_0);
+    lv_style_set_border_width(&gps_status_value_style, LV_PART_MAIN, 0);
     lv_style_set_text_font(&gps_status_value_style, LV_STATE_DEFAULT, &Ubuntu_16px);
     /*
      * led style
@@ -107,116 +107,116 @@ void gps_status_main_setup(uint32_t tile_num) {
     /*
      * num satfix
      */
-    lv_obj_t *satfix_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *satfix_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(satfix_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(satfix_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(satfix_cont, gps_status_main_tile, LV_ALIGN_IN_TOP_MID, 0, STATUSBAR_HEIGHT );
-    lv_obj_t *satfix_label = lv_label_create(satfix_cont, NULL);
-    lv_obj_add_style(satfix_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(satfix_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(satfix_cont, gps_status_main_tile, LV_ALIGN_IN_TOP_MID, 0, STATUSBAR_HEIGHT );
+    lv_obj_t *satfix_label = lv_label_create(satfix_cont);
+    lv_obj_add_style(satfix_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(satfix_label, "SatFix");
-    lv_obj_align(satfix_label, satfix_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    satfix_value_on = lv_led_create(satfix_cont, NULL);
+    lv_obj_align_to(satfix_label, satfix_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    satfix_value_on = lv_led_create(satfix_cont);
     lv_obj_add_style(satfix_value_on, LV_LED_PART_MAIN, &style_led_green);
     lv_obj_set_size(satfix_value_on, 15, 15);
-    lv_obj_align(satfix_value_on, satfix_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(satfix_value_on, satfix_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     lv_led_on(satfix_value_on);
-    lv_obj_set_hidden(satfix_value_on, true);
-    satfix_value_off = lv_led_create(satfix_cont, NULL);
+    lv_obj_add_flag(satfix_value_on, LV_OBJ_FLAG_HIDDEN);
+    satfix_value_off = lv_led_create(satfix_cont);
     lv_obj_add_style(satfix_value_off, LV_LED_PART_MAIN, &style_led_red);
     lv_obj_set_size(satfix_value_off, 15, 15);
-    lv_obj_align(satfix_value_off, satfix_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(satfix_value_off, satfix_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     lv_led_on(satfix_value_off);
-    lv_obj_set_hidden(satfix_value_off, false);
+    lv_obj_clear_flag(satfix_value_off, LV_OBJ_FLAG_HIDDEN);
     /*
      * num satellites
      */
-    lv_obj_t *num_satellites_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *num_satellites_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(num_satellites_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(num_satellites_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(num_satellites_cont, satfix_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_obj_t *num_satellites_label = lv_label_create(num_satellites_cont, NULL);
-    lv_obj_add_style(num_satellites_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(num_satellites_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(num_satellites_cont, satfix_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+    lv_obj_t *num_satellites_label = lv_label_create(num_satellites_cont);
+    lv_obj_add_style(num_satellites_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(num_satellites_label, "Num satellites");
-    lv_obj_align(num_satellites_label, num_satellites_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    num_satellites_value = lv_label_create(num_satellites_cont, NULL);
-    lv_obj_add_style(num_satellites_value, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(num_satellites_label, num_satellites_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    num_satellites_value = lv_label_create(num_satellites_cont);
+    lv_obj_add_style(num_satellites_value, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(num_satellites_value, "n/a");
-    lv_obj_align(num_satellites_value, num_satellites_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(num_satellites_value, num_satellites_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     /*
      * satellite type
      */
-    lv_obj_t *satellite_type_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *satellite_type_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(satellite_type_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(satellite_type_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(satellite_type_cont, num_satellites_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_obj_t *satellite_type_label = lv_label_create(satellite_type_cont, NULL);
-    lv_obj_add_style(satellite_type_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(satellite_type_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(satellite_type_cont, num_satellites_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+    lv_obj_t *satellite_type_label = lv_label_create(satellite_type_cont);
+    lv_obj_add_style(satellite_type_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(satellite_type_label, "Sat type:");
-    lv_obj_align(satellite_type_label, satellite_type_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    satellite_type = lv_label_create(satellite_type_cont, NULL);
-    lv_obj_add_style(satellite_type, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(satellite_type_label, satellite_type_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    satellite_type = lv_label_create(satellite_type_cont);
+    lv_obj_add_style(satellite_type, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(satellite_type, "n/a");
-    lv_obj_align(satellite_type, satellite_type_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(satellite_type, satellite_type_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     /*
      * altitude
      */
-    lv_obj_t *altitude_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *altitude_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(altitude_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(altitude_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(altitude_cont, satellite_type_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_obj_t *altitude_info_label = lv_label_create(altitude_cont, NULL);
-    lv_obj_add_style(altitude_info_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(altitude_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(altitude_cont, satellite_type_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+    lv_obj_t *altitude_info_label = lv_label_create(altitude_cont);
+    lv_obj_add_style(altitude_info_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(altitude_info_label, "Altitude");
-    lv_obj_align(altitude_info_label, altitude_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    altitude_value = lv_label_create(altitude_cont, NULL);
-    lv_obj_add_style(altitude_value, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(altitude_info_label, altitude_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    altitude_value = lv_label_create(altitude_cont);
+    lv_obj_add_style(altitude_value, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(altitude_value, "n/a");
-    lv_obj_align(altitude_value, altitude_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(altitude_value, altitude_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     /*
      * long lat
      */
-    lv_obj_t *pos_longlat_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *pos_longlat_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(pos_longlat_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(pos_longlat_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(pos_longlat_cont, altitude_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_obj_t *pos_longlat_label = lv_label_create(pos_longlat_cont, NULL);
-    lv_obj_add_style(pos_longlat_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(pos_longlat_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(pos_longlat_cont, altitude_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+    lv_obj_t *pos_longlat_label = lv_label_create(pos_longlat_cont);
+    lv_obj_add_style(pos_longlat_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(pos_longlat_label, "Long/Lat");
-    lv_obj_align(pos_longlat_label, pos_longlat_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    pos_longlat_value = lv_label_create(pos_longlat_cont, NULL);
-    lv_obj_add_style(pos_longlat_value, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(pos_longlat_label, pos_longlat_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    pos_longlat_value = lv_label_create(pos_longlat_cont);
+    lv_obj_add_style(pos_longlat_value, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(pos_longlat_value, "n/a");
-    lv_obj_align(pos_longlat_value, pos_longlat_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(pos_longlat_value, pos_longlat_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     /*
      * speed
      */
-    lv_obj_t *speed_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *speed_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(speed_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(speed_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(speed_cont, pos_longlat_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_obj_t *speed_label = lv_label_create(speed_cont, NULL);
-    lv_obj_add_style(speed_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(speed_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(speed_cont, pos_longlat_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+    lv_obj_t *speed_label = lv_label_create(speed_cont);
+    lv_obj_add_style(speed_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(speed_label, "Speed");
-    lv_obj_align(speed_label, speed_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    speed_value = lv_label_create(speed_cont, NULL);
-    lv_obj_add_style(speed_value, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(speed_label, speed_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    speed_value = lv_label_create(speed_cont);
+    lv_obj_add_style(speed_value, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(speed_value, "n/a");
-    lv_obj_align(speed_value, speed_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(speed_value, speed_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     /*
      * source label
      */
-    lv_obj_t *source_cont = lv_obj_create(gps_status_main_tile, NULL);
+    lv_obj_t *source_cont = lv_obj_create(gps_status_main_tile);
     lv_obj_set_size(source_cont, lv_disp_get_hor_res(NULL), STATUS_HEIGHT);
-    lv_obj_add_style(source_cont, LV_OBJ_PART_MAIN, &gps_status_value_style);
-    lv_obj_align(source_cont, speed_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_obj_t *source_label = lv_label_create(source_cont, NULL);
-    lv_obj_add_style(source_label, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_add_style(source_cont, LV_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(source_cont, speed_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+    lv_obj_t *source_label = lv_label_create(source_cont);
+    lv_obj_add_style(source_label, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(source_label, "Source");
-    lv_obj_align(source_label, source_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
-    source_value = lv_label_create(source_cont, NULL);
-    lv_obj_add_style(source_value, LV_OBJ_PART_MAIN, &gps_status_value_style);
+    lv_obj_align_to(source_label, source_cont, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    source_value = lv_label_create(source_cont);
+    lv_obj_add_style(source_value, LV_PART_MAIN, &gps_status_value_style);
     lv_label_set_text(source_value, "n/a");
-    lv_obj_align(source_value, source_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to(source_value, source_cont, LV_ALIGN_IN_RIGHT_MID, -5, 0);
     /*
      * create callback
      */
@@ -240,9 +240,9 @@ void gps_status_main_setup(uint32_t tile_num) {
 bool style_change_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case STYLE_CHANGE:  lv_style_copy(&gps_status_value_style, ws_get_mainbar_style());
-                            lv_style_set_bg_color(&gps_status_value_style, LV_OBJ_PART_MAIN, LV_COLOR_BLACK);
-                            lv_style_set_bg_opa(&gps_status_value_style, LV_OBJ_PART_MAIN, LV_OPA_0);
-                            lv_style_set_border_width(&gps_status_value_style, LV_OBJ_PART_MAIN, 0);
+                            lv_style_set_bg_color(&gps_status_value_style, LV_PART_MAIN, LV_COLOR_BLACK);
+                            lv_style_set_bg_opa(&gps_status_value_style, LV_PART_MAIN, LV_OPA_0);
+                            lv_style_set_border_width(&gps_status_value_style, LV_PART_MAIN, 0);
                             lv_style_set_text_font(&gps_status_value_style, LV_STATE_DEFAULT, &Ubuntu_16px);
                             break;
     }
@@ -264,12 +264,12 @@ bool gpsctl_gps_status_event_cb( EventBits_t event, void *arg ) {
 
     switch( event ) {
         case GPSCTL_FIX:
-            lv_obj_set_hidden( satfix_value_on, false );
-            lv_obj_set_hidden( satfix_value_off, true );
+            lv_obj_clear_flag( satfix_value_on, LV_OBJ_FLAG_HIDDEN );
+            lv_obj_add_flag( satfix_value_off, LV_OBJ_FLAG_HIDDEN );
             break;
         case GPSCTL_NOFIX:
-            lv_obj_set_hidden( satfix_value_on, true );
-            lv_obj_set_hidden( satfix_value_off, false );
+            lv_obj_add_flag( satfix_value_on, LV_OBJ_FLAG_HIDDEN );
+            lv_obj_clear_flag( satfix_value_off, LV_OBJ_FLAG_HIDDEN );
             lv_label_set_text( pos_longlat_value, "n/a" );
             lv_label_set_text( num_satellites_value, "n/a" );
             lv_label_set_text( altitude_value, "n/a" );
@@ -315,12 +315,12 @@ bool gpsctl_gps_status_event_cb( EventBits_t event, void *arg ) {
             break;
     }
 
-    lv_obj_align( pos_longlat_value, lv_obj_get_parent( pos_longlat_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
-    lv_obj_align( num_satellites_value, lv_obj_get_parent( num_satellites_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
-    lv_obj_align( satellite_type, lv_obj_get_parent( satellite_type ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
-    lv_obj_align( speed_value, lv_obj_get_parent( speed_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
-    lv_obj_align( altitude_value, lv_obj_get_parent( altitude_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
-    lv_obj_align( source_value, lv_obj_get_parent( source_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to( pos_longlat_value, lv_obj_get_parent( pos_longlat_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to( num_satellites_value, lv_obj_get_parent( num_satellites_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to( satellite_type, lv_obj_get_parent( satellite_type ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to( speed_value, lv_obj_get_parent( speed_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to( altitude_value, lv_obj_get_parent( altitude_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
+    lv_obj_align_to( source_value, lv_obj_get_parent( source_value ), LV_ALIGN_IN_RIGHT_MID, -5, 0);
 
     return( true );
 }

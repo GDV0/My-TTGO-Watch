@@ -54,8 +54,8 @@ lv_obj_t *bluetooth_FindPhone_label = NULL;
 
 lv_style_t bluetooth_FindPhone_style;
 
-lv_task_t * _FindPhone_PhoneSearch_task = nullptr; 
-lv_task_t * _FindPhone_WatchFind_task = nullptr;
+lv_timer_t * _FindPhone_PhoneSearch_task = nullptr; 
+lv_timer_t * _FindPhone_WatchFind_task = nullptr;
 
 LV_IMG_DECLARE(eye_200px);
 LV_IMG_DECLARE(eye_lid_closed);
@@ -72,8 +72,8 @@ static void go_FindPhone_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void exit_bluetooth_FindPhone_event_cb(lv_obj_t *obj, lv_event_t event);
 bool bluetooth_FindPhone_event_cb(EventBits_t event, void *arg);
 static void bluetooth_FindPhone_msg_pharse(BluetoothJsonRequest &doc);
-static void FindPhone_PhoneSearch_task( lv_task_t * task );
-static void FindPhone_WatchFind_task( lv_task_t * task );
+static void FindPhone_PhoneSearch_task( lv_timer_t * task );
+static void FindPhone_WatchFind_task( lv_timer_t * task );
 
 void bluetooth_FindPhone_tile_setup(void)
 {
@@ -82,22 +82,22 @@ void bluetooth_FindPhone_tile_setup(void)
     bluetooth_FindPhone_tile = mainbar_get_tile_obj(bluetooth_FindPhone_tile_num);
 
     lv_style_copy(&bluetooth_FindPhone_style, ws_get_mainbar_style());
-    lv_style_set_bg_color(&bluetooth_FindPhone_style, LV_OBJ_PART_MAIN, LV_COLOR_WHITE);
-    lv_style_set_bg_opa(&bluetooth_FindPhone_style, LV_OBJ_PART_MAIN, LV_OPA_100);
-    lv_style_set_border_width(&bluetooth_FindPhone_style, LV_OBJ_PART_MAIN, 0);
+    lv_style_set_bg_color(&bluetooth_FindPhone_style, LV_PART_MAIN, LV_COLOR_WHITE);
+    lv_style_set_bg_opa(&bluetooth_FindPhone_style, LV_PART_MAIN, LV_OPA_100);
+    lv_style_set_border_width(&bluetooth_FindPhone_style, LV_PART_MAIN, 0);
     lv_style_set_text_font(&bluetooth_FindPhone_style, LV_STATE_DEFAULT, &Ubuntu_32px);
     lv_style_set_text_color(&bluetooth_FindPhone_style, LV_STATE_DEFAULT, LV_COLOR_BLACK);
-    lv_obj_add_style(bluetooth_FindPhone_tile, LV_OBJ_PART_MAIN, &bluetooth_FindPhone_style);
+    lv_obj_add_style(bluetooth_FindPhone_tile, LV_PART_MAIN, &bluetooth_FindPhone_style);
 
-    bluetooth_FindPhone_img = lv_img_create(bluetooth_FindPhone_tile, NULL);
+    bluetooth_FindPhone_img = lv_img_create(bluetooth_FindPhone_tile);
     lv_img_set_src(bluetooth_FindPhone_img, &eye_200px);
-    lv_obj_align(bluetooth_FindPhone_img, bluetooth_FindPhone_tile, LV_ALIGN_CENTER, 0, 0);
-    bluetooth_FindPhone_label=lv_label_create(bluetooth_FindPhone_tile,NULL);
-    lv_obj_add_style(bluetooth_FindPhone_label, LV_OBJ_PART_MAIN, &bluetooth_FindPhone_style);
-    lv_obj_align(bluetooth_FindPhone_label, bluetooth_FindPhone_tile, LV_ALIGN_IN_LEFT_MID, 5, 0);
+    lv_obj_align_to(bluetooth_FindPhone_img, bluetooth_FindPhone_tile, LV_ALIGN_CENTER, 0, 0);
+    bluetooth_FindPhone_label=lv_label_create(bluetooth_FindPhone_tile);
+    lv_obj_add_style(bluetooth_FindPhone_label, LV_PART_MAIN, &bluetooth_FindPhone_style);
+    lv_obj_align_to(bluetooth_FindPhone_label, bluetooth_FindPhone_tile, LV_ALIGN_IN_LEFT_MID, 5, 0);
 
     lv_obj_t *header = wf_add_settings_header( bluetooth_FindPhone_tile, NULL, exit_bluetooth_FindPhone_event_cb );
-    lv_obj_align(header, bluetooth_FindPhone_tile, LV_ALIGN_IN_TOP_RIGHT, -10, 10);
+    lv_obj_align_to(header, bluetooth_FindPhone_tile, LV_ALIGN_IN_TOP_RIGHT, -10, 10);
 
     gadgetbridge_register_cb( GADGETBRIDGE_JSON_MSG, bluetooth_FindPhone_event_cb, "bluetooth_FindPhone");
 }
@@ -107,35 +107,35 @@ void FindPhone_main_setup( uint32_t tile_num ) {
     FindPhone_main_tile = mainbar_get_tile_obj( tile_num );
 
     lv_obj_t * exit_btn = wf_add_exit_button( FindPhone_main_tile, exit_FindPhone_main_event_cb );
-    lv_obj_align( exit_btn, FindPhone_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
+    lv_obj_align_to( exit_btn, FindPhone_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
 
     // eye toggle button
 	lv_obj_t *FindPhone_main_go_btn = NULL;
     FindPhone_main_go_btn = wf_add_image_button( FindPhone_main_tile, eye_lid_open, go_FindPhone_main_event_cb );
 	lv_btn_set_checkable(FindPhone_main_go_btn, true);
     lv_btn_toggle(FindPhone_main_go_btn);
-    lv_obj_align( FindPhone_main_go_btn, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( FindPhone_main_go_btn, LV_ALIGN_CENTER, 0, 0 );
 	
 	// iris 
-	FindPhone_main_iris = lv_img_create( FindPhone_main_tile, NULL);
+	FindPhone_main_iris = lv_img_create( FindPhone_main_tile);
 	lv_img_set_src (FindPhone_main_iris,&eye_iris);
-	lv_obj_set_hidden(FindPhone_main_iris,true);
-    lv_obj_align( FindPhone_main_iris, NULL, LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_t *app_label = lv_label_create( FindPhone_main_tile, NULL);
+	lv_obj_add_flag(FindPhone_main_iris,LV_OBJ_FLAG_HIDDEN);
+    lv_obj_align_to( FindPhone_main_iris, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_t *app_label = lv_label_create( FindPhone_main_tile);
     lv_label_set_text( app_label, "Find\nPhone");
-    lv_obj_reset_style_list( app_label, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( app_label, LV_OBJ_PART_MAIN, APP_STYLE );
-    lv_obj_align( app_label, FindPhone_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
-    lv_obj_align( FindPhone_main_go_btn, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_reset_style_list( app_label, LV_PART_MAIN );
+    lv_obj_add_style( app_label, LV_PART_MAIN, APP_STYLE );
+    lv_obj_align_to( app_label, FindPhone_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
+    lv_obj_align_to( FindPhone_main_go_btn, LV_ALIGN_CENTER, 0, 0 );
 }
 
 static void REM (bool val)
 {
 	if (!val )
 	{
-		lv_obj_set_hidden(FindPhone_main_iris,true);
+		lv_obj_add_flag(FindPhone_main_iris,LV_OBJ_FLAG_HIDDEN);
 	} else {
-		lv_obj_set_hidden(FindPhone_main_iris,false);
+		lv_obj_clear_flag(FindPhone_main_iris,LV_OBJ_FLAG_HIDDEN);
 		//move iris between +-50,+-50 around center
 		if (rand()%2)
 		{ 
@@ -170,7 +170,7 @@ static void toggle_searching ()
 	}
     else {
         if( _FindPhone_PhoneSearch_task == nullptr ) {
-            _FindPhone_PhoneSearch_task = lv_task_create( FindPhone_PhoneSearch_task, 1000, LV_TASK_PRIO_MID, NULL );
+            _FindPhone_PhoneSearch_task = lv_timer_create( FindPhone_PhoneSearch_task, 1000, NULL );
             searching_phone = true;
         }
 	}		
@@ -193,7 +193,7 @@ static void go_FindPhone_main_event_cb( lv_obj_t * obj, lv_event_t event )
     }
 }
 
-static void FindPhone_PhoneSearch_task( lv_task_t * task )
+static void FindPhone_PhoneSearch_task( lv_timer_t * task )
 { 
 	if (searching_phone) 
 	{
@@ -202,11 +202,11 @@ static void FindPhone_PhoneSearch_task( lv_task_t * task )
 	} else {
 		gadgetbridge_send_msg( (char*)"\r\n{t:\"findPhone\", n:\"false\"}\r\n" );
 	}
-    lv_task_del( _FindPhone_PhoneSearch_task );
+    lv_timer_del( _FindPhone_PhoneSearch_task );
     _FindPhone_PhoneSearch_task = nullptr;
 }
 
-static void FindPhone_WatchFind_task( lv_task_t * task )
+static void FindPhone_WatchFind_task( lv_timer_t * task )
 {
     sound_play_progmem_wav( piep_wav, piep_wav_len ); 
 	motor_vibe(100); 
@@ -237,13 +237,13 @@ static void bluetooth_FindPhone_msg_pharse(BluetoothJsonRequest &doc) {
         mainbar_jump_to_tilenumber(bluetooth_FindPhone_tile_num, LV_ANIM_OFF, true );
         lv_label_set_text(bluetooth_FindPhone_label, "Looking for me?");
         lv_obj_invalidate(lv_scr_act());
-        _FindPhone_WatchFind_task = lv_task_create( FindPhone_WatchFind_task, 1500, LV_TASK_PRIO_MID, NULL );           
+        _FindPhone_WatchFind_task = lv_timer_create( FindPhone_WatchFind_task, 1500, NULL );           
     }
 
     if ( doc.isEqualKeyValue("t", "find") && doc.isEqualKeyValue("n", false) ) {
 
         if( _FindPhone_WatchFind_task!=nullptr)  {
-            lv_task_del( _FindPhone_WatchFind_task );
+            lv_timer_del( _FindPhone_WatchFind_task );
             _FindPhone_WatchFind_task = nullptr;
         }      
               

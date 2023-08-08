@@ -56,21 +56,21 @@ void update_setup_tile_setup( uint32_t tile_num ) {
     update_setup_tile_num = tile_num;
     update_setup_tile = mainbar_get_tile_obj( update_setup_tile_num );
 
-    lv_obj_add_style( update_setup_tile, LV_OBJ_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( update_setup_tile, LV_PART_MAIN, ws_get_setup_tile_style() );
 
     lv_obj_t *header = wf_add_settings_header( update_setup_tile, "update settings", exit_update_check_setup_event_cb );
-    lv_obj_align( header, update_setup_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, update_setup_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     lv_obj_t *update_check_autorestart_cont = wf_add_labeled_switch( update_setup_tile, "reset after update", &update_check_autorestart_onoff, update_config.autorestart, update_check_autorestart_onoff_event_handler );
-    lv_obj_align( update_check_autorestart_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( update_check_autorestart_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 
     lv_obj_t *update_check_autosync_cont = wf_add_labeled_switch( update_setup_tile, "check for updates", &update_check_autosync_onoff, update_config.autosync, update_check_autosync_onoff_event_handler );
-    lv_obj_align( update_check_autosync_cont, update_check_autorestart_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( update_check_autosync_cont, update_check_autorestart_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 
     lv_obj_t *update_check_url_cont = lv_obj_create( update_setup_tile, NULL );
     lv_obj_set_size(update_check_url_cont, lv_disp_get_hor_res( NULL ) , 40);
-    lv_obj_add_style( update_check_url_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( update_check_url_cont, update_check_autosync_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( update_check_url_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( update_check_url_cont, update_check_autosync_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     
     update_check_url_textfield = lv_textarea_create( update_check_url_cont, NULL);
     lv_textarea_set_text( update_check_url_textfield, update_config.updateurl );
@@ -78,13 +78,13 @@ void update_setup_tile_setup( uint32_t tile_num ) {
     lv_textarea_set_one_line( update_check_url_textfield, true);
     lv_textarea_set_cursor_hidden( update_check_url_textfield, true);
     lv_obj_set_width( update_check_url_textfield, lv_disp_get_hor_res( NULL ) - 10 );
-    lv_obj_align( update_check_url_textfield, update_check_url_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_obj_align_to( update_check_url_textfield, update_check_url_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
     lv_obj_set_event_cb( update_check_url_textfield, update_check_url_textarea_event_cb );
 
     lv_obj_t *update_reset_url_btn = lv_btn_create( update_setup_tile, NULL);
     lv_obj_set_event_cb( update_reset_url_btn, update_reset_url_event_cb );
     lv_obj_add_style( update_reset_url_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
-    lv_obj_align( update_reset_url_btn, update_check_url_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
+    lv_obj_align_to( update_reset_url_btn, update_check_url_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
     lv_obj_t *update_reset_url_label = lv_label_create( update_reset_url_btn, NULL );
     lv_label_set_text( update_reset_url_label, "set default url");
 }

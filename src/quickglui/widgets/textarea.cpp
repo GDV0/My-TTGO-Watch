@@ -21,17 +21,18 @@ TextArea::TextArea(const Widget* parent, const char* txt) {
 }
 
 void TextArea::createObject(lv_obj_t* parent) {
-    assign(lv_textarea_create(parent, NULL));
-    lv_textarea_set_pwd_mode(native, false);
+    assign(lv_textarea_create(parent));
+    lv_textarea_set_password_mode(native, false);
     lv_textarea_set_one_line(native, true);
-    lv_textarea_set_cursor_hidden(native, true);
+    myCb = NULL;
+//GDV    lv_textarea_set_cursor_hidden(native, true);
 }
 
 void TextArea::assign(lv_obj_t* newHandle)
 {
     Widget::assign(newHandle);
-    if (lv_obj_get_event_cb(native) == NULL)
-        lv_obj_set_event_cb(native, &TextArea::Action);
+    if (myCb == NULL)
+        lv_obj_add_event_cb(native, myCb, LV_EVENT_ALL, &TextArea::Action);
 }
 
 TextArea& TextArea::text(const char * txt) {
@@ -41,12 +42,12 @@ TextArea& TextArea::text(const char * txt) {
 const char* TextArea::text() {
   return lv_textarea_get_text(native);
 }
-
+/*GDV not allowed in LVGL >= v8
 TextArea& TextArea::alignText(lv_label_align_t mode) {
   lv_label_set_align(native, mode);
   return *this;
 }
-
+*/
 TextArea& TextArea::autoKeyboard(bool enable) {
   auto handle = DefaultWidgetManager.GetOrCreate(native);
   handle->SetFlag(IsAutoKeyboardDisabled, !enable);
@@ -61,7 +62,7 @@ TextArea& TextArea::digitsMode(bool onlyDigits, const char* filterDigitsList) {
   return *this;
 }
 
-void TextArea::Action(lv_obj_t * obj, lv_event_t event) {
+void TextArea::Action(lv_obj_t * obj, lv_event_code_t event) {
     auto handle = DefaultWidgetManager.GetIfExists(obj);
     bool autoKeyboard = (handle == NULL /*enabled by default*/) || !handle->IsFlagSet(IsAutoKeyboardDisabled);
     bool digitsOnlyMode = (handle != NULL) && handle->IsFlagSet(IsDigitsOnlyMode);

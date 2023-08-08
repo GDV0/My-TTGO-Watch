@@ -141,7 +141,7 @@ void gui_setup( void ) {
     img_bin = lv_img_create( lv_scr_act() , NULL );
     lv_obj_set_width( img_bin, lv_disp_get_hor_res( NULL ) );
     lv_obj_set_height( img_bin, lv_disp_get_ver_res( NULL ) );
-    lv_obj_align( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
 
     log_i("mainbar setup");
     mainbar_setup();
@@ -225,9 +225,9 @@ void gui_setup( void ) {
     lv_obj_t *watch2021_mask_bin = lv_img_create( lv_scr_act() , NULL );
     lv_obj_set_width( watch2021_mask_bin, lv_disp_get_hor_res( NULL ) );
     lv_obj_set_height( watch2021_mask_bin, lv_disp_get_ver_res( NULL ) );
-    lv_obj_align( watch2021_mask_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( watch2021_mask_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
     lv_img_set_src( watch2021_mask_bin, &rounddisplaymask_240px );
-    lv_obj_align( watch2021_mask_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( watch2021_mask_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
 #endif
 }
 
@@ -321,26 +321,26 @@ void gui_set_background_image ( uint32_t background_image ) {
     switch ( background_image ) {
         case 0:
             lv_img_set_src( img_bin, &bg );
-            lv_obj_align( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
-            lv_obj_set_hidden( img_bin, false );
+            lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+            lv_obj_clear_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             break;
         case 1:
             lv_img_set_src( img_bin, &bg1 );
-            lv_obj_align( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
-            lv_obj_set_hidden( img_bin, false );
+            lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+            lv_obj_clear_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             break;
         case 2:
             lv_img_set_src( img_bin, &bg2 );
-            lv_obj_align( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
-            lv_obj_set_hidden( img_bin, false );
+            lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+            lv_obj_clear_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             break;
         case 3:
             lv_img_set_src( img_bin, &bg3 );
-            lv_obj_align( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
-            lv_obj_set_hidden( img_bin, false );
+            lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+            lv_obj_clear_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             break;
         case 4:
-            lv_obj_set_hidden( img_bin, true );
+            lv_obj_add_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             break;
         case 5: {
             FILE* file;
@@ -351,17 +351,17 @@ void gui_set_background_image ( uint32_t background_image ) {
                 log_d("set custom background image from spiffs");
                 fclose( file );
                 lv_img_set_src( img_bin, filename );
-                lv_obj_align( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
-                lv_obj_set_hidden( img_bin, false );
+                lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
+                lv_obj_clear_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             }
             else {
                 log_d("not custom background image found on spiffs, set to black");
-                lv_obj_set_hidden( img_bin, true );
+                lv_obj_add_flag( img_bin, LV_OBJ_FLAG_HIDDEN );
             }
             break;
         }
         default:
-            lv_obj_set_hidden( img_bin, true ); 
+            lv_obj_add_flag( img_bin, LV_OBJ_FLAG_HIDDEN ); 
     }
 }
 

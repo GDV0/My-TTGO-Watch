@@ -71,26 +71,26 @@ void touch_calibration_tile_setup( void ) {
     touch_calibration_tile = mainbar_get_tile_obj( touch_calibration_tile_num );
 
     lv_style_copy( &touch_calibration_style, ws_get_app_opa_style() );
-    lv_style_set_bg_color( &touch_calibration_style, LV_OBJ_PART_MAIN, LV_COLOR_BLACK );
-    lv_obj_add_style( touch_calibration_tile, LV_OBJ_PART_MAIN, &touch_calibration_style );
+    lv_style_set_bg_color( &touch_calibration_style, LV_PART_MAIN, LV_COLOR_BLACK );
+    lv_obj_add_style( touch_calibration_tile, LV_PART_MAIN, &touch_calibration_style );
 
     touch_location_done_arc = lv_arc_create( touch_calibration_tile, NULL);
     lv_arc_set_bg_angles( touch_location_done_arc, 0, 0 );
     lv_arc_set_angles( touch_location_done_arc, 0, 360 );
     lv_arc_set_rotation( touch_location_done_arc, 90 );
     lv_arc_set_end_angle( touch_location_done_arc, 360 );
-    lv_obj_align( touch_location_done_arc, NULL, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( touch_location_done_arc, NULL, LV_ALIGN_CENTER, 0, 0 );
     lv_style_copy( &touch_calibration_arc_style, ws_get_app_opa_style() );
     lv_style_set_bg_opa( &touch_calibration_style, LV_ARC_PART_INDIC, LV_OPA_TRANSP );
     lv_obj_add_style( touch_location_done_arc, LV_ARC_PART_BG, &touch_calibration_arc_style );
 
     touch_location_done_icon = wf_add_image( touch_calibration_tile, check_32px );
-    lv_obj_align( touch_location_done_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_set_hidden(touch_location_done_icon, true );
+    lv_obj_align_to( touch_location_done_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
 
     touch_location_icon = wf_add_image( touch_calibration_tile, location_32px );
-    lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_set_hidden(touch_location_icon, true );
+    lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_flag(touch_location_icon, LV_OBJ_FLAG_HIDDEN );
 
     mainbar_add_tile_activate_cb( touch_calibration_tile_num, touch_calibration_activate_cb );
     mainbar_add_tile_hibernate_cb( touch_calibration_tile_num, touch_calibration_hibernate_cb );
@@ -110,9 +110,9 @@ void touch_calibration_activate_cb( void ) {
     touch_calibration_state = CALIBRATION_STATE_START;
     touch_calibration_press_counter = 2;
     lv_arc_set_end_angle( touch_location_done_arc, 360 );
-    lv_obj_set_hidden( touch_location_icon, true );
-    lv_obj_set_hidden(touch_location_done_icon, true );
-    lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN );
+    lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+    lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
     touch_calibration_active = true;
 }
 
@@ -121,9 +121,9 @@ void touch_calibration_hibernate_cb( void ) {
     touch_calibration_state = CALIBRATION_STATE_NONE;    
     touch_calibration_press_counter = 2;
     lv_arc_set_end_angle( touch_location_done_arc, 360 );
-    lv_obj_set_hidden( touch_location_icon, true );
-    lv_obj_set_hidden(touch_location_done_icon, true );
-    lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN );
+    lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+    lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );
     touch_calibration_active = false;
 }
 
@@ -222,32 +222,32 @@ bool touch_calibration_event_cb( EventBits_t event, void *arg ) {
                     switch( touch_calibration_state ) {
                         case CALIBRATION_STATE_START:
                             display_set_rotation( 180 );
-                            lv_obj_set_hidden( touch_location_icon, true ); 
+                            lv_obj_add_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_BOTTOM_LEFT:
-                            lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0 );
-                            lv_obj_set_hidden(touch_location_done_icon, true );
-                            lv_obj_set_hidden( touch_location_icon, false ); 
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0 );
+                            lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+                            lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_TOP_LEFT:
-                            lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
-                            lv_obj_set_hidden(touch_location_done_icon, true );
-                            lv_obj_set_hidden( touch_location_icon, false ); 
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
+                            lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+                            lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_TOP_RIGHT:
-                            lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_TOP_RIGHT, 0, 0 );
-                            lv_obj_set_hidden(touch_location_done_icon, true );
-                            lv_obj_set_hidden( touch_location_icon, false ); 
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_TOP_RIGHT, 0, 0 );
+                            lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+                            lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_BOTTOM_RIGHT:
-                            lv_obj_align( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0 );
-                            lv_obj_set_hidden(touch_location_done_icon, true );
-                            lv_obj_set_hidden( touch_location_icon, false ); 
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0 );
+                            lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+                            lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_DONE:
                             display_set_rotation( display_rotation );
-                            lv_obj_set_hidden(touch_location_done_icon, false );
-                            lv_obj_set_hidden( touch_location_icon, true );
+                            lv_obj_clear_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
+                            lv_obj_add_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN );
                             touch_calibration_press_counter = 2;
                             break;
                         case CALIBRATION_STATE_EXIT:

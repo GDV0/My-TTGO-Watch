@@ -36,19 +36,19 @@ void alarm_clock_setup_setup( uint32_t tile_num ) {
     lv_obj_t *tile = mainbar_get_tile_obj( tile_num );
 
     lv_obj_t *header = wf_add_settings_header( tile, "Alarm settings" );
-    lv_obj_align( header, tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( header, tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
 
     lv_obj_t * vibe_onoff = wf_add_labeled_switch( tile, "Vibrate", &vibe_switch, true, NULL, SETUP_STYLE );
-    lv_obj_align( vibe_onoff, header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
+    lv_obj_align_to( vibe_onoff, header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
     lv_obj_t * fade_onoff = wf_add_labeled_switch( tile, "Fade", &fade_switch, true, NULL, SETUP_STYLE);
-    lv_obj_align( fade_onoff, vibe_onoff, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
+    lv_obj_align_to( fade_onoff, vibe_onoff, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
     lv_obj_t * beep_onoff = wf_add_labeled_switch( tile, "Beep", &beep_switch, true, NULL, SETUP_STYLE);
-    lv_obj_align( beep_onoff, fade_onoff, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
+    lv_obj_align_to( beep_onoff, fade_onoff, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
     lv_obj_t * show_onoff = wf_add_labeled_switch( tile, "Show on main tile", &main_tile_switch, true, NULL, SETUP_STYLE);
-    lv_obj_align( show_onoff, beep_onoff, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
+    lv_obj_align_to( show_onoff, beep_onoff, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 }
 
 static void set_switch_state(lv_obj_t *switch_obj, bool state){

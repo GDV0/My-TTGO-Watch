@@ -15,9 +15,9 @@ Container::Container(Widget* parent) {
 }
 
 void Container::createObject(lv_obj_t* parent) {
-  assign(lv_cont_create(parent, NULL));
+  assign(lv_obj_create(parent));
 }
 
-void Container::autoLayout(lv_layout_t value) {
-  lv_cont_set_layout(handle(), value);
+void Container::autoLayout(uint32_t value) {
+  lv_obj_set_layout(handle(), value);
 }

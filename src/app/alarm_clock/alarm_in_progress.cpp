@@ -82,14 +82,14 @@ static bool is_alarm_time(){
     return time_tm.tm_hour == rtcctl_get_alarm_data()->hour && time_tm.tm_min == rtcctl_get_alarm_data()->minute;
 }
 
-static void alarm_task_function(lv_task_t * task){
+static void alarm_task_function(lv_timer_t * task){
     alarm_properties_t * properties = alarm_clock_get_properties();
     if (in_progress && !is_alarm_time()){
         in_progress = false;
     }
 
     if (!in_progress){ //last turn
-        lv_task_del(task);
+        lv_timer_del(task);
         highlighted = false; //set default value
     }
 
@@ -116,8 +116,8 @@ static void alarm_task_function(lv_task_t * task){
         //used brightmess because is smooth for SW dimming would be necessary to use double buffer display
         display_set_brightness(highlighted ? DISPLAY_MAX_BRIGHTNESS : DISPLAY_MIN_BRIGHTNESS);
     }
-    //lv_style_set_text_color( &label_style, LV_OBJ_PART_MAIN, highlighted ? LV_COLOR_BLACK : LV_COLOR_WHITE );
-    //lv_style_set_text_opa(&label_style, LV_OBJ_PART_MAIN, highlighted ? LV_OPA_100 : LV_OPA_0);
+    //lv_style_set_text_color( &label_style, LV_PART_MAIN, highlighted ? LV_COLOR_BLACK : LV_COLOR_WHITE );
+    //lv_style_set_text_opa(&label_style, LV_PART_MAIN, highlighted ? LV_OPA_100 : LV_OPA_0);
 
     lv_obj_invalidate(tile);
 
@@ -135,14 +135,14 @@ void alarm_in_progress_start_alarm(){
     mainbar_jump_to_tilenumber( tile_num, LV_ANIM_OFF, true );
 
     lv_label_set_text(label, alarm_clock_get_clock_label(false));
-    lv_obj_align( label, tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( label, tile, NULL, LV_ALIGN_CENTER, 0, 0 );
 
     highlighted = true;
     in_progress = true;
     vibe_delay_coutdown = alarm_clock_get_properties()->vibe ? BEEP_TO_VIBE_DELAY : 0;
     beep_often_countown = BEEP_OFTEN_DELAY;
     brightness = display_get_brightness();
-    lv_task_create( alarm_task_function, highlight_time, LV_TASK_PRIO_MID, NULL );
+    lv_timer_create( alarm_task_function, highlight_time, NULL );
 }
 
 void alarm_in_progress_finish_alarm(){
@@ -154,20 +154,20 @@ void alarm_in_progress_tile_setup( void ) {
     tile_num = mainbar_add_app_tile( 1, 1, "alarm in progress" );
     tile = mainbar_get_tile_obj( tile_num );
 
-    lv_obj_add_style( tile, LV_OBJ_PART_MAIN, APP_STYLE );
+    lv_obj_add_style( tile, APP_STYLE, LV_PART_MAIN );
     lv_style_copy( &label_style, APP_ICON_LABEL_STYLE );
     lv_style_set_text_font( &label_style, LV_STATE_DEFAULT, &Ubuntu_72px);
 
     lv_obj_t * cancel_btm = wf_add_close_button( tile, exit_event_callback, SYSTEM_ICON_STYLE );
-    lv_obj_align( cancel_btm, tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( cancel_btm, tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
 
     label = wf_add_label( tile, "00:00" );
     lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
-    lv_obj_add_style( label, LV_OBJ_PART_MAIN, &label_style );
-    lv_obj_align( label, tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_style( label, &label_style, LV_PART_MAIN );
+    lv_obj_align_to( label, tile, LV_ALIGN_CENTER, 0, 0 );
 
     lv_obj_t *alarm_icon = wf_add_image( tile, alarm_clock_64px);
-    lv_obj_align( alarm_icon, label, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
+    lv_obj_align_to( alarm_icon, label, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
     styles_register_cb( STYLE_CHANGE, alarm_in_progress_style_change_event_cb, "alarm in progress style change event" );
 }

@@ -67,11 +67,11 @@ void tracker_app_view_setup( uint32_t tile ) {
      */
     tracker_speed_chart = lv_chart_create( mainbar_get_tile_obj( tile ), NULL );
     lv_obj_set_size( tracker_speed_chart, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) / 2 );
-    lv_obj_align( tracker_speed_chart, NULL, LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_align_to( tracker_speed_chart, NULL, LV_ALIGN_IN_TOP_MID, 0, 0 );
     lv_chart_set_type( tracker_speed_chart, LV_CHART_TYPE_LINE );  
     lv_chart_set_point_count( tracker_speed_chart, lv_disp_get_hor_res( NULL ) / 2 );
     lv_chart_set_div_line_count( tracker_speed_chart, 1, 1 );
-    lv_obj_add_style( tracker_speed_chart, LV_OBJ_PART_MAIN, APP_STYLE );
+    lv_obj_add_style( tracker_speed_chart, LV_PART_MAIN, APP_STYLE );
     lv_obj_set_style_local_size( tracker_speed_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 1 );
     lv_obj_set_style_local_bg_opa( tracker_speed_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_OPA_100 );
     lv_obj_set_style_local_bg_grad_dir( tracker_speed_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_GRAD_DIR_VER );
@@ -80,11 +80,11 @@ void tracker_app_view_setup( uint32_t tile ) {
 
     tracker_altitude_chart = lv_chart_create( mainbar_get_tile_obj( tile ), NULL );
     lv_obj_set_size( tracker_altitude_chart, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) / 2 );
-    lv_obj_align( tracker_altitude_chart, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_obj_align_to( tracker_altitude_chart, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
     lv_chart_set_type( tracker_altitude_chart, LV_CHART_TYPE_LINE );  
     lv_chart_set_point_count( tracker_altitude_chart, lv_disp_get_hor_res( NULL ) / 2 );
     lv_chart_set_div_line_count( tracker_altitude_chart, 1, 1 );
-    lv_obj_add_style( tracker_altitude_chart, LV_OBJ_PART_MAIN, APP_STYLE );
+    lv_obj_add_style( tracker_altitude_chart, LV_PART_MAIN, APP_STYLE );
     lv_obj_set_style_local_size( tracker_altitude_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 1 );
     lv_obj_set_style_local_bg_opa( tracker_altitude_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_OPA_100 );
     lv_obj_set_style_local_bg_grad_dir( tracker_altitude_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_GRAD_DIR_VER );
@@ -95,22 +95,22 @@ void tracker_app_view_setup( uint32_t tile ) {
     tracker_altitude_series = lv_chart_add_series( tracker_altitude_chart, LV_COLOR_BLUE );
 
     lv_obj_t *tracker_speed_label = wf_add_label( mainbar_get_tile_obj( tile ), "speed", APP_ICON_LABEL_STYLE );
-    lv_obj_align( tracker_speed_label, tracker_speed_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2, THEME_PADDING  * 2);
+    lv_obj_align_to( tracker_speed_label, tracker_speed_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2, THEME_PADDING  * 2);
 
     lv_obj_t *tracker_altitude_label = wf_add_label( mainbar_get_tile_obj( tile ), "altitude", APP_ICON_LABEL_STYLE );
-    lv_obj_align( tracker_altitude_label, tracker_altitude_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2, THEME_PADDING * 2 );
+    lv_obj_align_to( tracker_altitude_label, tracker_altitude_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2, THEME_PADDING * 2 );
 
     tracker_speed_min_label = wf_add_label( mainbar_get_tile_obj( tile ), "0km/h", APP_ICON_LABEL_STYLE );
-    lv_obj_align( tracker_speed_min_label, tracker_speed_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING  * 2);
+    lv_obj_align_to( tracker_speed_min_label, tracker_speed_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING  * 2);
 
     tracker_speed_max_label = wf_add_label( mainbar_get_tile_obj( tile ), "0km/h", APP_ICON_LABEL_STYLE );
-    lv_obj_align( tracker_speed_max_label, tracker_speed_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING  * 2);
+    lv_obj_align_to( tracker_speed_max_label, tracker_speed_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING  * 2);
 
     tracker_altitude_min_label = wf_add_label( mainbar_get_tile_obj( tile ), "0m", APP_ICON_LABEL_STYLE );
-    lv_obj_align( tracker_altitude_min_label, tracker_altitude_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING  * 2);
+    lv_obj_align_to( tracker_altitude_min_label, tracker_altitude_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING  * 2);
 
     tracker_altitude_max_label = wf_add_label( mainbar_get_tile_obj( tile ), "0m", APP_ICON_LABEL_STYLE );
-    lv_obj_align( tracker_altitude_max_label, tracker_altitude_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING  * 2);
+    lv_obj_align_to( tracker_altitude_max_label, tracker_altitude_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING  * 2);
 
     mainbar_add_slide_element( tracker_speed_chart );
     mainbar_add_slide_element( tracker_altitude_chart );

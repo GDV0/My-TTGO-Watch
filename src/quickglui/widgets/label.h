@@ -51,8 +51,9 @@ public:
     /**
      * @brief Align label text 
      */
+    /*GDV Not allowed in LVGL >= v8
     Label& alignText(lv_label_align_t mode);
-
+    */
     constexpr static const char* TypeName = "lv_label";
 };
 

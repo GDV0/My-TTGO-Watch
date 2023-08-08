@@ -60,11 +60,11 @@ void battery_history_tile_setup( uint32_t tile_num ) {
      */
     battery_history_voltage_chart = lv_chart_create( mainbar_get_tile_obj( battery_history_tile_num ), NULL );
     lv_obj_set_size( battery_history_voltage_chart, lv_disp_get_hor_res( NULL ), ( lv_disp_get_ver_res( NULL ) - STATUSBAR_HEIGHT ) / 2 );
-    lv_obj_align( battery_history_voltage_chart, NULL, LV_ALIGN_IN_TOP_MID, 0, STATUSBAR_HEIGHT );
+    lv_obj_align_to( battery_history_voltage_chart, NULL, LV_ALIGN_IN_TOP_MID, 0, STATUSBAR_HEIGHT );
     lv_chart_set_type( battery_history_voltage_chart, LV_CHART_TYPE_LINE );  
     lv_chart_set_point_count( battery_history_voltage_chart, lv_disp_get_hor_res( NULL ) / 2);
     lv_chart_set_div_line_count( battery_history_voltage_chart, 1, 1 );
-    lv_obj_add_style( battery_history_voltage_chart, LV_OBJ_PART_MAIN, APP_STYLE );
+    lv_obj_add_style( battery_history_voltage_chart, LV_PART_MAIN, APP_STYLE );
     lv_obj_set_style_local_size( battery_history_voltage_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 1 );
     lv_obj_set_style_local_bg_opa( battery_history_voltage_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_OPA_100 );
     lv_obj_set_style_local_bg_grad_dir( battery_history_voltage_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_GRAD_DIR_VER );
@@ -74,11 +74,11 @@ void battery_history_tile_setup( uint32_t tile_num ) {
 
     battery_history_current_chart = lv_chart_create( mainbar_get_tile_obj( battery_history_tile_num ), NULL );
     lv_obj_set_size( battery_history_current_chart, lv_disp_get_hor_res( NULL ), ( lv_disp_get_ver_res( NULL ) - STATUSBAR_HEIGHT ) / 2 );
-    lv_obj_align( battery_history_current_chart, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_obj_align_to( battery_history_current_chart, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
     lv_chart_set_type( battery_history_current_chart, LV_CHART_TYPE_LINE );  
     lv_chart_set_point_count( battery_history_current_chart, lv_disp_get_hor_res( NULL ) / 2 );
     lv_chart_set_div_line_count( battery_history_current_chart, 5, 1 );
-    lv_obj_add_style( battery_history_current_chart, LV_OBJ_PART_MAIN, APP_STYLE );
+    lv_obj_add_style( battery_history_current_chart, LV_PART_MAIN, APP_STYLE );
     lv_obj_set_style_local_size( battery_history_current_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 1 );
     lv_obj_set_style_local_bg_opa( battery_history_current_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_OPA_100 );
     lv_obj_set_style_local_bg_grad_dir( battery_history_current_chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_GRAD_DIR_VER );
@@ -91,22 +91,22 @@ void battery_history_tile_setup( uint32_t tile_num ) {
     battery_history_discharge_series = lv_chart_add_series( battery_history_current_chart, LV_COLOR_RED );
 
     lv_obj_t *battery_history_voltage_label = wf_add_label( battery_history_voltage_chart, "voltage", APP_ICON_LABEL_STYLE );
-    lv_obj_align( battery_history_voltage_label, battery_history_voltage_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2, THEME_PADDING * 2 );
+    lv_obj_align_to( battery_history_voltage_label, battery_history_voltage_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2, THEME_PADDING * 2 );
 
     lv_obj_t *battery_history_current_label = wf_add_label( battery_history_current_chart, "current", APP_ICON_LABEL_STYLE );
-    lv_obj_align( battery_history_current_label, battery_history_current_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2 , THEME_PADDING * 2 );
+    lv_obj_align_to( battery_history_current_label, battery_history_current_chart, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING * 2 , THEME_PADDING * 2 );
 
     lv_obj_t *battery_history_voltage_min_label = wf_add_label( battery_history_voltage_chart, "3.0V", APP_ICON_LABEL_STYLE );
-    lv_obj_align( battery_history_voltage_min_label, battery_history_voltage_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING * 2 );
+    lv_obj_align_to( battery_history_voltage_min_label, battery_history_voltage_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING * 2 );
 
     lv_obj_t *battery_history_voltage_max_label = wf_add_label( battery_history_voltage_chart, "4.4V", APP_ICON_LABEL_STYLE );
-    lv_obj_align( battery_history_voltage_max_label, battery_history_voltage_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING * 2 );
+    lv_obj_align_to( battery_history_voltage_max_label, battery_history_voltage_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING * 2 );
 
     lv_obj_t *battery_history_current_min_label = wf_add_label( battery_history_current_chart, "0mA", APP_ICON_LABEL_STYLE );
-    lv_obj_align( battery_history_current_min_label, battery_history_current_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING * 2 );
+    lv_obj_align_to( battery_history_current_min_label, battery_history_current_chart, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING * 2, -THEME_PADDING * 2 );
 
     lv_obj_t *battery_history_current_max_label = wf_add_label( battery_history_current_chart, "300mA", APP_ICON_LABEL_STYLE );
-    lv_obj_align( battery_history_current_max_label, battery_history_current_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING * 2 );
+    lv_obj_align_to( battery_history_current_max_label, battery_history_current_chart, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING * 2, THEME_PADDING * 2 );
 
     lv_chart_set_y_range( battery_history_voltage_chart, lv_chart_get_series_axis( battery_history_voltage_chart, battery_history_voltage_series ), 3000, 4400 );
     lv_chart_set_y_range( battery_history_current_chart, lv_chart_get_series_axis( battery_history_current_chart, battery_history_charge_series ), 0, 300 );

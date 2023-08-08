@@ -42,7 +42,7 @@ public:
     Style& textOpacity(lv_opa_t value);
   
 private:
-  lv_style_t native = {0};
+    lv_style_t native;
 };
 
 #endif

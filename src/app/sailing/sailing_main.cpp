@@ -68,7 +68,7 @@ lv_obj_t * gspeed_label = NULL;
 lv_obj_t * vmg_label = NULL;
 lv_obj_t * distance_label = NULL;
 
-lv_task_t * _sailing_task;
+lv_timer_t * _sailing_task;
 
 static volatile bool sailing_app_active = false;
 static volatile bool sailing_app_wifi_active = false;
@@ -91,7 +91,7 @@ void sailing_hibernate_cb( void );
 void sailing_app_setup_udp( bool enable );
 static void exit_sailing_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void enter_sailing_setup_event_cb( lv_obj_t * obj, lv_event_t event );
-void sailing_task( lv_task_t * task );
+void sailing_task( lv_timer_t * task );
 
 void sailing_main_setup( uint32_t tile_num ) {
 
@@ -104,56 +104,56 @@ void sailing_main_setup( uint32_t tile_num ) {
     sailing_main_tile = mainbar_get_tile_obj( tile_num );
     lv_style_copy( &sailing_main_style, APP_STYLE );
     lv_style_set_text_font( &sailing_main_style, LV_STATE_DEFAULT, &Ubuntu_32px);
-    lv_obj_add_style( sailing_main_tile, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( sailing_main_tile, LV_PART_MAIN, &sailing_main_style );
 
     // heading style
     lv_style_copy( &heading_main_style, APP_STYLE );
     lv_style_set_text_font( &heading_main_style, LV_STATE_DEFAULT, &Ubuntu_48px);
 
     lv_obj_t * exit_btn = wf_add_exit_button( sailing_main_tile, exit_sailing_main_event_cb );
-    lv_obj_align(exit_btn, sailing_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to(exit_btn, sailing_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
 
     lv_obj_t * setup_btn = wf_add_setup_button( sailing_main_tile, enter_sailing_setup_event_cb );
-    lv_obj_align(setup_btn, sailing_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to(setup_btn, sailing_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING );
 
     heading_info_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( heading_info_label, LV_OBJ_PART_MAIN, &heading_main_style );
+    lv_obj_add_style( heading_info_label, LV_PART_MAIN, &heading_main_style );
     lv_label_set_text( heading_info_label, "H =" );
-    lv_obj_align( heading_info_label, sailing_main_tile, LV_ALIGN_IN_TOP_LEFT, 0, STATUSBAR_HEIGHT );
+    lv_obj_align_to( heading_info_label, sailing_main_tile, LV_ALIGN_IN_TOP_LEFT, 0, STATUSBAR_HEIGHT );
     heading_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( heading_label, LV_OBJ_PART_MAIN, &heading_main_style );
+    lv_obj_add_style( heading_label, LV_PART_MAIN, &heading_main_style );
     lv_label_set_text( heading_label, "0°" );
-    lv_obj_align( heading_label, sailing_main_tile, LV_ALIGN_IN_TOP_RIGHT, 0, STATUSBAR_HEIGHT );
+    lv_obj_align_to( heading_label, sailing_main_tile, LV_ALIGN_IN_TOP_RIGHT, 0, STATUSBAR_HEIGHT );
 
     lv_obj_t * gspeed_info_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( gspeed_info_label, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( gspeed_info_label, LV_PART_MAIN, &sailing_main_style );
     lv_label_set_text( gspeed_info_label, "Gs =" );
-    lv_obj_align( gspeed_info_label, sailing_main_tile, LV_ALIGN_IN_LEFT_MID, 0, -30 );
+    lv_obj_align_to( gspeed_info_label, sailing_main_tile, LV_ALIGN_IN_LEFT_MID, 0, -30 );
     gspeed_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( gspeed_label, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( gspeed_label, LV_PART_MAIN, &sailing_main_style );
     lv_label_set_text( gspeed_label, "0kt" );
-    lv_obj_align( gspeed_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, -30 );
+    lv_obj_align_to( gspeed_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, -30 );
 
     lv_obj_t * vmg_info_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( vmg_info_label, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( vmg_info_label, LV_PART_MAIN, &sailing_main_style );
     lv_label_set_text( vmg_info_label, "Vmg =" );
-    lv_obj_align( vmg_info_label, sailing_main_tile, LV_ALIGN_IN_LEFT_MID, 0, 10 );
+    lv_obj_align_to( vmg_info_label, sailing_main_tile, LV_ALIGN_IN_LEFT_MID, 0, 10 );
     vmg_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( vmg_label, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( vmg_label, LV_PART_MAIN, &sailing_main_style );
     lv_label_set_text( vmg_label, "0kt" );
-    lv_obj_align( vmg_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 10 );
+    lv_obj_align_to( vmg_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 10 );
 
     lv_obj_t * distance_info_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( distance_info_label, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( distance_info_label, LV_PART_MAIN, &sailing_main_style );
     lv_label_set_text( distance_info_label, "Ds =" );
-    lv_obj_align( distance_info_label, sailing_main_tile, LV_ALIGN_IN_LEFT_MID, 0, 50 );
+    lv_obj_align_to( distance_info_label, sailing_main_tile, LV_ALIGN_IN_LEFT_MID, 0, 50 );
     distance_label = lv_label_create( sailing_main_tile, NULL );
-    lv_obj_add_style( distance_label, LV_OBJ_PART_MAIN, &sailing_main_style );
+    lv_obj_add_style( distance_label, LV_PART_MAIN, &sailing_main_style );
     lv_label_set_text( distance_label, "0nm" );
-    lv_obj_align( distance_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 50 );
+    lv_obj_align_to( distance_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 50 );
 
     // create an task that runs every secound
-    _sailing_task = lv_task_create( sailing_task, 1000, LV_TASK_PRIO_MID, NULL );
+    _sailing_task = lv_timer_create( sailing_task, 1000, NULL );
 
     //udp listening
     wifictl_register_cb( WIFICTL_OFF | WIFICTL_CONNECT | WIFICTL_DISCONNECT, sailing_wifictl_event_cb, "sailing data" );
@@ -310,20 +310,20 @@ static void sailing_main_update_label()
       lv_label_set_text( heading_info_label, "H =" );
       lv_label_set_text( heading_label, heading );
     }
-    lv_obj_align( heading_info_label, sailing_main_tile, LV_ALIGN_IN_TOP_LEFT, 0, STATUSBAR_HEIGHT );
-    lv_obj_align( heading_label, sailing_main_tile, LV_ALIGN_IN_TOP_RIGHT, 0, STATUSBAR_HEIGHT );
+    lv_obj_align_to( heading_info_label, sailing_main_tile, LV_ALIGN_IN_TOP_LEFT, 0, STATUSBAR_HEIGHT );
+    lv_obj_align_to( heading_label, sailing_main_tile, LV_ALIGN_IN_TOP_RIGHT, 0, STATUSBAR_HEIGHT );
 
     lv_label_set_text( gspeed_label, gspeed );
-    lv_obj_align( gspeed_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, -30 );
+    lv_obj_align_to( gspeed_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, -30 );
 
     lv_label_set_text( vmg_label, vmg );
-    lv_obj_align( vmg_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 10 );
+    lv_obj_align_to( vmg_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 10 );
 
     lv_label_set_text( distance_label, distance );
-    lv_obj_align( distance_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 50 );
+    lv_obj_align_to( distance_label, sailing_main_tile, LV_ALIGN_IN_RIGHT_MID, 0, 50 );
 }
 
-void sailing_task( lv_task_t * task ) {
+void sailing_task( lv_timer_t * task ) {
     // put your code her
     sailing_main_update_label();
 }

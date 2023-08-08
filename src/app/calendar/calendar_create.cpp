@@ -128,18 +128,18 @@ void calendar_create_build_ui( void ) {
      * copy mainbar style and set it to calendar
      */
     lv_style_copy( &calendar_create_date_select_style, APP_STYLE );
-    lv_style_set_radius( &calendar_create_date_select_style, LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_border_width( &calendar_create_date_select_style, LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_bg_color( &calendar_create_date_select_style, LV_OBJ_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_bg_opa( &calendar_create_date_select_style, LV_OBJ_PART_MAIN, LV_OPA_80 );
+    lv_style_set_radius( &calendar_create_date_select_style, LV_PART_MAIN, 0 );
+    lv_style_set_border_width( &calendar_create_date_select_style, LV_PART_MAIN, 0 );
+    lv_style_set_bg_color( &calendar_create_date_select_style, LV_PART_MAIN, LV_COLOR_WHITE );
+    lv_style_set_bg_opa( &calendar_create_date_select_style, LV_PART_MAIN, LV_OPA_80 );
     /**
      * 
      */
     calendar_create_date_select = lv_calendar_create( calendar_create_date_select_tile, NULL );
     lv_obj_set_size( calendar_create_date_select, lv_disp_get_hor_res( NULL ) - THEME_ICON_SIZE, lv_disp_get_ver_res( NULL ) );
-    lv_obj_align( calendar_create_date_select, calendar_create_date_select_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
+    lv_obj_align_to( calendar_create_date_select, calendar_create_date_select_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
     lv_obj_set_event_cb( calendar_create_date_select, calendar_create_date_selected_event_cb );
-    lv_obj_add_style( calendar_create_date_select, LV_OBJ_PART_MAIN, &calendar_create_date_select_style );
+    lv_obj_add_style( calendar_create_date_select, LV_PART_MAIN, &calendar_create_date_select_style );
     lv_obj_set_style_local_text_font( calendar_create_date_select, LV_CALENDAR_PART_HEADER, LV_STATE_DEFAULT, date_create_font );
     lv_obj_set_style_local_text_color( calendar_create_date_select, LV_CALENDAR_PART_HEADER, LV_STATE_DEFAULT, LV_COLOR_BLACK );
     lv_obj_set_style_local_text_font( calendar_create_date_select, LV_CALENDAR_PART_DATE, LV_STATE_DEFAULT, date_create_font );
@@ -150,57 +150,57 @@ void calendar_create_build_ui( void ) {
      * add exit button
      */
     lv_obj_t *date_select_exit_button = wf_add_exit_button( calendar_create_date_select_tile, calendar_create_exit_event_cb );
-    lv_obj_align( date_select_exit_button, calendar_create_date_select_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( date_select_exit_button, calendar_create_date_select_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
     /**
      * 
      */
-    lv_obj_t *calendar_select_date_btn = lv_btn_create( calendar_create_tile , NULL);
-    lv_obj_add_style( calendar_select_date_btn, LV_OBJ_PART_MAIN, ws_get_button_style() );
+    lv_obj_t *calendar_select_date_btn = lv_btn_create( calendar_create_tile);
+    lv_obj_add_style( calendar_select_date_btn, LV_PART_MAIN, ws_get_button_style() );
     lv_obj_set_size( calendar_select_date_btn, lv_disp_get_hor_res( NULL ) - ( 2 * THEME_PADDING ), 40 );
-    lv_obj_align( calendar_select_date_btn, NULL, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( calendar_select_date_btn, NULL, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
     lv_obj_set_event_cb( calendar_select_date_btn, calendar_create_date_select_event_cb );
-    calendar_select_date_btn_label = lv_label_create( calendar_select_date_btn, NULL );
+    calendar_select_date_btn_label = lv_label_create( calendar_select_date_btn );
     lv_label_set_text( calendar_select_date_btn_label, "n / a" );
     /**
      * 
      */
     calendar_create_hour_list = wf_add_list( calendar_create_tile, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23", ws_get_setup_dropdown_style() );
     lv_obj_set_size( calendar_create_hour_list, lv_disp_get_hor_res( NULL ) / 2 - THEME_PADDING - THEME_PADDING / 2, 40 );
-    lv_obj_align( calendar_create_hour_list, calendar_select_date_btn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_PADDING );
+    lv_obj_align_to( calendar_create_hour_list, calendar_select_date_btn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_PADDING );
     /**
      * 
      */
     calendar_create_min_list = wf_add_list( calendar_create_tile, "0\n15\n30\n45", ws_get_setup_dropdown_style() );
     lv_obj_set_size( calendar_create_min_list, lv_disp_get_hor_res( NULL ) / 2 - THEME_PADDING - THEME_PADDING / 2 , 40 );
-    lv_obj_align( calendar_create_min_list, calendar_select_date_btn, LV_ALIGN_OUT_BOTTOM_RIGHT, 0, THEME_PADDING );
+    lv_obj_align_to( calendar_create_min_list, calendar_select_date_btn, LV_ALIGN_OUT_BOTTOM_RIGHT, 0, THEME_PADDING );
     /**
      * 
      */
-    claendar_create_textfield = lv_textarea_create( calendar_create_tile, NULL);
+    claendar_create_textfield = lv_textarea_create( calendar_create_tile);
     lv_textarea_set_text( claendar_create_textfield, "" );
     lv_textarea_set_pwd_mode( claendar_create_textfield, false );
     lv_textarea_set_cursor_hidden( claendar_create_textfield, false );
     lv_textarea_set_one_line( claendar_create_textfield, true);
     // lv_obj_set_height( claendar_create_textfield, 140 );
     lv_obj_set_width( claendar_create_textfield, lv_disp_get_hor_res( NULL ) - ( 2 * THEME_PADDING ) );
-    lv_obj_align( claendar_create_textfield, calendar_create_hour_list, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_PADDING );
+    lv_obj_align_to( claendar_create_textfield, calendar_create_hour_list, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_PADDING );
     lv_obj_set_event_cb( claendar_create_textfield, calendar_create_text_event_cb );
-    lv_obj_add_style( claendar_create_textfield, LV_OBJ_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( claendar_create_textfield, LV_PART_MAIN, ws_get_button_style() );
     /**
      * add exit button
      */
     lv_obj_t *exit_button = wf_add_exit_button( calendar_create_tile, calendar_create_exit_event_cb );
-    lv_obj_align( exit_button, calendar_create_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( exit_button, calendar_create_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
     /**
      * add add button
      */
     lv_obj_t *create_button = wf_add_add_button( calendar_create_tile, calendar_create_add_event_cb );
-    lv_obj_align( create_button, calendar_create_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( create_button, calendar_create_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
     /**
      * add trash button
      */
     lv_obj_t *trash_button = wf_add_trash_button( calendar_create_tile, calendar_create_trash_event_cb );
-    lv_obj_align( trash_button, calendar_create_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_ICON_PADDING );
+    lv_obj_align_to( trash_button, calendar_create_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_ICON_PADDING );
 }
 
 static void calendar_create_date_selected_event_cb( lv_obj_t * obj, lv_event_t event ) {

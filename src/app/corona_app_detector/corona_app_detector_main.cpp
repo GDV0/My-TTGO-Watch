@@ -34,14 +34,14 @@
 lv_obj_t *corona_app_detector_main_tile = NULL;
 lv_style_t corona_app_detector_main_style;
 
-lv_task_t * _corona_app_detector_task;
+lv_timer_t * _corona_app_detector_task;
 
 LV_IMG_DECLARE(refresh_32px);
 LV_FONT_DECLARE(Ubuntu_72px);
 
 static void exit_corona_app_detector_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void enter_corona_app_detector_setup_event_cb( lv_obj_t * obj, lv_event_t event );
-void corona_app_detector_task( lv_task_t * task );
+void corona_app_detector_task( lv_timer_t * task );
 
 void corona_app_detector_main_setup( uint32_t tile_num ) {
 
@@ -49,13 +49,13 @@ void corona_app_detector_main_setup( uint32_t tile_num ) {
     lv_style_copy( &corona_app_detector_main_style, ws_get_mainbar_style() );
 
     lv_obj_t * exit_btn = wf_add_exit_button( corona_app_detector_main_tile, exit_corona_app_detector_main_event_cb, &corona_app_detector_main_style );
-    lv_obj_align(exit_btn, corona_app_detector_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
+    lv_obj_align_to(exit_btn, corona_app_detector_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
 
     lv_obj_t * setup_btn = wf_add_setup_button( corona_app_detector_main_tile, enter_corona_app_detector_setup_event_cb, &corona_app_detector_main_style );
-    lv_obj_align(setup_btn, corona_app_detector_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -10 );
+    lv_obj_align_to(setup_btn, corona_app_detector_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -10 );
 
     // create an task that runs every secound
-    _corona_app_detector_task = lv_task_create( corona_app_detector_task, 1000, LV_TASK_PRIO_MID, NULL );
+    _corona_app_detector_task = lv_timer_create( corona_app_detector_task, 1000, NULL );
 }
 
 static void enter_corona_app_detector_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
@@ -73,6 +73,6 @@ static void exit_corona_app_detector_main_event_cb( lv_obj_t * obj, lv_event_t e
     }
 }
 
-void corona_app_detector_task( lv_task_t * task ) {
+void corona_app_detector_task( lv_timer_t * task ) {
     // put your code her
 }

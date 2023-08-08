@@ -21,7 +21,7 @@ Label::Label(const Widget* parent, const char* content) {
 }
 
 void Label::createObject(lv_obj_t* parent) {
-  assign(lv_label_create(parent, NULL));
+  assign(lv_label_create(parent));
 }
 
 Label& Label::text(const char * txt){
@@ -33,8 +33,10 @@ Label& Label::text(String txt){
   return *this;
 }
 
+/* GDV
 Label& Label::alignText(lv_label_align_t mode) {
   lv_label_set_align(native, mode);
   return *this;
 }
+*/
 

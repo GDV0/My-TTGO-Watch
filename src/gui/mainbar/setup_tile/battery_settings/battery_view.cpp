@@ -62,81 +62,81 @@ void battery_view_tile_setup( uint32_t tile_num ) {
 
     lv_obj_t *battery_design_cont = lv_obj_create( battery_view_tile, NULL );
     lv_obj_set_size( battery_design_cont, lv_disp_get_hor_res( NULL ) , 25 );
-    lv_obj_add_style( battery_design_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( battery_design_cont, battery_view_tile, LV_ALIGN_IN_TOP_RIGHT, 0, 75 );
+    lv_obj_add_style( battery_design_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( battery_design_cont, battery_view_tile, LV_ALIGN_IN_TOP_RIGHT, 0, 75 );
     lv_obj_t *battery_design_cap_label = lv_label_create( battery_design_cont, NULL);
-    lv_obj_add_style( battery_design_cap_label, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_design_cap_label, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_design_cap_label, "designed cap");
-    lv_obj_align( battery_design_cap_label, battery_design_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( battery_design_cap_label, battery_design_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
     battery_view_design_cap = lv_label_create( battery_design_cont, NULL);
-    lv_obj_add_style( battery_view_design_cap, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_view_design_cap, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_view_design_cap, "300mAh");
-    lv_obj_align( battery_view_design_cap, battery_design_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( battery_view_design_cap, battery_design_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
 
     lv_obj_t *battery_current_cont = lv_obj_create( battery_view_tile, NULL );
     lv_obj_set_size( battery_current_cont, lv_disp_get_hor_res( NULL ) , 22 );
-    lv_obj_add_style( battery_current_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( battery_current_cont, battery_design_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( battery_current_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( battery_current_cont, battery_design_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t *battery_current_cap_label = lv_label_create( battery_current_cont, NULL);
-    lv_obj_add_style( battery_current_cap_label, LV_OBJ_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( battery_current_cap_label, LV_PART_MAIN, ws_get_setup_tile_style() );
     lv_label_set_text( battery_current_cap_label, "charged capacity");
-    lv_obj_align( battery_current_cap_label, battery_current_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( battery_current_cap_label, battery_current_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
     battery_view_current_cap = lv_label_create( battery_current_cont, NULL);
-    lv_obj_add_style( battery_view_current_cap, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_view_current_cap, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_view_current_cap, "300mAh");
-    lv_obj_align( battery_view_current_cap, battery_current_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( battery_view_current_cap, battery_current_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
 
     lv_obj_t *battery_voltage_cont = lv_obj_create( battery_view_tile, NULL );
     lv_obj_set_size( battery_voltage_cont, lv_disp_get_hor_res( NULL ) , 22 );
-    lv_obj_add_style( battery_voltage_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( battery_voltage_cont, battery_current_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( battery_voltage_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( battery_voltage_cont, battery_current_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t *battery_voltage_label = lv_label_create( battery_voltage_cont, NULL);
-    lv_obj_add_style( battery_voltage_label, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_voltage_label, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_voltage_label, "battery voltage");
-    lv_obj_align( battery_voltage_label, battery_voltage_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( battery_voltage_label, battery_voltage_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
     battery_view_voltage = lv_label_create( battery_voltage_cont, NULL);
-    lv_obj_add_style( battery_view_voltage, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_view_voltage, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_view_voltage, "2.4mV");
-    lv_obj_align( battery_view_voltage, battery_voltage_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( battery_view_voltage, battery_voltage_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
 
     lv_obj_t *battery_charge_cont = lv_obj_create( battery_view_tile, NULL );
     lv_obj_set_size( battery_charge_cont, lv_disp_get_hor_res( NULL ) , 22 );
-    lv_obj_add_style( battery_charge_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( battery_charge_cont, battery_voltage_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( battery_charge_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( battery_charge_cont, battery_voltage_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t *battery_charge_label = lv_label_create( battery_charge_cont, NULL);
-    lv_obj_add_style( battery_charge_label, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_charge_label, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_charge_label, "charge current");
-    lv_obj_align( battery_charge_label, battery_charge_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( battery_charge_label, battery_charge_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
     charge_view_current = lv_label_create( battery_charge_cont, NULL);
-    lv_obj_add_style( charge_view_current, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( charge_view_current, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( charge_view_current, "100mA");
-    lv_obj_align( charge_view_current, battery_charge_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( charge_view_current, battery_charge_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
 
     lv_obj_t *battery_discharge_cont = lv_obj_create( battery_view_tile, NULL );
     lv_obj_set_size( battery_discharge_cont, lv_disp_get_hor_res( NULL ) , 22 );
-    lv_obj_add_style( battery_discharge_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( battery_discharge_cont, battery_charge_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( battery_discharge_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( battery_discharge_cont, battery_charge_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t *battery_discharge_label = lv_label_create( battery_discharge_cont, NULL);
-    lv_obj_add_style( battery_discharge_label, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( battery_discharge_label, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( battery_discharge_label, "discharge current");
-    lv_obj_align( battery_discharge_label, battery_discharge_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( battery_discharge_label, battery_discharge_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
     discharge_view_current = lv_label_create( battery_discharge_cont, NULL);
-    lv_obj_add_style( discharge_view_current, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( discharge_view_current, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( discharge_view_current, "100mA");
-    lv_obj_align( discharge_view_current, battery_discharge_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( discharge_view_current, battery_discharge_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
 
     lv_obj_t *vbus_voltage_cont = lv_obj_create( battery_view_tile, NULL );
     lv_obj_set_size( vbus_voltage_cont, lv_disp_get_hor_res( NULL ) , 22 );
-    lv_obj_add_style( vbus_voltage_cont, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
-    lv_obj_align( vbus_voltage_cont, battery_discharge_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_add_style( vbus_voltage_cont, LV_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_align_to( vbus_voltage_cont, battery_discharge_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t *vbus_voltage_label = lv_label_create( vbus_voltage_cont, NULL);
-    lv_obj_add_style( vbus_voltage_label, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( vbus_voltage_label, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( vbus_voltage_label, "VBUS voltage");
-    lv_obj_align( vbus_voltage_label, vbus_voltage_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
+    lv_obj_align_to( vbus_voltage_label, vbus_voltage_cont, LV_ALIGN_IN_LEFT_MID, THEME_PADDING, 0 );
     vbus_view_voltage = lv_label_create( vbus_voltage_cont, NULL);
-    lv_obj_add_style( vbus_view_voltage, LV_OBJ_PART_MAIN, ws_get_setup_tile_style()  );
+    lv_obj_add_style( vbus_view_voltage, LV_PART_MAIN, ws_get_setup_tile_style()  );
     lv_label_set_text( vbus_view_voltage, "2.4mV");
-    lv_obj_align( vbus_view_voltage, vbus_voltage_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
+    lv_obj_align_to( vbus_view_voltage, vbus_voltage_cont, LV_ALIGN_IN_RIGHT_MID, -THEME_PADDING, 0 );
 
     mainbar_add_tile_button_cb( battery_view_tile_num, battery_view_button_cb );
 
@@ -178,25 +178,25 @@ static void battery_view_update_task( lv_task_t *task ) {
         snprintf( temp, sizeof( temp ), "unknown" );        
     }
     lv_label_set_text( battery_view_current_cap, temp );
-    lv_obj_align( battery_view_current_cap, lv_obj_get_parent( battery_view_current_cap ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( battery_view_current_cap, lv_obj_get_parent( battery_view_current_cap ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
     snprintf( temp, sizeof( temp ), "%dmAh", pmu_get_designed_battery_cap() );
     lv_label_set_text( battery_view_design_cap, temp );
-    lv_obj_align( battery_view_design_cap, lv_obj_get_parent( battery_view_design_cap ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( battery_view_design_cap, lv_obj_get_parent( battery_view_design_cap ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
     snprintf( temp, sizeof( temp ), "%0.2fV", pmu_get_battery_voltage() / 1000 );
     lv_label_set_text( battery_view_voltage, temp );
-    lv_obj_align( battery_view_voltage, lv_obj_get_parent( battery_view_voltage ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( battery_view_voltage, lv_obj_get_parent( battery_view_voltage ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
     snprintf( temp, sizeof( temp ), "%0.1fmA", pmu_get_battery_charge_current() );
     lv_label_set_text( charge_view_current, temp );
-    lv_obj_align( charge_view_current, lv_obj_get_parent( charge_view_current ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( charge_view_current, lv_obj_get_parent( charge_view_current ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
     snprintf( temp, sizeof( temp ), "%0.1fmA", pmu_get_battery_discharge_current() );
     lv_label_set_text( discharge_view_current, temp );
-    lv_obj_align( discharge_view_current, lv_obj_get_parent( discharge_view_current ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( discharge_view_current, lv_obj_get_parent( discharge_view_current ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 
     snprintf( temp, sizeof( temp ), "%0.2fV", pmu_get_vbus_voltage() / 1000 );
     lv_label_set_text( vbus_view_voltage, temp );
-    lv_obj_align( vbus_view_voltage, lv_obj_get_parent( vbus_view_voltage ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
+    lv_obj_align_to( vbus_view_voltage, lv_obj_get_parent( vbus_view_voltage ), LV_ALIGN_IN_RIGHT_MID, -5, 0 );
 }

@@ -53,7 +53,7 @@ lv_obj_t *channel_select = NULL;
 lv_chart_series_t *ser1 = NULL;
 lv_chart_series_t *ser2 = NULL;
 lv_chart_series_t *ser3 = NULL;
-lv_task_t *_wifimon_app_task = NULL;
+lv_timer_t *_wifimon_app_task = NULL;
 int wifimon_display_timeout = 0;
 
 LV_IMG_DECLARE(exit_dark_48px);
@@ -62,7 +62,7 @@ LV_FONT_DECLARE(Ubuntu_72px);
 
 static void exit_wifimon_app_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void wifimon_sniffer_set_channel( uint8_t channel );
-static void wifimon_app_task( lv_task_t * task );
+static void wifimon_app_task( lv_timer_t * task );
 static void wifimon_activate_cb( void );
 static void wifimon_hibernate_cb( void );
 
@@ -115,7 +115,7 @@ void wifimon_app_main_setup( uint32_t tile_num ) {
      */
     chart = lv_chart_create( wifimon_app_main_tile, NULL );
     lv_obj_set_size( chart, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - THEME_ICON_SIZE );
-    lv_obj_align( chart, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
+    lv_obj_align_to( chart, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
     lv_chart_set_type( chart, LV_CHART_TYPE_LINE );  
     lv_chart_set_point_count( chart, 32 );
     lv_obj_set_style_local_bg_opa( chart, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, LV_OPA_50 );
@@ -132,14 +132,14 @@ void wifimon_app_main_setup( uint32_t tile_num ) {
      * add exit button
      */
     lv_obj_t * exit_btn = wf_add_exit_button( wifimon_app_main_tile, exit_wifimon_app_main_event_cb );
-    lv_obj_align( exit_btn, wifimon_app_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to( exit_btn, wifimon_app_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
     /**
      * add channel select roller
      */
     channel_select = lv_roller_create(wifimon_app_main_tile, NULL);
     lv_roller_set_options( channel_select, "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13", LV_ROLLER_MODE_INIFINITE );
     lv_roller_set_visible_row_count( channel_select, 5 );
-    lv_obj_align( channel_select, NULL, LV_ALIGN_IN_TOP_LEFT, THEME_ICON_PADDING, THEME_ICON_PADDING );
+    lv_obj_align_to( channel_select, NULL, LV_ALIGN_IN_TOP_LEFT, THEME_ICON_PADDING, THEME_ICON_PADDING );
     lv_obj_set_event_cb( channel_select, wifimon_channel_select_event_handler );
     /**
      * add chart series label
@@ -150,7 +150,7 @@ void wifimon_app_main_setup( uint32_t tile_num ) {
     lv_label_set_align( chart_series_label, LV_LABEL_ALIGN_RIGHT );       
     lv_label_set_text( chart_series_label, "#ffff00 - misc#\n#ff0000 - mgmt#\n#11ff00 - data#"); 
     lv_obj_set_width( chart_series_label, 70 );
-    lv_obj_align( chart_series_label, NULL, LV_ALIGN_IN_TOP_RIGHT, -THEME_ICON_PADDING, THEME_ICON_PADDING );
+    lv_obj_align_to( chart_series_label, NULL, LV_ALIGN_IN_TOP_RIGHT, -THEME_ICON_PADDING, THEME_ICON_PADDING );
 
     mainbar_add_tile_activate_cb( tile_num, wifimon_activate_cb );
     mainbar_add_tile_hibernate_cb( tile_num, wifimon_hibernate_cb );
@@ -165,7 +165,7 @@ static void exit_wifimon_app_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
 
 static void wifimon_hibernate_cb( void ) {
     if(_wifimon_app_task != NULL) {
-        lv_task_del(_wifimon_app_task);
+        lv_timer_del(_wifimon_app_task);
         _wifimon_app_task = NULL;
     }  
 #ifdef NATIVE_64BIT
@@ -204,7 +204,7 @@ static void wifimon_activate_cb( void ) {
     /**
      * start stats fetch task
      */
-    _wifimon_app_task = lv_task_create( wifimon_app_task, 1000, LV_TASK_PRIO_MID, NULL );
+    _wifimon_app_task = lv_timer_create( wifimon_app_task, 1000, NULL );
     /**
      * save display timeout time
      */
@@ -212,7 +212,7 @@ static void wifimon_activate_cb( void ) {
     display_set_timeout( DISPLAY_MAX_TIMEOUT );
 }
 
-static void wifimon_app_task( lv_task_t * task ) {
+static void wifimon_app_task( lv_timer_t * task ) {
     /**
      * limit scale
      */

@@ -230,25 +230,25 @@ void time_settings_tile_setup( void ) {
     // get an app tile and copy mainstyle
     time_tile_num = mainbar_add_setup_tile( 1, 1, "time setup" );
     time_settings_tile = mainbar_get_tile_obj( time_tile_num );
-    lv_obj_add_style( time_settings_tile, LV_OBJ_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( time_settings_tile, LV_PART_MAIN, ws_get_setup_tile_style() );
 
     icon_t *time_setup_icon = setup_register( "time", &time_64px, enter_time_setup_event_cb );
     setup_hide_indicator( time_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( time_settings_tile, "time settings", exit_time_setup_event_cb );
-    lv_obj_align( header, time_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, time_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     lv_obj_t *wifisync_cont = wf_add_labeled_switch( time_settings_tile, "sync when connect", &wifisync_onoff, timesync_get_timesync(), wifisync_onoff_event_handler, ws_get_setup_tile_style() );
-    lv_obj_align( wifisync_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
+    lv_obj_align_to( wifisync_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
 
     lv_obj_t *clock_fmt_cont = wf_add_labeled_switch( time_settings_tile, "use 24hr clock", &clock_fmt_onoff, timesync_get_24hr(), clock_fmt_onoff_event_handler, ws_get_setup_tile_style() );
-    lv_obj_align( clock_fmt_cont, wifisync_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
+    lv_obj_align_to( clock_fmt_cont, wifisync_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
 
     lv_obj_t *region_cont = wf_add_labeled_list( time_settings_tile, "region", &region_list, regionlist.c_str(), region_event_handler, ws_get_setup_tile_style() );
-    lv_obj_align( region_cont, clock_fmt_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
+    lv_obj_align_to( region_cont, clock_fmt_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
 
     lv_obj_t *location_cont = wf_add_labeled_list( time_settings_tile, "location", &location_list, locationlist.c_str(), location_event_handler, ws_get_setup_tile_style() );
-    lv_obj_align( location_cont, region_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
+    lv_obj_align_to( location_cont, region_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
 
     lv_dropdown_set_selected( region_list, selected_region );
     lv_dropdown_set_selected( location_list, selected_location );

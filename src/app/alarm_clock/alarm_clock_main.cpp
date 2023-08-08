@@ -83,11 +83,11 @@ void alarm_clock_main_setup( uint32_t tile_num ) {
     lv_obj_t * main_tile = mainbar_get_tile_obj( tile_num );
     
     lv_obj_t * alarm_onoff_cont = wf_add_labeled_switch( main_tile, "Activated", &alarm_enabled_switch, true, NULL, APP_STYLE );
-    lv_obj_align( alarm_onoff_cont, main_tile, LV_ALIGN_IN_TOP_MID, THEME_ICON_PADDING, THEME_ICON_PADDING );
+    lv_obj_align_to( alarm_onoff_cont, main_tile, LV_ALIGN_IN_TOP_MID, THEME_ICON_PADDING, THEME_ICON_PADDING );
 
     lv_obj_t * weekday_container = wf_add_container(main_tile, LV_LAYOUT_PRETTY_MID, LV_FIT_PARENT, LV_FIT_TIGHT, false, APP_STYLE );
     lv_obj_set_style_local_pad_inner( weekday_container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, 1);
-    lv_obj_align( weekday_container, alarm_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
+    lv_obj_align_to( weekday_container, alarm_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 
     static const int day_btn_width = 28;
     static const int day_btn_height = 29;
@@ -102,7 +102,7 @@ void alarm_clock_main_setup( uint32_t tile_num ) {
     lv_obj_t *roller_container = wf_add_container(main_tile, LV_LAYOUT_PRETTY_MID, LV_FIT_PARENT, LV_FIT_TIGHT, false, APP_STYLE );
     lv_obj_set_style_local_pad_left( roller_container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, 1);
     lv_obj_set_style_local_pad_right( roller_container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, 1);
-    lv_obj_align( roller_container, weekday_container, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
+    lv_obj_align_to( roller_container, weekday_container, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
     hour_roller = wf_add_roller( roller_container, get_roller_content(24, false, !clock_format_24), LV_ROLLER_MODE_INIFINITE, ROLLER_ROW_COUNT );
     lv_obj_set_width( hour_roller, 90 );
@@ -115,10 +115,10 @@ void alarm_clock_main_setup( uint32_t tile_num ) {
     lv_obj_set_height( minute_roller, 90 );
 
     lv_obj_t *exit_btn = wf_add_exit_button( main_tile );
-    lv_obj_align(exit_btn, main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to(exit_btn, main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
 
     lv_obj_t *setup_btn = wf_add_setup_button( main_tile, enter_alarm_clock_setup_event_cb );
-    lv_obj_align(setup_btn, main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
+    lv_obj_align_to(setup_btn, main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
 }
 
 void alarm_clock_main_set_data_to_display(rtcctl_alarm_t *alarm_data, bool clock_24){

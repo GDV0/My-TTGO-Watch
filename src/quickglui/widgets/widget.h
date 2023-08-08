@@ -55,8 +55,8 @@ public:
   Widget& realign();
   
   Widget& style(const Style& addStyle, bool resetStyleList);
-  Widget& style(const Style& addStyle, uint8_t part = LV_OBJ_PART_MAIN, bool resetStyleList=false);
-  Widget& style(lv_style_t* addStyle, uint8_t part = LV_OBJ_PART_MAIN, bool resetStyleList=false);
+  Widget& style(const Style& addStyle, uint8_t part = LV_PART_MAIN, bool resetStyleList=false);
+  Widget& style(lv_style_t* addStyle, uint8_t part = LV_PART_MAIN, bool resetStyleList=false);
 
   Widget& childAddedHandler(OnChildAddedHandler handler);
 

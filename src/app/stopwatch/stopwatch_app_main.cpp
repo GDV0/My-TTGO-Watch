@@ -52,7 +52,7 @@ lv_obj_t * stopwatch_app_main_exit_btn = NULL;
 
 lv_style_t stopwatch_app_main_stopwatchstyle;
 
-lv_task_t * _stopwatch_app_task = NULL;
+lv_timer_t * _stopwatch_app_task = NULL;
 
 LV_FONT_DECLARE(Ubuntu_72px);
 
@@ -64,7 +64,7 @@ static void start_stopwatch_app_main_event_cb( lv_obj_t * obj, lv_event_t event 
 static void stop_stopwatch_app_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void reset_stopwatch_app_main_event_cb( lv_obj_t * obj, lv_event_t event );
 
-void stopwatch_app_task( lv_task_t * task );
+void stopwatch_app_task( lv_timer_t * task );
 
 void stopwatch_app_main_setup( uint32_t tile_num ) {
 
@@ -75,27 +75,27 @@ void stopwatch_app_main_setup( uint32_t tile_num ) {
 
     lv_obj_t * stopwatch_cont = mainbar_obj_create( stopwatch_app_main_tile );
     lv_obj_set_size( stopwatch_cont, LV_HOR_RES , LV_VER_RES / 2 );
-    lv_obj_add_style( stopwatch_cont, LV_OBJ_PART_MAIN, APP_STYLE );
-    lv_obj_align( stopwatch_cont, stopwatch_app_main_tile, LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_add_style( stopwatch_cont, LV_PART_MAIN, APP_STYLE );
+    lv_obj_align_to( stopwatch_cont, stopwatch_app_main_tile, LV_ALIGN_CENTER, 0, 0 );
 
     stopwatch_app_main_stopwatchlabel = lv_label_create( stopwatch_cont , NULL);
     lv_label_set_text(stopwatch_app_main_stopwatchlabel, "00:00");
-    lv_obj_reset_style_list( stopwatch_app_main_stopwatchlabel, LV_OBJ_PART_MAIN );
-    lv_obj_add_style( stopwatch_app_main_stopwatchlabel, LV_OBJ_PART_MAIN, &stopwatch_app_main_stopwatchstyle );
-    lv_obj_align(stopwatch_app_main_stopwatchlabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_reset_style_list( stopwatch_app_main_stopwatchlabel, LV_PART_MAIN );
+    lv_obj_add_style( stopwatch_app_main_stopwatchlabel, LV_PART_MAIN, &stopwatch_app_main_stopwatchstyle );
+    lv_obj_align_to(stopwatch_app_main_stopwatchlabel, NULL, LV_ALIGN_CENTER, 0, 0);
 
     stopwatch_app_main_start_btn = wf_add_play_button( stopwatch_app_main_tile, start_stopwatch_app_main_event_cb );
-    lv_obj_align(stopwatch_app_main_start_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
+    lv_obj_align_to(stopwatch_app_main_start_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
 
     stopwatch_app_main_stop_btn = wf_add_stop_button( stopwatch_app_main_tile, stop_stopwatch_app_main_event_cb );
-    lv_obj_align(stopwatch_app_main_stop_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
-    lv_obj_set_hidden(stopwatch_app_main_stop_btn, true);
+    lv_obj_align_to(stopwatch_app_main_stop_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -THEME_PADDING );
+    lv_obj_add_flag(stopwatch_app_main_stop_btn, LV_OBJ_FLAG_HIDDEN);
 
     stopwatch_app_main_reset_btn = wf_add_eject_button( stopwatch_app_main_tile, reset_stopwatch_app_main_event_cb );
-    lv_obj_align(stopwatch_app_main_reset_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to(stopwatch_app_main_reset_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_RIGHT, -THEME_PADDING, -THEME_PADDING );
 
     stopwatch_app_main_exit_btn = wf_add_exit_button( stopwatch_app_main_tile, exit_stopwatch_app_main_event_cb );
-    lv_obj_align(stopwatch_app_main_exit_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to(stopwatch_app_main_exit_btn, stopwatch_app_main_tile, LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
 
     styles_register_cb( STYLE_CHANGE, stopwatch_style_change_event_cb, "stopwatch style change" );
     mainbar_add_tile_button_cb( tile_num, stopwatch_button_event_cb );
@@ -145,7 +145,7 @@ static void stopwatch_app_main_update_stopwatchlabel()
     sprintf(msg,"%02d:%02d", min, sec);
 
     lv_label_set_text(stopwatch_app_main_stopwatchlabel, msg);
-    lv_obj_align(stopwatch_app_main_stopwatchlabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align_to(stopwatch_app_main_stopwatchlabel, NULL, LV_ALIGN_CENTER, 0, 0);
     stopwatch_app_update_widget_label( msg );
 }
 
@@ -156,9 +156,9 @@ static void start_stopwatch_app_main_event_cb( lv_obj_t * obj, lv_event_t event 
         case( LV_EVENT_CLICKED ):       // create an task that runs every secound
                                         prev_time = time(0);
                                         if( !_stopwatch_app_task )
-                                            _stopwatch_app_task = lv_task_create( stopwatch_app_task, 1000, LV_TASK_PRIO_MID, NULL );
-                                        lv_obj_set_hidden(stopwatch_app_main_start_btn, true);
-                                        lv_obj_set_hidden(stopwatch_app_main_stop_btn, false);
+                                            _stopwatch_app_task = lv_timer_create( stopwatch_app_task, 1000, NULL );
+                                        lv_obj_add_flag(stopwatch_app_main_start_btn, LV_OBJ_FLAG_HIDDEN);
+                                        lv_obj_clear_flag(stopwatch_app_main_stop_btn, LV_OBJ_FLAG_HIDDEN);
                                         stopwatch_add_widget();
                                         stopwatch_app_hide_app_icon_info( false );
                                         break;
@@ -169,10 +169,10 @@ static void stop_stopwatch_app_main_event_cb( lv_obj_t * obj, lv_event_t event )
     switch( event ) {
         case( LV_EVENT_CLICKED ):       // create an task that runs every secound
                                         if( _stopwatch_app_task )
-                                            lv_task_del(_stopwatch_app_task);
+                                            lv_timer_del(_stopwatch_app_task);
                                         _stopwatch_app_task = NULL;
-                                        lv_obj_set_hidden(stopwatch_app_main_start_btn, false);
-                                        lv_obj_set_hidden(stopwatch_app_main_stop_btn, true);
+                                        lv_obj_clear_flag(stopwatch_app_main_start_btn, LV_OBJ_FLAG_HIDDEN);
+                                        lv_obj_add_flag(stopwatch_app_main_stop_btn, LV_OBJ_FLAG_HIDDEN);
                                         stopwatch_remove_widget();
                                         stopwatch_app_hide_app_icon_info( true );
                                         break;
@@ -196,7 +196,7 @@ static void exit_stopwatch_app_main_event_cb( lv_obj_t * obj, lv_event_t event )
     }
 }
 
-void stopwatch_app_task( lv_task_t * task ) {
+void stopwatch_app_task( lv_timer_t * task ) {
 
     time_t now = time(0);
     double dif_seconds = difftime(now,prev_time);

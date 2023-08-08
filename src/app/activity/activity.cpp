@@ -101,7 +101,7 @@ void activity_app_setup() {
         // Save default callback
         default_msgbox_cb = lv_obj_get_event_cb(mbox1);
         lv_obj_set_event_cb(mbox1, activity_reset_cb);
-        lv_obj_align(mbox1, NULL, LV_ALIGN_CENTER, 0, 0);
+        lv_obj_align_to(mbox1, NULL, LV_ALIGN_CENTER, 0, 0);
     });
     
     refresh_main_page();

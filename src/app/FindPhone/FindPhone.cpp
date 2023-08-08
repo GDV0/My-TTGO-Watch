@@ -46,7 +46,7 @@ LV_IMG_DECLARE(eye_64px);
 LV_IMG_DECLARE(info_1_16px);
 
 // declare callback functions for the app and widget icon to enter the app
-static void enter_FindPhone_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t enter_FindPhone_event_cb( lv_obj_t * obj, lv_event_code_t event );
 //static void enter_FindPhone_widget_event_cb( lv_obj_t * obj, lv_event_t event );
 
 /*
@@ -81,7 +81,7 @@ uint32_t FindPhone_get_app_setup_tile_num( void ) {
 /*
  *
  */
-static void enter_FindPhone_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static lv_event_cb_t enter_FindPhone_event_cb( lv_obj_t * obj, lv_event_code_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       app_hide_indicator( FindPhone );
                                         mainbar_jump_to_tilenumber( FindPhone_main_tile_num, LV_ANIM_OFF, true );

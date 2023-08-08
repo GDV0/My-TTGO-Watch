@@ -97,26 +97,26 @@ void tracker_app_main_setup( uint32_t tile ) {
     tracker_progress_arc = lv_arc_create( mainbar_get_tile_obj( tile ), NULL);
     lv_coord_t size = lv_disp_get_ver_res( NULL ) > lv_disp_get_hor_res( NULL ) ? ( ( lv_disp_get_hor_res( NULL ) / 4 ) * 3 ) : ( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 );
     lv_obj_set_size( tracker_progress_arc, size, size );
-    lv_obj_align( tracker_progress_arc, mainbar_get_tile_obj( tile ), LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_align_to( tracker_progress_arc, mainbar_get_tile_obj( tile ), LV_ALIGN_CENTER, 0, 0 );
     lv_arc_set_bg_angles( tracker_progress_arc, 0, 0 );
     lv_arc_set_angles( tracker_progress_arc, 0, 360 );
     lv_arc_set_rotation( tracker_progress_arc, 90 );
     lv_arc_set_end_angle( tracker_progress_arc, 0 );
-    lv_obj_add_style( tracker_progress_arc, LV_OBJ_PART_MAIN, APP_STYLE );
+    lv_obj_add_style( tracker_progress_arc, LV_PART_MAIN, APP_STYLE );
     lv_obj_set_style_local_line_width( tracker_progress_arc, LV_ARC_PART_INDIC, LV_STATE_DEFAULT, 45 );
     lv_obj_set_style_local_line_color( tracker_progress_arc, LV_ARC_PART_INDIC, LV_STATE_DEFAULT, LV_COLOR_RED );
     /**
      * add exit, menu and setup button to the main app tile
      */
     tracker_exit_btn = wf_add_exit_button( mainbar_get_tile_obj( tile ) );
-    lv_obj_align( tracker_exit_btn, mainbar_get_tile_obj( tile ), LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
+    lv_obj_align_to( tracker_exit_btn, mainbar_get_tile_obj( tile ), LV_ALIGN_IN_BOTTOM_LEFT, THEME_PADDING, -THEME_PADDING );
 
     tracker_trash_btn = wf_add_trash_button( mainbar_get_tile_obj( tile ), tracker_app_main_enter_trash_cb );
-    lv_obj_align( tracker_trash_btn, mainbar_get_tile_obj( tile ), LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( tracker_trash_btn, mainbar_get_tile_obj( tile ), LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
     
     tracker_location_icon = wf_add_location_button( mainbar_get_tile_obj( tile ), tracker_app_main_enter_location_cb );
-    lv_obj_align( tracker_location_icon, mainbar_get_tile_obj( tile ), LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_set_hidden( tracker_location_icon, false );
+    lv_obj_align_to( tracker_location_icon, mainbar_get_tile_obj( tile ), LV_ALIGN_CENTER, 0, 0 );
+    lv_obj_clear_flag( tracker_location_icon, LV_OBJ_FLAG_HIDDEN );
 
     tracker_info_label = wf_add_label( mainbar_get_tile_obj( tile ), "", APP_ICON_LABEL_STYLE );
     lv_obj_set_style_local_text_font(tracker_info_label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &Ubuntu_32px );

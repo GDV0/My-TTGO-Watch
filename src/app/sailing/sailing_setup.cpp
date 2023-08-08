@@ -57,17 +57,17 @@ void sailing_setup_setup( uint32_t tile_num ) {
      * add setup header with exit button
      */
     lv_obj_t *header = wf_add_settings_header( sailing_setup_tile, "Exit setup" );
-    lv_obj_align( header, sailing_setup_tile, LV_ALIGN_IN_TOP_LEFT, 10, 10 );
+    lv_obj_align_to( header, sailing_setup_tile, LV_ALIGN_IN_TOP_LEFT, 10, 10 );
     /**
      * setup always on display switch
      */
     lv_obj_t *sailing_foobar_switch_cont = wf_add_labeled_switch( sailing_setup_tile, "Always on display", &sailing_foobar_switch, false, sailing_foobar_switch_event_cb, SETUP_STYLE );
-    lv_obj_align( sailing_foobar_switch_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( sailing_foobar_switch_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
     /**
      * setup show track switch
      */
     lv_obj_t *sailing_track_switch_cont = wf_add_labeled_switch( sailing_setup_tile, "Show track", &sailing_track_switch, false, sailing_track_switch_event_cb, SETUP_STYLE );
-    lv_obj_align( sailing_track_switch_cont, sailing_foobar_switch_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align_to( sailing_track_switch_cont, sailing_foobar_switch_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 }
 
 static void sailing_foobar_switch_event_cb( lv_obj_t * obj, lv_event_t event ) {
