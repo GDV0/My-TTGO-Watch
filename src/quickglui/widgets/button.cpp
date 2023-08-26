@@ -20,25 +20,25 @@ Button::Button(lv_obj_t * btn){
 
 
 Button::Button(const Widget* parent, const lv_img_dsc_t& image, WidgetAction onClick){
-  assign(lv_imgbtn_create(parent->handle(), NULL));
+  assign(lv_imgbtn_create(parent->handle()));
   
-  lv_imgbtn_set_src(native, LV_BTN_STATE_RELEASED, &image);
-  lv_imgbtn_set_src(native, LV_BTN_STATE_PRESSED, &image);
-  lv_imgbtn_set_src(native, LV_BTN_STATE_CHECKED_RELEASED, &image);
-  lv_imgbtn_set_src(native, LV_BTN_STATE_CHECKED_PRESSED, &image);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_RELEASED, &image);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_PRESSED, &image);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_CHECKED_RELEASED, &image);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_CHECKED_PRESSED, &image);
   
   if (onClick != nullptr)
     clicked(onClick);
 }
 
 Button::Button(const Widget* parent, const char * txt, WidgetAction onClick){
-  assign(lv_btn_create(parent->handle(), NULL));
-  lv_obj_t * lbl = lv_label_create(native, NULL);
+  assign(lv_btn_create(parent->handle()));
+  lv_obj_t * lbl = lv_label_create(native);
   label = Label(lbl);
   if (txt != nullptr)
   {
     label.text(txt);
-    label.alignText(LV_LABEL_ALIGN_CENTER);
+//GDV    label.alignText(LV_LABEL_ALIGN_CENTER);
   }
 
   if (onClick != nullptr)
@@ -75,13 +75,13 @@ void Button::assign(lv_obj_t* newHandle)
 // }
 
 Button& Button::disable() {
-  lv_btn_set_state(native, LV_BTN_STATE_DISABLED);
+  lv_btn_set_state(native, LV_IMGBTN_STATE_DISABLED);
   lv_obj_set_click(native, false);
   return *this;
 }
 Button& Button::enable() {
   lv_obj_set_click(native, true);
-  lv_btn_set_state(native, LV_BTN_STATE_RELEASED);
+  lv_btn_set_state(native, LV_IMGBTN_STATE_RELEASED);
   return *this;
 }
 

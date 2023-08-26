@@ -66,7 +66,7 @@ void touch_settings_tile_setup( void ) {
     setup_hide_indicator( touch_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( touch_settings_tile, "touch settings", exit_touch_setup_event_cb );
-    lv_obj_align_to( header, touch_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, touch_settings_tile, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     calibrate_btn = lv_btn_create( touch_settings_tile, NULL);
     lv_obj_set_event_cb( calibrate_btn, touch_settings_calibration_btn_cb );
@@ -83,7 +83,7 @@ void touch_settings_tile_setup( void ) {
     touch_coor_label = lv_label_create( touch_settings_tile, NULL);
     lv_obj_add_style( touch_coor_label, LV_PART_MAIN, SETUP_STYLE  );
     lv_label_set_text( touch_coor_label, "" );
-    lv_obj_align_to( touch_coor_label, touch_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
+    lv_obj_align_to( touch_coor_label, touch_settings_tile, LV_ALIGN_BOTTOM_MID, 0, -5 );
 
     mainbar_add_tile_activate_cb( touch_tile_num, touch_settings_activate_cb );
     mainbar_add_tile_hibernate_cb( touch_tile_num, touch_settings_hibernate_cb );
@@ -131,7 +131,7 @@ bool touch_settings_event_cb( EventBits_t event, void *arg ) {
                 char touch_label[64]="";
                 snprintf( touch_label, sizeof( touch_label ), "x/y coor: %d/%d/%s", touch->x_coor, touch->y_coor, touch->touched ? "pressed":"release" );
                 lv_label_set_text( touch_coor_label, touch_label );
-                lv_obj_align_to( touch_coor_label, touch_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
+                lv_obj_align_to( touch_coor_label, touch_settings_tile, LV_ALIGN_BOTTOM_MID, 0, -5 );
             }
             break;
     }

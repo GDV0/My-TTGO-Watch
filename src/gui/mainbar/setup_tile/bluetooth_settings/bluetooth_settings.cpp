@@ -86,17 +86,17 @@ void bluetooth_settings_tile_setup( void ) {
     setup_hide_indicator( bluettoth_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( bluetooth_settings_tile_1, "bluetooth settings" );
-    lv_obj_align_to( header, bluetooth_settings_tile_1, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+    lv_obj_align_to( header, bluetooth_settings_tile_1, LV_ALIGN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
     
     if ( bluetooth_settings_tile_2 ) {
         header_2 = wf_add_settings_header( bluetooth_settings_tile_2, "bluetooth settings" );
-        lv_obj_align_to( header_2, bluetooth_settings_tile_2, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+        lv_obj_align_to( header_2, bluetooth_settings_tile_2, LV_ALIGN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
 
         lv_obj_t *up_btn_1 = wf_add_image_button( bluetooth_settings_tile_2, up_32px, up_bluetooth_setup_event_cb, ws_get_setup_tile_style() );
-        lv_obj_align_to( up_btn_1, bluetooth_settings_tile_2, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+        lv_obj_align_to( up_btn_1, bluetooth_settings_tile_2, LV_ALIGN_TOP_RIGHT, -THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
 
         lv_obj_t *down_btn_1 = wf_add_image_button( bluetooth_settings_tile_1, down_32px, down_bluetooth_setup_event_cb, ws_get_setup_tile_style() );
-        lv_obj_align_to( down_btn_1, bluetooth_settings_tile_1, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+        lv_obj_align_to( down_btn_1, bluetooth_settings_tile_1, LV_ALIGN_TOP_RIGHT, -THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
     }
     
     lv_obj_t *bluetooth_enable_cont = wf_add_labeled_switch( bluetooth_settings_tile_1, "enable on wakeup", &bluetooth_enable_onoff, blectl_get_autoon(), bluetooth_enable_onoff_event_handler, SETUP_STYLE );

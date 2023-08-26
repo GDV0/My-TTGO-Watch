@@ -38,13 +38,13 @@ void keyboard_prelim( void ) {
         kb_screen = lv_cont_create( lv_scr_act(), NULL );
         lv_obj_add_style( kb_screen, LV_PART_MAIN, SETUP_STYLE );
         lv_obj_set_size( kb_screen, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) );
-        lv_obj_align_to( kb_screen, lv_scr_act(), LV_ALIGN_IN_BOTTOM_MID, 0, STATUSBAR_HEIGHT );
+        lv_obj_align_to( kb_screen, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, STATUSBAR_HEIGHT );
         
         kb_textarea = lv_textarea_create( kb_screen, NULL );
         lv_obj_add_protect( kb_textarea, LV_PROTECT_CLICK_FOCUS );
         lv_obj_set_size( kb_textarea, lv_disp_get_hor_res( NULL ) - THEME_PADDING, 40 );
         lv_textarea_set_one_line( kb_textarea, true);
-        lv_obj_align_to( kb_textarea, kb_screen, LV_ALIGN_IN_TOP_MID, 0, THEME_PADDING );
+        lv_obj_align_to( kb_textarea, kb_screen, LV_ALIGN_TOP_MID, 0, THEME_PADDING );
         kb_style_initialized = true;
     }
 }
@@ -61,7 +61,7 @@ void keyboard_setup( void ) {
 
     kb = lv_keyboard_create( kb_screen , NULL);
     lv_obj_set_size( kb, lv_disp_get_hor_res( NULL ), ( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 ) > 240 ? 240:( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 - 20 )  );
-    lv_obj_align_to( kb, kb_screen, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_obj_align_to( kb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, 0 );
     lv_obj_add_style( kb, LV_OBJ_PART_ALL, SETUP_STYLE );
     lv_obj_add_style( kb, LV_KEYBOARD_PART_BTN, ws_get_button_style() );
     lv_keyboard_set_cursor_manage( kb, true);
@@ -80,7 +80,7 @@ void num_keyboard_setup( void ) {
     keyboard_prelim();
     nkb = lv_keyboard_create( kb_screen , NULL);
     lv_obj_set_size( nkb, lv_disp_get_hor_res( NULL ), ( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 ) > 200 ? 200:( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 - 20 ) );
-    lv_obj_align_to( nkb, kb_screen, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+    lv_obj_align_to( nkb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, 0 );
     lv_obj_add_style( nkb, LV_OBJ_PART_ALL, SETUP_STYLE );
     lv_obj_add_style( nkb, LV_KEYBOARD_PART_BTN, ws_get_button_style() );
     lv_keyboard_set_mode( nkb, LV_KEYBOARD_MODE_NUM);
@@ -156,9 +156,9 @@ void keyboard_show( void ) {
     lv_obj_clear_flag( kb_screen, LV_OBJ_FLAG_HIDDEN );
     lv_obj_clear_flag( kb_textarea, LV_OBJ_FLAG_HIDDEN );
     lv_obj_clear_flag( kb, LV_OBJ_FLAG_HIDDEN );
-    lv_obj_align_to( kb_screen, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:STATUSBAR_HEIGHT );
-    lv_obj_align_to( kb, kb_screen, LV_ALIGN_IN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
-    lv_obj_align_to( nkb, kb_screen, LV_ALIGN_IN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
+    lv_obj_align_to( kb_screen, NULL, LV_ALIGN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:STATUSBAR_HEIGHT );
+    lv_obj_align_to( kb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
+    lv_obj_align_to( nkb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
 
 }
 
@@ -171,7 +171,7 @@ void num_keyboard_show( void ) {
     lv_obj_clear_flag( kb_screen, LV_OBJ_FLAG_HIDDEN );
     lv_obj_clear_flag( kb_textarea, LV_OBJ_FLAG_HIDDEN );
     lv_obj_clear_flag( nkb, LV_OBJ_FLAG_HIDDEN );
-    lv_obj_align_to( kb_screen, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:STATUSBAR_HEIGHT );
-    lv_obj_align_to( kb, kb_screen, LV_ALIGN_IN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
-    lv_obj_align_to( nkb, kb_screen, LV_ALIGN_IN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
+    lv_obj_align_to( kb_screen, NULL, LV_ALIGN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:STATUSBAR_HEIGHT );
+    lv_obj_align_to( kb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
+    lv_obj_align_to( nkb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, statusbar_get_hidden_state()?0:-STATUSBAR_HEIGHT );
  }

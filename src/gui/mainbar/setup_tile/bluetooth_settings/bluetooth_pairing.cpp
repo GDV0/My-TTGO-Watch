@@ -67,13 +67,13 @@ void bluetooth_pairing_tile_setup( void ) {
     lv_obj_add_style( bluetooth_pairing_tile, LV_PART_MAIN, &bluetooth_pairing_style );
 
     lv_obj_t *bluetooth_pairing_exit_btn = wf_add_exit_button( bluetooth_pairing_tile, exit_bluetooth_pairing_event_cb );
-    lv_obj_align_to( bluetooth_pairing_exit_btn, bluetooth_pairing_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( bluetooth_pairing_exit_btn, bluetooth_pairing_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
 
-    bluetooth_pairing_img = lv_img_create( bluetooth_pairing_tile, NULL );
+    bluetooth_pairing_img = lv_img_create( bluetooth_pairing_tile );
     lv_img_set_src( bluetooth_pairing_img, &bluetooth_64px );
     lv_obj_align_to( bluetooth_pairing_img, bluetooth_pairing_tile, LV_ALIGN_CENTER, 0, 0 );
 
-    bluetooth_pairing_info_label = lv_label_create( bluetooth_pairing_tile, NULL);
+    bluetooth_pairing_info_label = lv_label_create( bluetooth_pairing_tile);
     lv_obj_add_style( bluetooth_pairing_info_label, LV_PART_MAIN, &bluetooth_pairing_style  );
     lv_label_set_text( bluetooth_pairing_info_label, "");
     lv_obj_align_to( bluetooth_pairing_info_label, bluetooth_pairing_img, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );

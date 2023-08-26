@@ -67,7 +67,7 @@ void battery_calibration_tile_setup( uint32_t tile_num ) {
     lv_label_set_text( battery_calibration_info_label, "Test message from bar.");
 
     battery_calibration_store_switch = wf_add_switch( mainbar_get_tile_obj( battery_calibration_tile_num ), false ,battery_calibration_store_switch_event_cb );
-    lv_obj_align_to( battery_calibration_store_switch, mainbar_get_tile_obj( battery_calibration_tile_num ), LV_ALIGN_IN_BOTTOM_MID, 0, -10 );
+    lv_obj_align_to( battery_calibration_store_switch, mainbar_get_tile_obj( battery_calibration_tile_num ), LV_ALIGN_BOTTOM_MID, 0, -10 );
     lv_obj_add_flag( battery_calibration_store_switch, LV_OBJ_FLAG_HIDDEN );
 
     mainbar_add_slide_element( battery_calibration_page );

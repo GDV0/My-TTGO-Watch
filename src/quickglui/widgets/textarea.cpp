@@ -42,12 +42,11 @@ TextArea& TextArea::text(const char * txt) {
 const char* TextArea::text() {
   return lv_textarea_get_text(native);
 }
-/*GDV not allowed in LVGL >= v8
 TextArea& TextArea::alignText(lv_label_align_t mode) {
-  lv_label_set_align(native, mode);
+  lv_obj_set_style_text_align(native, mode, 0);
   return *this;
 }
-*/
+
 TextArea& TextArea::autoKeyboard(bool enable) {
   auto handle = DefaultWidgetManager.GetOrCreate(native);
   handle->SetFlag(IsAutoKeyboardDisabled, !enable);
@@ -62,14 +61,14 @@ TextArea& TextArea::digitsMode(bool onlyDigits, const char* filterDigitsList) {
   return *this;
 }
 
-void TextArea::Action(lv_obj_t * obj, lv_event_code_t event) {
+void TextArea::Action(lv_obj_t * obj, lv_event_t event) {
     auto handle = DefaultWidgetManager.GetIfExists(obj);
     bool autoKeyboard = (handle == NULL /*enabled by default*/) || !handle->IsFlagSet(IsAutoKeyboardDisabled);
     bool digitsOnlyMode = (handle != NULL) && handle->IsFlagSet(IsDigitsOnlyMode);
     
     if (!autoKeyboard) return; //Nothing to do for now
 
-    switch (event) {
+    switch (lv_event_get_code(event)) {
         case LV_EVENT_CLICKED:
             if (digitsOnlyMode)
                 num_keyboard_set_textarea(obj);

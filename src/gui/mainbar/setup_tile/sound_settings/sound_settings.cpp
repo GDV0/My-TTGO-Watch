@@ -72,7 +72,7 @@ void sound_settings_tile_setup( void ) {
     setup_hide_indicator( sound_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( sound_settings_tile, "sound settings", exit_sound_setup_event_cb );
-    lv_obj_align_to( header, sound_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, sound_settings_tile, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     lv_obj_t *vibe_cont = wf_add_labeled_switch( sound_settings_tile, "enable vibe", &sound_vibe_onoff, motor_get_vibe_config(), sound_vibe_setup_event_cb, ws_get_setup_tile_style() );
     lv_obj_align_to( vibe_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
@@ -90,7 +90,7 @@ void sound_settings_tile_setup( void ) {
     lv_obj_add_style( sound_volume_slider, LV_SLIDER_PART_KNOB, ws_get_slider_style() );
     lv_slider_set_range( sound_volume_slider, 1, 100 );
     lv_obj_set_size(sound_volume_slider, lv_disp_get_hor_res( NULL ) - 100 , 10 );
-    lv_obj_align_to( sound_volume_slider, sound_volume_cont, LV_ALIGN_IN_TOP_RIGHT, -30, 10 );
+    lv_obj_align_to( sound_volume_slider, sound_volume_cont, LV_ALIGN_TOP_RIGHT, -30, 10 );
     lv_obj_set_event_cb( sound_volume_slider, sound_volume_setup_event_cb );
     sound_volume_slider_label = lv_label_create( sound_volume_cont, NULL );
     lv_obj_add_style( sound_volume_slider_label, LV_PART_MAIN, &sound_settings_style  );
@@ -98,7 +98,7 @@ void sound_settings_tile_setup( void ) {
     lv_obj_align_to( sound_volume_slider_label, sound_volume_slider, LV_ALIGN_OUT_BOTTOM_MID, 0, -5 );
     sound_icon = lv_img_create( sound_volume_cont, NULL );
     lv_img_set_src( sound_icon, &sound_32px );
-    lv_obj_align_to( sound_icon, sound_volume_cont, LV_ALIGN_IN_LEFT_MID, 15, 0 );
+    lv_obj_align_to( sound_icon, sound_volume_cont, LV_ALIGN_LEFT_MID, 15, 0 );
 
     lv_slider_set_value( sound_volume_slider, sound_get_volume_config(), LV_ANIM_OFF );
     char temp[16]="";

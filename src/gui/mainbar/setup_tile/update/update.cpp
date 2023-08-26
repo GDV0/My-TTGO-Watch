@@ -109,10 +109,10 @@ void update_tile_setup( void ) {
     setup_hide_indicator( update_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( update_settings_tile, "update" );
-    lv_obj_align_to( header, update_settings_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+    lv_obj_align_to( header, update_settings_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
 
     lv_obj_t *setup_btn = wf_add_setup_button( update_settings_tile, enter_update_setup_setup_event_cb );
-    lv_obj_align_to( setup_btn, header, LV_ALIGN_IN_RIGHT_MID, 0, 0 );
+    lv_obj_align_to( setup_btn, header, LV_ALIGN_RIGHT_MID, 0, 0 );
 
     lv_obj_t *update_version_cont = wf_add_label( update_settings_tile, "firmware version", SETUP_STYLE );
     lv_obj_align_to( update_version_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );

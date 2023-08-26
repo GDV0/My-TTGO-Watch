@@ -90,7 +90,7 @@ void bluetooth_media_tile_setup( void ) {
     bluetooth_media_tile = mainbar_get_tile_obj( bluetooth_media_tile_num );
 
     bluetooth_exit_btn = wf_add_image_button( bluetooth_media_tile, cancel_32px, exit_bluetooth_media_cb, SYSTEM_ICON_STYLE );
-    lv_obj_align_to( bluetooth_exit_btn, bluetooth_media_tile, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( bluetooth_exit_btn, bluetooth_media_tile, LV_ALIGN_TOP_RIGHT, -THEME_PADDING, THEME_PADDING );
 
     bluetooth_media_play = wf_add_image_button( bluetooth_media_tile, play_64px, bluetooth_media_play_event_cb, SYSTEM_ICON_STYLE );
     lv_obj_align_to( bluetooth_media_play, bluetooth_media_tile, LV_ALIGN_CENTER, 0, 0 );
@@ -109,7 +109,7 @@ void bluetooth_media_tile_setup( void ) {
     lv_obj_set_style_local_text_font( bluetooth_media_artist, LV_PART_MAIN, LV_STATE_DEFAULT, &Ubuntu_32px );
     lv_label_set_long_mode( bluetooth_media_artist, LV_LABEL_LONG_SROLL_CIRC );
     lv_obj_set_width( bluetooth_media_artist, lv_disp_get_hor_res( NULL ) - THEME_ICON_SIZE - THEME_PADDING * 2 );
-    lv_obj_align_to( bluetooth_media_artist, bluetooth_media_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( bluetooth_media_artist, bluetooth_media_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
 
     bluetooth_media_title = wf_add_label( bluetooth_media_tile, "title", APP_STYLE );
     lv_label_set_long_mode( bluetooth_media_title, LV_LABEL_LONG_SROLL_CIRC );
@@ -264,7 +264,7 @@ static bool bluetooth_media_queue_msg( BluetoothJsonRequest &doc ) {
              */            
             if ( doc.containsKey("artist") ) {
                 lv_label_set_text( bluetooth_media_artist, doc["artist"] );
-                lv_obj_align_to( bluetooth_media_artist, bluetooth_media_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
+                lv_obj_align_to( bluetooth_media_artist, bluetooth_media_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
             }
             retval = true;
         }

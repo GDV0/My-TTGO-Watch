@@ -60,7 +60,7 @@ void splash_screen_stage_one( void ) {
     lv_obj_add_style( background, LV_PART_MAIN, BACKGROUND_STYLE );
     lv_obj_align_to( background, NULL, LV_ALIGN_CENTER, 0, 0 );
 
-    logo = lv_img_create( background , NULL );
+    logo = lv_img_create( background );
 
     // load boot logo from spiffs if exsist
     FILE* file;

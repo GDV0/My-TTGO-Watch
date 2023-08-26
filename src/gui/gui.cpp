@@ -138,7 +138,7 @@ void gui_setup( void ) {
     /*
      * Create an blank wallpaper
      */
-    img_bin = lv_img_create( lv_scr_act() , NULL );
+    img_bin = lv_img_create( lv_scr_act() );
     lv_obj_set_width( img_bin, lv_disp_get_hor_res( NULL ) );
     lv_obj_set_height( img_bin, lv_disp_get_ver_res( NULL ) );
     lv_obj_align_to( img_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
@@ -222,7 +222,7 @@ void gui_setup( void ) {
 #if defined( NATIVE_64BIT ) && defined( ROUND_DISPLAY )
     LV_IMG_DECLARE( rounddisplaymask_240px );
 
-    lv_obj_t *watch2021_mask_bin = lv_img_create( lv_scr_act() , NULL );
+    lv_obj_t *watch2021_mask_bin = lv_img_create( lv_scr_act());
     lv_obj_set_width( watch2021_mask_bin, lv_disp_get_hor_res( NULL ) );
     lv_obj_set_height( watch2021_mask_bin, lv_disp_get_ver_res( NULL ) );
     lv_obj_align_to( watch2021_mask_bin, NULL, LV_ALIGN_CENTER, 0, 0 );
@@ -267,7 +267,7 @@ bool gui_powermgm_event_cb( EventBits_t event, void *arg ) {
                                             lv_obj_invalidate( lv_scr_act() );
                                             lv_refr_now( NULL );
                                             hardware_detach_lvgl_ticker();
-                                            lv_task_enable( false );
+                                            lv_timer_enable( false );
                                         #endif
                                         break;
         case POWERMGM_WAKEUP:           /*
@@ -277,7 +277,7 @@ bool gui_powermgm_event_cb( EventBits_t event, void *arg ) {
                                         #ifdef NATIVE_64BIT
                                         #else
                                             hardware_attach_lvgl_ticker();
-                                            lv_task_enable( true );
+                                            lv_timer_enable( true );
                                         #endif
                                         lv_disp_trig_activity( NULL );
                                         break;
@@ -288,7 +288,7 @@ bool gui_powermgm_event_cb( EventBits_t event, void *arg ) {
                                         #ifdef NATIVE_64BIT
                                         #else
                                             hardware_attach_lvgl_ticker();
-                                            lv_task_enable( true );
+                                            lv_timer_enable( true );
                                         #endif
                                         lv_disp_trig_activity( NULL );
                                         break;

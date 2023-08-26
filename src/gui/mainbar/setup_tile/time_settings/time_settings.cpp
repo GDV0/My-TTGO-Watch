@@ -236,7 +236,7 @@ void time_settings_tile_setup( void ) {
     setup_hide_indicator( time_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( time_settings_tile, "time settings", exit_time_setup_event_cb );
-    lv_obj_align_to( header, time_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, time_settings_tile, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     lv_obj_t *wifisync_cont = wf_add_labeled_switch( time_settings_tile, "sync when connect", &wifisync_onoff, timesync_get_timesync(), wifisync_onoff_event_handler, ws_get_setup_tile_style() );
     lv_obj_align_to( wifisync_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );

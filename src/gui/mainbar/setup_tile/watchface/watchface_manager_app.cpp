@@ -171,7 +171,7 @@ void watchface_manager_app_setup( uint32_t tile_num ) {
     lv_obj_t *watchface_manager_app_name_cont = lv_obj_create( watchface_manager_app_cont, NULL );
     lv_obj_set_size( watchface_manager_app_name_cont, ( lv_disp_get_hor_res( NULL ) / 3 ) * 2 , lv_disp_get_ver_res( NULL ) / 4 );
     lv_obj_add_style( watchface_manager_app_name_cont, LV_PART_MAIN, &watchface_manager_style );
-    lv_obj_align_to( watchface_manager_app_name_cont, watchface_manager_app_cont, LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_align_to( watchface_manager_app_name_cont, watchface_manager_app_cont, LV_ALIGN_TOP_MID, 0, 0 );
     watchface_manager_app_theme_name_label = wf_add_label( watchface_manager_app_name_cont, watchface_theme.watchface_manager_theme_name.c_str() );
     lv_obj_align_to( watchface_manager_app_theme_name_label, watchface_manager_app_name_cont, LV_ALIGN_CENTER, 0, 4 );
     /**
@@ -182,9 +182,9 @@ void watchface_manager_app_setup( uint32_t tile_num ) {
     lv_obj_add_style( watchface_manager_app_preview_cont, LV_PART_MAIN, &watchface_manager_style );
     lv_obj_align_to( watchface_manager_app_preview_cont, watchface_manager_app_name_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     watchface_manager_prev_btn = wf_add_left_button( watchface_manager_app_preview_cont, watchface_manager_prev_theme_event_cb, &watchface_manager_trans_button_style );
-    lv_obj_align_to( watchface_manager_prev_btn, watchface_manager_app_preview_cont, LV_ALIGN_IN_LEFT_MID, 10, 0 );
+    lv_obj_align_to( watchface_manager_prev_btn, watchface_manager_app_preview_cont, LV_ALIGN_LEFT_MID, 10, 0 );
     watchface_manager_next_btn = wf_add_right_button( watchface_manager_app_preview_cont, watchface_manager_next_theme_event_cb, &watchface_manager_trans_button_style );
-    lv_obj_align_to( watchface_manager_next_btn, watchface_manager_app_preview_cont, LV_ALIGN_IN_RIGHT_MID, -10, 0 );
+    lv_obj_align_to( watchface_manager_next_btn, watchface_manager_app_preview_cont, LV_ALIGN_RIGHT_MID, -10, 0 );
     watchface_manager_preview_img = lv_img_create( watchface_manager_app_preview_cont, NULL );
     lv_img_set_src( watchface_manager_preview_img, &download_32px );
     lv_obj_align_to( watchface_manager_preview_img, watchface_manager_app_preview_cont, LV_ALIGN_CENTER, 0, 0 );
@@ -215,27 +215,27 @@ void watchface_manager_app_setup( uint32_t tile_num ) {
      * add theme menu button
      */
     lv_obj_t *watchface_manager_menu_btn = wf_add_menu_button( watchface_manager_app_cont, watchface_manager_theme_menu_event_cb, &watchface_manager_trans_button_style );
-    lv_obj_align_to( watchface_manager_menu_btn, watchface_manager_app_cont, LV_ALIGN_IN_TOP_LEFT, +10, +10 );
+    lv_obj_align_to( watchface_manager_menu_btn, watchface_manager_app_cont, LV_ALIGN_TOP_LEFT, +10, +10 );
     watchface_manager_theme_menu = lv_list_create( watchface_manager_app_tile, NULL );
     lv_obj_set_size( watchface_manager_theme_menu, 190, 240 );
-    lv_obj_align_to( watchface_manager_theme_menu, watchface_manager_app_tile, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+    lv_obj_align_to( watchface_manager_theme_menu, watchface_manager_app_tile, LV_ALIGN_RIGHT_MID, 0, 0);
     lv_obj_add_flag( watchface_manager_theme_menu, LV_OBJ_FLAG_HIDDEN );
     /**
      * add exit button
      */
     lv_obj_t *watchface_manager_exit_btn = wf_add_exit_button( watchface_manager_app_cont, &watchface_manager_trans_button_style );
-    lv_obj_align_to( watchface_manager_exit_btn, watchface_manager_app_cont, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10 );
+    lv_obj_align_to( watchface_manager_exit_btn, watchface_manager_app_cont, LV_ALIGN_BOTTOM_LEFT, 10, -10 );
 
     /**
      * add refresh button
      */
     lv_obj_t *watchface_manager_refresh_btn = wf_add_refresh_button( watchface_manager_app_cont, watchface_manager_refresh_event_cb, &watchface_manager_trans_button_style );
-    lv_obj_align_to( watchface_manager_refresh_btn, watchface_manager_app_cont, LV_ALIGN_IN_TOP_RIGHT, -10, 10 );
+    lv_obj_align_to( watchface_manager_refresh_btn, watchface_manager_app_cont, LV_ALIGN_TOP_RIGHT, -10, 10 );
     /**
      * add setup button
      */
     lv_obj_t *watchface_manager_setup_btn = wf_add_setup_button( watchface_manager_app_cont, setup_watchface_manager_app_event_cb, &watchface_manager_trans_button_style );
-    lv_obj_align_to( watchface_manager_setup_btn, watchface_manager_app_cont, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -10 );
+    lv_obj_align_to( watchface_manager_setup_btn, watchface_manager_app_cont, LV_ALIGN_BOTTOM_RIGHT, -10, -10 );
     /**
      * set activate and hibernate call back
      */

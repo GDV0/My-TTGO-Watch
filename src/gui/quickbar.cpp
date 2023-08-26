@@ -154,14 +154,14 @@ void quickbar_setup( void ){
         lv_obj_align_to( quickbar, lv_scr_act(), LV_ALIGN_CENTER, 0, 0 );
     #else
         lv_obj_set_height( quickbar, 48 * 2 );
-        lv_obj_align_to( quickbar, lv_scr_act(), LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
+        lv_obj_align_to( quickbar, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0 );
     #endif
 
     quickbar_time_label = lv_label_create( quickbar , NULL);
     lv_label_set_text( quickbar_time_label, "00:00");
     lv_obj_reset_style_list( quickbar_time_label, LV_PART_MAIN );
     lv_obj_add_style( quickbar_time_label, LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_DARK ]  );
-    lv_obj_align_to( quickbar_time_label, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
+    lv_obj_align_to( quickbar_time_label, NULL, LV_ALIGN_TOP_MID, 0, 0);
 
     quickbar_setup_btn = wf_add_image_button( quickbar, setup_32px, quickbar_setup_event_cb, &quickbarstyle[ QUICKBAR_STYLE_DARK ] );
     lv_obj_set_width( quickbar_setup_btn, 48 );
@@ -181,12 +181,12 @@ void quickbar_setup( void ){
     quickbar_wifi_btn = wf_add_image_button( quickbar, wifi_64px, quickbar_wifi_event_cb, &quickbarstyle[ QUICKBAR_STYLE_RED ] );
     lv_obj_set_width( quickbar_wifi_btn, wifi_64px.header.w + THEME_ICON_PADDING);
     lv_obj_set_height( quickbar_wifi_btn, wifi_64px.header.h + THEME_ICON_PADDING );
-    lv_obj_align_to( quickbar_wifi_btn, quickbar, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0 );
+    lv_obj_align_to( quickbar_wifi_btn, quickbar, LV_ALIGN_BOTTOM_LEFT, 0, 0 );
 
     quickbar_bluetooth_btn = wf_add_image_button( quickbar, bluetooth_64px, quickbar_bluetooth_event_cb, &quickbarstyle[ QUICKBAR_STYLE_RED ] );
     lv_obj_set_width( quickbar_bluetooth_btn, bluetooth_64px.header.w + THEME_ICON_PADDING );
     lv_obj_set_height( quickbar_bluetooth_btn, bluetooth_64px.header.h + THEME_ICON_PADDING );
-    lv_obj_align_to( quickbar_bluetooth_btn, quickbar, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0 );
+    lv_obj_align_to( quickbar_bluetooth_btn, quickbar, LV_ALIGN_BOTTOM_RIGHT, 0, 0 );
     /*
      * quickbar init complete
      */
@@ -294,7 +294,7 @@ static bool quickbar_button_event_cb( EventBits_t event, void *arg ) {
             if( lv_obj_get_hidden( quickbar ) ) {
                 timesync_get_current_timestring( time, sizeof( time ) );
                 lv_label_set_text( quickbar_time_label, time );
-                lv_obj_align_to( quickbar_time_label, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
+                lv_obj_align_to( quickbar_time_label, NULL, LV_ALIGN_TOP_MID, 0, 0);
                 quickbar_hide( false );
             }
             else {

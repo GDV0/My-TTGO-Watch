@@ -59,7 +59,7 @@ protected:
   virtual void assign(lv_obj_t* newHandle);
 
 private:
-    static void Action(lv_obj_t * obj, lv_event_code_t event);
+    static void Action(lv_obj_t * obj, lv_event_t event);
     static lv_event_cb_t myCb;
 };
 

@@ -68,7 +68,7 @@ void notify_settings_tile_setup( void ) {
     setup_hide_indicator( notify_setup_icon );
 
     lv_obj_t *notify_header = wf_add_settings_header( notify_settings_tile, "notifications settings", notify_exit_setup_event_cb );
-    lv_obj_align_to( notify_header, notify_settings_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+    lv_obj_align_to( notify_header, notify_settings_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
 
     lv_obj_t *notify_wakeup_on_notification_cont = wf_add_labeled_switch( notify_settings_tile, "wakeup", &notify_wakeup_on_notification_switch, blectl_get_wakeup_on_notification(), notify_wakeup_switch_event_handler, SETUP_STYLE );
     lv_obj_align_to( notify_wakeup_on_notification_cont, notify_header, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );

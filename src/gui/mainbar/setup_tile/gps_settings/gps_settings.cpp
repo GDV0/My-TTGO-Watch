@@ -66,7 +66,7 @@ void gps_settings_tile_setup( void ) {
      * add setup header
      */
     lv_obj_t *header = wf_add_settings_header( gps_settings_tile, "gps settings", exit_gps_setup_event_cb );
-    lv_obj_align_to( header, gps_settings_tile, LV_ALIGN_IN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
+    lv_obj_align_to( header, gps_settings_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, STATUSBAR_HEIGHT + THEME_PADDING );
     /**
      * add autoon switch
      */
@@ -94,7 +94,7 @@ void gps_settings_tile_setup( void ) {
     gps_latlon_label = lv_label_create( gps_settings_tile, NULL);
     lv_obj_add_style( gps_latlon_label, LV_PART_MAIN, ws_get_mainbar_style()  );
     lv_label_set_text( gps_latlon_label, "fix: - lat: - lon: -");
-    lv_obj_align_to( gps_latlon_label, gps_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
+    lv_obj_align_to( gps_latlon_label, gps_settings_tile, LV_ALIGN_BOTTOM_MID, 0, -5 );
 
     gpsctl_register_cb( GPSCTL_FIX | GPSCTL_NOFIX | GPSCTL_UPDATE_LOCATION, gps_settings_latlon_update_cb, "gps settings" );
     gpsctl_register_cb( GPSCTL_UPDATE_CONFIG, gps_settings_config_update_cb, "gps settings" );
@@ -168,7 +168,7 @@ bool gps_settings_latlon_update_cb( EventBits_t event, void *arg ) {
     }
     snprintf( msg, sizeof( msg ), "%s @ lat: %.3f lon: %.3f", gpsfix?"fix":"nofix", lat, lon );
     lv_label_set_text( gps_latlon_label, msg );
-    lv_obj_align_to( gps_latlon_label, gps_settings_tile, LV_ALIGN_IN_BOTTOM_MID, 0, -5 );
+    lv_obj_align_to( gps_latlon_label, gps_settings_tile, LV_ALIGN_BOTTOM_MID, 0, -5 );
 
     return( true );
 }

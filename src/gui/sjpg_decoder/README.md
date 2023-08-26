@@ -41,8 +41,8 @@ void demo_jpg_sjpg( void )
   lv_obj_t * img2;
 
   lv_split_jpeg_init();
-  img1 = lv_img_create(lv_scr_act(), NULL);
-  img2 = lv_img_create(lv_scr_act(), NULL);
+  img1 = lv_img_create(lv_scr_act());
+  img2 = lv_img_create(lv_scr_act());
 
   //jpg from c array
   lv_img_set_src( img1,  &wallpaper_jpg);

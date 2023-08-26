@@ -86,7 +86,7 @@ LV_FONT_DECLARE(Ubuntu_32px);
 
 lv_status_bar_t statusicon[ STATUSBAR_NUM ] = 
 {
-    { NULL, NULL, LV_ALIGN_IN_RIGHT_MID, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] },
+    { NULL, NULL, LV_ALIGN_RIGHT_MID, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] },
     { NULL, LV_SYMBOL_BATTERY_FULL, LV_ALIGN_OUT_LEFT_MID, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] },
     { NULL, LV_SYMBOL_BLUETOOTH, LV_ALIGN_OUT_LEFT_MID, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] },
     { NULL, LV_SYMBOL_WIFI, LV_ALIGN_OUT_LEFT_MID, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] },
@@ -196,16 +196,16 @@ void statusbar_setup( void )
     lv_obj_set_height( statusbar, STATUSBAR_HEIGHT );
     lv_obj_reset_style_list( statusbar, LV_PART_MAIN );
     lv_obj_add_style( statusbar, LV_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_NORMAL ] );
-    lv_obj_align_to( statusbar, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0 );
+    lv_obj_align_to( statusbar, lv_scr_act(), LV_ALIGN_TOP_MID, 0, 0 );
     lv_obj_set_event_cb( statusbar, statusbar_event );
 
     for( int i = 0 ; i < STATUSBAR_NUM ; i++ ) {
         if ( statusicon[i].symbol == NULL ) {
-            statusicon[i].icon = lv_label_create( statusbar, NULL);
+            statusicon[i].icon = lv_label_create( statusbar;
             lv_label_set_text( statusicon[i].icon, "100%" );
         }
         else {
-            statusicon[i].icon = lv_img_create( statusbar , NULL);
+            statusicon[i].icon = lv_img_create( statusbar );
             lv_img_set_src( statusicon[i].icon, statusicon[i].symbol );
         }
         lv_obj_reset_style_list( statusicon[i].icon, LV_PART_MAIN );
@@ -221,19 +221,19 @@ void statusbar_setup( void )
     static lv_style_t style;
     lv_style_copy( &style, &statusbarstyle[ STATUSBAR_STYLE_GRAY ] );
 
-    lv_style_set_image_recolor_opa( &style, LV_BTN_STATE_RELEASED, LV_OPA_100 );
-    lv_style_set_image_recolor( &style, LV_BTN_STATE_RELEASED, LV_COLOR_GREEN );
-    lv_style_set_image_recolor_opa( &style, LV_BTN_STATE_PRESSED, LV_OPA_100 );
-    lv_style_set_image_recolor( &style, LV_BTN_STATE_PRESSED, LV_COLOR_RED );
-    lv_style_set_image_recolor_opa( &style, LV_BTN_STATE_CHECKED_RELEASED, LV_OPA_100 );
-    lv_style_set_image_recolor( &style, LV_BTN_STATE_CHECKED_RELEASED, LV_COLOR_RED );
-    lv_style_set_image_recolor_opa( &style, LV_BTN_STATE_CHECKED_PRESSED, LV_OPA_100 );
-    lv_style_set_image_recolor( &style, LV_BTN_STATE_CHECKED_PRESSED, LV_COLOR_GREEN );
+    lv_style_set_image_recolor_opa( &style, LV_IMGBTN_STATE_RELEASED, LV_OPA_100 );
+    lv_style_set_image_recolor( &style, LV_IMGBTN_STATE_RELEASED, LV_COLOR_GREEN );
+    lv_style_set_image_recolor_opa( &style, LV_IMGBTN_STATE_PRESSED, LV_OPA_100 );
+    lv_style_set_image_recolor( &style, LV_IMGBTN_STATE_PRESSED, LV_COLOR_RED );
+    lv_style_set_image_recolor_opa( &style, LV_IMGBTN_STATE_CHECKED_RELEASED, LV_OPA_100 );
+    lv_style_set_image_recolor( &style, LV_IMGBTN_STATE_CHECKED_RELEASED, LV_COLOR_RED );
+    lv_style_set_image_recolor_opa( &style, LV_IMGBTN_STATE_CHECKED_PRESSED, LV_OPA_100 );
+    lv_style_set_image_recolor( &style, LV_IMGBTN_STATE_CHECKED_PRESSED, LV_COLOR_GREEN );
 
     statusbar_wifi = wf_add_image_button_old( statusbar, wifi_64px, statusbar_wifi_event_cb, &style );
     lv_imgbtn_set_checkable (statusbar_wifi, true );
-    lv_obj_align_to( statusbar_wifi, statusbar, LV_ALIGN_IN_TOP_MID, 0, STATUSBAR_HEIGHT );
-    lv_imgbtn_set_state( statusbar_wifi, LV_BTN_STATE_CHECKED_PRESSED );
+    lv_obj_align_to( statusbar_wifi, statusbar, LV_ALIGN_TOP_MID, 0, STATUSBAR_HEIGHT );
+    lv_imgbtn_set_state( statusbar_wifi, LV_IMGBTN_STATE_CHECKED_PRESSED );
 
     /*Create a label on the Image button*/
     statusbar_wifilabel = lv_label_create( statusbar, NULL);
@@ -251,37 +251,37 @@ void statusbar_setup( void )
 
     statusbar_bluetooth = wf_add_image_button_old( statusbar, bluetooth_64px, statusbar_bluetooth_event_cb, &style );
     lv_imgbtn_set_checkable (statusbar_bluetooth, true );
-    lv_obj_align_to( statusbar_bluetooth, statusbar, LV_ALIGN_IN_TOP_RIGHT, -8, STATUSBAR_HEIGHT );
-    lv_imgbtn_set_state( statusbar_bluetooth, LV_BTN_STATE_CHECKED_PRESSED );
+    lv_obj_align_to( statusbar_bluetooth, statusbar, LV_ALIGN_TOP_RIGHT, -8, STATUSBAR_HEIGHT );
+    lv_imgbtn_set_state( statusbar_bluetooth, LV_IMGBTN_STATE_CHECKED_PRESSED );
 
     statusbar_gps = wf_add_image_button_old( statusbar, gps_64px, statusbar_gps_event_cb, &style );
     lv_imgbtn_set_checkable (statusbar_gps, true );
-    lv_obj_align_to( statusbar_gps, statusbar, LV_ALIGN_IN_TOP_LEFT, 8, STATUSBAR_HEIGHT );
-    lv_imgbtn_set_state( statusbar_gps, LV_BTN_STATE_CHECKED_PRESSED );
+    lv_obj_align_to( statusbar_gps, statusbar, LV_ALIGN_TOP_LEFT, 8, STATUSBAR_HEIGHT );
+    lv_imgbtn_set_state( statusbar_gps, LV_IMGBTN_STATE_CHECKED_PRESSED );
 
     statusbar_stepcounterlabel = lv_label_create(statusbar, NULL );
     lv_obj_reset_style_list( statusbar_stepcounterlabel, LV_PART_MAIN );
     lv_obj_add_style( statusbar_stepcounterlabel, LV_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] );
     lv_label_set_text( statusbar_stepcounterlabel, "0");
-    lv_obj_align_to( statusbar_stepcounterlabel, statusbar, LV_ALIGN_IN_LEFT_MID, 5, 0 );
+    lv_obj_align_to( statusbar_stepcounterlabel, statusbar, LV_ALIGN_LEFT_MID, 5, 0 );
 
     lv_obj_t *statusbar_volume_cont = lv_obj_create( statusbar, NULL );
     lv_obj_add_style( statusbar_volume_cont, LV_PART_MAIN, &style );
     lv_obj_set_size( statusbar_volume_cont, lv_disp_get_hor_res( NULL ) , 36 );
-    lv_obj_align_to( statusbar_volume_cont, statusbar, LV_ALIGN_IN_BOTTOM_MID, 0, STATUSBAR_EXPAND_HEIGHT - STATUSBAR_HEIGHT );
+    lv_obj_align_to( statusbar_volume_cont, statusbar, LV_ALIGN_BOTTOM_MID, 0, STATUSBAR_EXPAND_HEIGHT - STATUSBAR_HEIGHT );
     statusbar_volume_slider = lv_slider_create( statusbar_volume_cont, NULL );
     lv_obj_set_size( statusbar_volume_slider, lv_disp_get_hor_res( NULL ) - 100 , 10 );
-    lv_obj_align_to( statusbar_volume_slider, statusbar_volume_cont, LV_ALIGN_IN_RIGHT_MID, -30, 0 );
+    lv_obj_align_to( statusbar_volume_slider, statusbar_volume_cont, LV_ALIGN_RIGHT_MID, -30, 0 );
     lv_obj_add_protect( statusbar_volume_slider, LV_PROTECT_CLICK_FOCUS);
     lv_obj_add_style( statusbar_volume_slider, LV_SLIDER_PART_INDIC, ws_get_slider_style() );
     lv_obj_add_style( statusbar_volume_slider, LV_SLIDER_PART_KNOB, ws_get_slider_style() );
     lv_slider_set_range( statusbar_volume_slider, 0, 100 );
     lv_obj_set_event_cb( statusbar_volume_slider, statusbar_volume_slider_event_handler_cb ) ;
-    statusbar_sound_icon = lv_img_create( statusbar_volume_cont, NULL );
+    statusbar_sound_icon = lv_img_create( statusbar_volume_cont );
     lv_obj_set_click( statusbar_sound_icon, true );
     lv_obj_set_event_cb( statusbar_sound_icon, statusbar_sound_event_cb );
     lv_img_set_src( statusbar_sound_icon, &sound_32px );
-    lv_obj_align_to( statusbar_sound_icon, statusbar_volume_cont, LV_ALIGN_IN_LEFT_MID, 15, 0 );
+    lv_obj_align_to( statusbar_sound_icon, statusbar_volume_cont, LV_ALIGN_LEFT_MID, 15, 0 );
 
     lv_obj_t *statusbar_brightness_cont = lv_obj_create( statusbar, NULL );
     lv_obj_add_style( statusbar_brightness_cont, LV_PART_MAIN, &style );
@@ -289,17 +289,17 @@ void statusbar_setup( void )
     lv_obj_align_to( statusbar_brightness_cont, statusbar_volume_cont, LV_ALIGN_OUT_TOP_MID, 0, 0 );
     statusbar_brightness_slider = lv_slider_create( statusbar_brightness_cont, NULL );
     lv_obj_set_size( statusbar_brightness_slider, lv_disp_get_hor_res( NULL ) - 100 , 10 );
-    lv_obj_align_to( statusbar_brightness_slider, statusbar_brightness_cont, LV_ALIGN_IN_RIGHT_MID, -30, 0 );
+    lv_obj_align_to( statusbar_brightness_slider, statusbar_brightness_cont, LV_ALIGN_RIGHT_MID, -30, 0 );
     lv_slider_set_range( statusbar_brightness_slider, DISPLAY_MIN_BRIGHTNESS, DISPLAY_MAX_BRIGHTNESS );
     lv_obj_add_protect( statusbar_brightness_slider, LV_PROTECT_CLICK_FOCUS);
     lv_obj_add_style( statusbar_brightness_slider, LV_SLIDER_PART_INDIC, ws_get_slider_style() );
     lv_obj_add_style( statusbar_brightness_slider, LV_SLIDER_PART_KNOB, ws_get_slider_style() );
     lv_obj_set_event_cb( statusbar_brightness_slider, statusbar_brightness_slider_event_handler_cb ) ;
-    statusbar_brightness_icon = lv_img_create( statusbar_brightness_cont, NULL );
+    statusbar_brightness_icon = lv_img_create( statusbar_brightness_cont );
     lv_obj_set_click( statusbar_brightness_icon, true );
     lv_obj_set_event_cb( statusbar_brightness_icon, statusbar_display_event_cb );
     lv_img_set_src( statusbar_brightness_icon, &brightness_32px );
-    lv_obj_align_to( statusbar_brightness_icon, statusbar_brightness_cont, LV_ALIGN_IN_LEFT_MID, 15, 0 );
+    lv_obj_align_to( statusbar_brightness_icon, statusbar_brightness_cont, LV_ALIGN_LEFT_MID, 15, 0 );
 
     lv_slider_set_value( statusbar_brightness_slider, display_get_brightness(), LV_ANIM_OFF );
     lv_slider_set_value( statusbar_volume_slider, sound_get_volume_config(), LV_ANIM_OFF );
@@ -388,12 +388,12 @@ bool statusbar_gpsctl_event_cb( EventBits_t event, void *arg ) {
         case GPSCTL_DISABLE:  
             statusbar_hide_icon( STATUSBAR_GPS );
             statusbar_style_icon( STATUSBAR_GPS, STATUSBAR_STYLE_GRAY );
-            lv_imgbtn_set_state( statusbar_gps, LV_BTN_STATE_CHECKED_RELEASED );
+            lv_imgbtn_set_state( statusbar_gps, LV_IMGBTN_STATE_CHECKED_RELEASED );
             break;
         case GPSCTL_ENABLE:  
             statusbar_show_icon( STATUSBAR_GPS );
             statusbar_style_icon( STATUSBAR_GPS, STATUSBAR_STYLE_GRAY );
-            lv_imgbtn_set_state( statusbar_gps, LV_BTN_STATE_RELEASED );
+            lv_imgbtn_set_state( statusbar_gps, LV_IMGBTN_STATE_RELEASED );
             break;
         case GPSCTL_FIX:  
             statusbar_show_icon( STATUSBAR_GPS );
@@ -572,10 +572,10 @@ bool statusbar_blectl_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case BLECTL_ON:             statusbar_show_icon( STATUSBAR_BLUETOOTH );
                                     statusbar_style_icon( STATUSBAR_BLUETOOTH, STATUSBAR_STYLE_GRAY );
-                                    lv_imgbtn_set_state( statusbar_bluetooth, LV_BTN_STATE_RELEASED );
+                                    lv_imgbtn_set_state( statusbar_bluetooth, LV_IMGBTN_STATE_RELEASED );
                                     break;
         case BLECTL_OFF:            statusbar_hide_icon( STATUSBAR_BLUETOOTH );
-                                    lv_imgbtn_set_state( statusbar_bluetooth, LV_BTN_STATE_CHECKED_RELEASED );
+                                    lv_imgbtn_set_state( statusbar_bluetooth, LV_IMGBTN_STATE_CHECKED_RELEASED );
                                     break;
         case BLECTL_CONNECT:        statusbar_style_icon( STATUSBAR_BLUETOOTH, STATUSBAR_STYLE_WHITE );
                                     break;
@@ -734,10 +734,10 @@ void statusbar_wifi_event_cb( lv_obj_t *wifi, lv_event_t event ) {
     switch ( event ) {
         case ( LV_EVENT_VALUE_CHANGED ):
             switch ( lv_imgbtn_get_state( wifi ) ) {
-                case( LV_BTN_STATE_CHECKED_RELEASED ):  wifictl_off();
+                case( LV_IMGBTN_STATE_CHECKED_RELEASED ):  wifictl_off();
                                                         wifictl_set_autoon( false );
                                                         break;
-                case( LV_BTN_STATE_RELEASED ):          wifictl_on();
+                case( LV_IMGBTN_STATE_RELEASED ):          wifictl_on();
                                                         wifictl_set_autoon( true );
                                                         break;
             }
@@ -763,9 +763,9 @@ void statusbar_gps_event_cb( lv_obj_t *gps, lv_event_t event ) {
     switch ( event ) {
         case ( LV_EVENT_VALUE_CHANGED ):
             switch ( lv_imgbtn_get_state( gps ) ) {
-                case( LV_BTN_STATE_CHECKED_RELEASED ):  gpsctl_off();
+                case( LV_IMGBTN_STATE_CHECKED_RELEASED ):  gpsctl_off();
                                                         break;
-                case( LV_BTN_STATE_RELEASED ):          gpsctl_on();
+                case( LV_IMGBTN_STATE_RELEASED ):          gpsctl_on();
                                                         break;
             }
             statusbar_refresh_update = true;
@@ -790,10 +790,10 @@ void statusbar_bluetooth_event_cb( lv_obj_t *bluetooth, lv_event_t event ) {
     switch ( event ) {
         case ( LV_EVENT_VALUE_CHANGED ):
             switch ( lv_imgbtn_get_state( bluetooth ) ) {
-                case( LV_BTN_STATE_CHECKED_RELEASED ):   
+                case( LV_IMGBTN_STATE_CHECKED_RELEASED ):   
                     blectl_off();
                     break;
-                case( LV_BTN_STATE_RELEASED ):    
+                case( LV_IMGBTN_STATE_RELEASED ):    
                     blectl_on();
                     break;
                 default:
@@ -819,10 +819,10 @@ void statusbar_wifi_set_state( bool state, const char *wifiname ) {
     }
 
     if( state ) {
-        lv_imgbtn_set_state( statusbar_wifi, LV_BTN_STATE_RELEASED );
+        lv_imgbtn_set_state( statusbar_wifi, LV_IMGBTN_STATE_RELEASED );
     }
     else {
-        lv_imgbtn_set_state( statusbar_wifi, LV_BTN_STATE_CHECKED_RELEASED );
+        lv_imgbtn_set_state( statusbar_wifi, LV_IMGBTN_STATE_CHECKED_RELEASED );
     }
     lv_label_set_text( statusbar_wifilabel, wifiname );
     lv_label_set_text( statusbar_wifiiplabel, "" );
@@ -853,10 +853,10 @@ void statusbar_bluetooth_set_state( bool state ) {
     }
 
     if ( state ) {
-        lv_imgbtn_set_state( statusbar_bluetooth, LV_BTN_STATE_RELEASED );
+        lv_imgbtn_set_state( statusbar_bluetooth, LV_IMGBTN_STATE_RELEASED );
     }
     else {
-        lv_imgbtn_set_state( statusbar_bluetooth, LV_BTN_STATE_PRESSED );
+        lv_imgbtn_set_state( statusbar_bluetooth, LV_IMGBTN_STATE_PRESSED );
     }
 }
 

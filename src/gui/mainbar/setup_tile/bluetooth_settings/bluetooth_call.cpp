@@ -71,17 +71,17 @@ void bluetooth_call_tile_setup( void ) {
     lv_style_set_text_font( &bluetooth_call_style, LV_STATE_DEFAULT, caller_font );
     lv_obj_add_style( bluetooth_call_tile, LV_PART_MAIN, &bluetooth_call_style );
 
-    bluetooth_call_img = lv_img_create( bluetooth_call_tile, NULL );
+    bluetooth_call_img = lv_img_create( bluetooth_call_tile );
     lv_img_set_src( bluetooth_call_img, &call_ok_128px );
     lv_obj_align_to( bluetooth_call_img, bluetooth_call_tile, LV_ALIGN_CENTER, 0, 0 );
 
-    bluetooth_call_number_label = lv_label_create( bluetooth_call_tile, NULL);
+    bluetooth_call_number_label = lv_label_create( bluetooth_call_tile );
     lv_obj_add_style( bluetooth_call_number_label, LV_PART_MAIN, &bluetooth_call_style  );
     lv_label_set_text( bluetooth_call_number_label, "foo bar");
     lv_obj_align_to( bluetooth_call_number_label, bluetooth_call_img, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
     lv_obj_t * exit_btn = wf_add_exit_button( bluetooth_call_tile, exit_bluetooth_call_event_cb );
-    lv_obj_align_to( exit_btn, bluetooth_call_tile, LV_ALIGN_IN_TOP_RIGHT, -THEME_PADDING, THEME_PADDING );
+    lv_obj_align_to( exit_btn, bluetooth_call_tile, LV_ALIGN_TOP_RIGHT, -THEME_PADDING, THEME_PADDING );
 
     gadgetbridge_register_cb( GADGETBRIDGE_JSON_MSG, bluetooth_call_event_cb, "bluetooth_call" );
     styles_register_cb( STYLE_CHANGE, bluetooth_call_style_change_event_cb, "bluetooth call style" );

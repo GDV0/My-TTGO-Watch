@@ -163,7 +163,7 @@ void watchface_tile_setup( void ) {
     /**
      * alloc default dial
      */
-    watchface_dial_img = lv_img_create( watchface_cont, NULL );
+    watchface_dial_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_dial_img, &swiss_dial_240px );
     lv_obj_align_to( watchface_dial_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.dial.x_offset, watchface_theme_config->dial.dial.y_offset );
     /**
@@ -223,7 +223,7 @@ void watchface_tile_setup( void ) {
         /**
          * alloc and setup image
          */
-        watchface_image[ i ] = lv_img_create( watchface_image_cont, NULL );
+        watchface_image[ i ] = lv_img_create( watchface_image_cont );
         lv_img_set_src( watchface_image[ i ], watchface_theme_config->dial.image[ i ].file );
         lv_obj_add_style( watchface_image[ i ], LV_PART_MAIN, &watchface_app_image_style );
         lv_obj_align_to( watchface_image[ i ], watchface_image_cont, LV_ALIGN_CENTER, 0, 0 );
@@ -233,37 +233,37 @@ void watchface_tile_setup( void ) {
     /**
      * alloc default index shadows
      */
-    watchface_hour_s_img = lv_img_create( watchface_cont, NULL );
+    watchface_hour_s_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_hour_s_img, &swiss_hour_s_240px );
     lv_obj_align_to( watchface_hour_s_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.hour_shadow.x_offset, watchface_theme_config->dial.hour_shadow.y_offset );
     lv_img_set_angle( watchface_hour_s_img, 0 );
-    watchface_min_s_img = lv_img_create( watchface_cont, NULL );
+    watchface_min_s_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_min_s_img, &swiss_min_s_240px );
     lv_obj_align_to( watchface_min_s_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.min_shadow.x_offset, watchface_theme_config->dial.min_shadow.y_offset );
     lv_img_set_angle( watchface_min_s_img, 0 );
-    watchface_sec_s_img = lv_img_create( watchface_cont, NULL );
+    watchface_sec_s_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_sec_s_img, &swiss_sec_s_240px );
     lv_obj_align_to( watchface_sec_s_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.sec_shadow.x_offset, watchface_theme_config->dial.sec_shadow.y_offset );
     lv_img_set_angle( watchface_sec_s_img, 0 );
     /**
      * alloc default index
      */
-    watchface_hour_img = lv_img_create( watchface_cont, NULL );
+    watchface_hour_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_hour_img, &swiss_hour_240px );
     lv_obj_align_to( watchface_hour_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.hour.x_offset, watchface_theme_config->dial.hour.y_offset );
     lv_img_set_angle( watchface_hour_img, 0 );
-    watchface_min_img = lv_img_create( watchface_cont, NULL );
+    watchface_min_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_min_img, &swiss_min_240px );
     lv_obj_align_to( watchface_min_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.min.x_offset, watchface_theme_config->dial.min.y_offset );
     lv_img_set_angle( watchface_hour_img, 0 );
-    watchface_sec_img = lv_img_create( watchface_cont, NULL );
+    watchface_sec_img = lv_img_create( watchface_cont );
     lv_img_set_src( watchface_sec_img, &swiss_sec_240px );
     lv_obj_align_to( watchface_sec_img, watchface_cont, LV_ALIGN_CENTER, watchface_theme_config->dial.sec.x_offset, watchface_theme_config->dial.sec.y_offset );
     lv_img_set_angle( watchface_hour_img, 0 );
     /**
      * watchface exit on touch
      */
-    watchface_btn = lv_btn_create( watchface_app_tile, NULL );
+    watchface_btn = lv_btn_create( watchface_app_tile );
     lv_obj_set_width( watchface_btn, lv_disp_get_hor_res( NULL ) );
     lv_obj_set_height( watchface_btn, lv_disp_get_ver_res( NULL ) );
     lv_obj_add_protect( watchface_btn, LV_PROTECT_CLICK_FOCUS );
@@ -814,10 +814,10 @@ lv_align_t watchface_get_align( char *align ) {
         return( LV_ALIGN_CENTER );
     }
     else if ( !strcmp( align, "left" ) ) {
-        return( LV_ALIGN_IN_LEFT_MID );
+        return( LV_ALIGN_LEFT_MID );
     }
     else if ( !strcmp( align, "right" ) ) {
-        return( LV_ALIGN_IN_RIGHT_MID );
+        return( LV_ALIGN_RIGHT_MID );
     }
     else {
         return( LV_ALIGN_CENTER );

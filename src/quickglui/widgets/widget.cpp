@@ -145,37 +145,37 @@ Widget& Widget::alignInParentCenter(lv_coord_t x_offset, lv_coord_t y_offset)
 Widget& Widget::alignInParentLeftMid(lv_coord_t x_offset, lv_coord_t y_offset)
 {
   auto parHandle = lv_obj_get_parent(native);
-  align(parHandle, LV_ALIGN_IN_LEFT_MID, x_offset, y_offset);
+  align(parHandle, LV_ALIGN_LEFT_MID, x_offset, y_offset);
   return *this;
 }
 Widget& Widget::alignInParentTopLeft(lv_coord_t x_offset, lv_coord_t y_offset)
 {
   auto parHandle = lv_obj_get_parent(native);
-  align(parHandle, LV_ALIGN_IN_TOP_LEFT, x_offset, y_offset);
+  align(parHandle, LV_ALIGN_TOP_LEFT, x_offset, y_offset);
   return *this;
 }
 Widget& Widget::alignInParentRightMid(lv_coord_t x_offset, lv_coord_t y_offset)
 {
   auto parHandle = lv_obj_get_parent(native);
-  align(parHandle, LV_ALIGN_IN_RIGHT_MID, x_offset, y_offset);
+  align(parHandle, LV_ALIGN_RIGHT_MID, x_offset, y_offset);
   return *this;
 }
 Widget& Widget::alignInParentTopRight(lv_coord_t x_offset, lv_coord_t y_offset)
 {
   auto parHandle = lv_obj_get_parent(native);
-  align(parHandle, LV_ALIGN_IN_TOP_RIGHT, x_offset, y_offset);
+  align(parHandle, LV_ALIGN_TOP_RIGHT, x_offset, y_offset);
   return *this;
 }
 Widget& Widget::alignInParentBottomRight(lv_coord_t x_offset, lv_coord_t y_offset)
 {
   auto parHandle = lv_obj_get_parent(native);
-  align(parHandle, LV_ALIGN_IN_BOTTOM_RIGHT, x_offset, y_offset);
+  align(parHandle, LV_ALIGN_BOTTOM_RIGHT, x_offset, y_offset);
   return *this;
 }
 Widget& Widget::alignInParentBottomLeft(lv_coord_t x_offset, lv_coord_t y_offset)
 {
   auto parHandle = lv_obj_get_parent(native);
-  align(parHandle, LV_ALIGN_IN_BOTTOM_LEFT, x_offset, y_offset);
+  align(parHandle, LV_ALIGN_BOTTOM_LEFT, x_offset, y_offset);
   return *this;
 }
 Widget& Widget::alignOutsideRightMid(const Widget& base, lv_coord_t x_offset, lv_coord_t y_offset)

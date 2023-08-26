@@ -60,7 +60,7 @@ void move_settings_tile_setup( void ) {
     setup_hide_indicator( move_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( move_settings_tile, "movement settings", exit_move_setup_event_cb );
-    lv_obj_align_to( header, move_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, move_settings_tile, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     lv_obj_t *stepcounter_cont = wf_add_labeled_switch( move_settings_tile, "step counter", &stepcounter_onoff, bma_get_config( BMA_STEPCOUNTER ), stepcounter_onoff_event_handler, ws_get_setup_tile_style() );
     lv_obj_align_to( stepcounter_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );

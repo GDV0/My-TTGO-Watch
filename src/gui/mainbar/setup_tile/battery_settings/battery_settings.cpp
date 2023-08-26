@@ -79,7 +79,7 @@ void battery_settings_tile_setup( void ) {
     setup_hide_indicator( battery_setup_icon );
 
     lv_obj_t *header = wf_add_settings_header( battery_settings_tile, "energy settings", exit_battery_setup_event_cb );
-    lv_obj_align_to( header, battery_settings_tile, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header, battery_settings_tile, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     lv_obj_t *battery_silence_wakeup_switch_cont = wf_add_labeled_switch( battery_settings_tile, "silence wakeup", &battery_silence_wakeup_switch, pmu_get_silence_wakeup(), battery_silence_wakeup_switch_event_handler, SETUP_STYLE );
     lv_obj_align_to( battery_silence_wakeup_switch_cont, header, LV_ALIGN_OUT_BOTTOM_MID, 0, 2 );

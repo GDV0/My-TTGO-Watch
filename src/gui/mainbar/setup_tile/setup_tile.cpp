@@ -90,7 +90,7 @@ void setup_tile_setup( void ) {
         setup_entry[ setup ].icon_cont = mainbar_obj_create( setup_cont[ setup / ( MAX_SETUP_ICON_HORZ * MAX_SETUP_ICON_VERT ) ] );
         lv_obj_reset_style_list( setup_entry[ setup ].icon_cont, LV_PART_MAIN );
         lv_obj_set_size( setup_entry[ setup ].icon_cont, SETUP_ICON_X_SIZE, SETUP_ICON_Y_SIZE );
-        lv_obj_align_to( setup_entry[ setup ].icon_cont , setup_cont[ setup / ( MAX_SETUP_ICON_HORZ * MAX_SETUP_ICON_VERT ) ], LV_ALIGN_IN_TOP_LEFT, setup_entry[ setup ].x, setup_entry[ setup ].y );
+        lv_obj_align_to( setup_entry[ setup ].icon_cont , setup_cont[ setup / ( MAX_SETUP_ICON_HORZ * MAX_SETUP_ICON_VERT ) ], LV_ALIGN_TOP_LEFT, setup_entry[ setup ].x, setup_entry[ setup ].y );
         // create app label
         setup_entry[ setup ].label = lv_label_create( setup_cont[ setup / ( MAX_SETUP_ICON_HORZ * MAX_SETUP_ICON_VERT ) ], NULL );
         mainbar_add_slide_element(setup_entry[ setup ].label);

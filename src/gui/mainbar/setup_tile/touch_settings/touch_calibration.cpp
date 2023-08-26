@@ -225,22 +225,22 @@ bool touch_calibration_event_cb( EventBits_t event, void *arg ) {
                             lv_obj_add_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_BOTTOM_LEFT:
-                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0 );
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_BOTTOM_LEFT, 0, 0 );
                             lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
                             lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_TOP_LEFT:
-                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_TOP_LEFT, 0, 0 );
                             lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
                             lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_TOP_RIGHT:
-                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_TOP_RIGHT, 0, 0 );
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_TOP_RIGHT, 0, 0 );
                             lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
                             lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;
                         case CALIBRATION_STATE_BOTTOM_RIGHT:
-                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0 );
+                            lv_obj_align_to( touch_location_icon, touch_calibration_tile, LV_ALIGN_BOTTOM_RIGHT, 0, 0 );
                             lv_obj_add_flag(touch_location_done_icon, LV_OBJ_FLAG_HIDDEN );
                             lv_obj_clear_flag( touch_location_icon, LV_OBJ_FLAG_HIDDEN ); 
                             break;

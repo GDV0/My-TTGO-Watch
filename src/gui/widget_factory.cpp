@@ -186,14 +186,14 @@ lv_obj_t * wf_add_container(lv_obj_t *parent_tile, lv_layout_t layout, lv_fit_t 
 lv_obj_t * wf_add_tile_container(lv_obj_t *parent_tile, lv_layout_t layout, lv_style_t *style ){
     lv_obj_set_style_local_pad_all(parent_tile, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_t * container = wf_add_container(parent_tile, layout, LV_FIT_PARENT, LV_FIT_TIGHT, true, style?style:APP_STYLE );
-    lv_obj_align_to( container, parent_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
+    lv_obj_align_to( container, parent_tile, LV_ALIGN_TOP_LEFT, 0, 0 );
     return container;
 }
 
 lv_obj_t * wf_add_tile_container(lv_obj_t *parent_tile, lv_layout_t layout){
     lv_obj_set_style_local_pad_all(parent_tile, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_t * container = wf_add_container(parent_tile, layout, LV_FIT_PARENT, LV_FIT_TIGHT, true, NULL );
-    lv_obj_align_to( container, parent_tile, LV_ALIGN_IN_TOP_LEFT, 0, 0 );
+    lv_obj_align_to( container, parent_tile, LV_ALIGN_TOP_LEFT, 0, 0 );
     return container;
 }
 
@@ -206,7 +206,7 @@ lv_obj_t * wf_add_tile_footer_container(lv_obj_t *tile, lv_layout_t layout){
     lv_obj_t *container = wf_add_container(tile, layout, LV_FIT_PARENT, LV_FIT_TIGHT, true);
     lv_obj_set_style_local_pad_all( container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, CLICKABLE_PADDING);
     lv_obj_set_style_local_pad_inner( container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, CONTAINER_INNER_PADDING);
-    lv_obj_align_to( container, tile, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+    lv_obj_align_to( container, tile, LV_ALIGN_BOTTOM_MID, 0, 0);
 
     return container;
 }
@@ -422,13 +422,13 @@ lv_obj_t * wf_add_labeled_list(lv_obj_t *parent, char const * text, lv_obj_t ** 
  * 
  */
 lv_obj_t * wf_add_button(lv_obj_t *parent, char const * label, int width, int height, lv_event_cb_t event_cb){
-    lv_obj_t * button = lv_btn_create(parent, NULL);
-    lv_obj_t * label_obj = lv_label_create(button, NULL);
+    lv_obj_t * button = lv_btn_create(parent);
+    lv_obj_t * label_obj = lv_label_create(button);
     lv_label_set_text(label_obj, label);
-    lv_btn_set_checkable(button, true);
-    lv_btn_set_state(button, LV_BTN_STATE_RELEASED);
+    lv_obj_add_flag(button, , LV_OBJ_FLAG_CHECKABLE);
+    lv_btn_set_state(button, LV_IMGBTN_STATE_RELEASED);
     lv_btn_toggle(button);
-    lv_obj_add_style( button, LV_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( button, ws_get_button_style(), LV_PART_MAIN );
 
     if (width != -1){
         lv_obj_set_width(button, width);
@@ -507,11 +507,11 @@ void wf_image_button_set_style( lv_obj_t *button, lv_style_t *style ) {
 }
 
 lv_obj_t * wf_add_image_button_old(lv_obj_t *parent, lv_img_dsc_t const &image, lv_event_cb_t event_cb, lv_style_t *style){
-    lv_obj_t * button = lv_imgbtn_create( parent, NULL );
-    lv_imgbtn_set_src( button, LV_BTN_STATE_RELEASED, &image );
-    lv_imgbtn_set_src( button, LV_BTN_STATE_PRESSED, &image );
-    lv_imgbtn_set_src( button, LV_BTN_STATE_CHECKED_RELEASED, &image );
-    lv_imgbtn_set_src( button, LV_BTN_STATE_CHECKED_PRESSED, &image );
+    lv_obj_t * button = lv_imgbtn_create( parent );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_RELEASED, &image );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_PRESSED, &image );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_CHECKED_RELEASED, &image );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_CHECKED_PRESSED, &image );
 
     if (!style)
         style = ws_get_img_button_style();
@@ -535,7 +535,7 @@ lv_obj_t * wf_add_image_button(lv_obj_t *parent, lv_img_dsc_t const &image, lv_e
     lv_obj_add_protect( button, LV_PROTECT_CLICK_FOCUS );
     lv_obj_add_style( button, LV_BTN_PART_MAIN, ws_get_img_button_style() );
 
-    lv_obj_t *button_img = lv_img_create( button, NULL );
+    lv_obj_t *button_img = lv_img_create( button );
     lv_img_set_src( button_img, &image );
     lv_obj_align_to( button_img, button, LV_ALIGN_CENTER, 0, 0 );
     lv_obj_set_click( button_img, false );
@@ -767,7 +767,7 @@ lv_obj_t *wf_get_settings_header_title(lv_obj_t *parent) {
 }
 
 lv_obj_t * wf_add_image(lv_obj_t *parent, lv_img_dsc_t const &image){
-    lv_obj_t * img_obj = lv_img_create( parent, NULL );
+    lv_obj_t * img_obj = lv_img_create( parent );
     lv_img_set_src( img_obj, &image );
     return img_obj;
 }

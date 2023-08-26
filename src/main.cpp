@@ -3,7 +3,7 @@
 
 #include "hardware/hardware.h"
 #include "hardware/powermgm.h"
-
+/*
 #include "app/calc/calc_app.h"
 #include "app/FindPhone/FindPhone.h"
 #include "app/gps_status/gps_status.h"
@@ -24,7 +24,7 @@
 #include "app/IRController/IRController.h"
 #include "app/alarm_clock/alarm_clock.h"
 #include "app/compass/compass_app.h"
-
+*/
 #if defined( NATIVE_64BIT )
     /**
      * for non arduino
@@ -51,6 +51,7 @@ void setup() {
     /**
      * apps here
      */
+    /*
     osmmap_app_setup();
     weather_app_setup();
     compass_app_setup();
@@ -71,9 +72,11 @@ void setup() {
     wifimon_app_setup();
     calc_app_setup();
     kodi_remote_app_setup();
+*/
     /**
      * post hardware setup
      */
+
     hardware_post_setup();
 }
 

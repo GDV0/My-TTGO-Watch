@@ -22,7 +22,7 @@ AppPage& AppPage::init(lv_obj_t* handle, bool defaultExitBtn)
   {
     lv_obj_t *btnExitHandle = wf_add_exit_button(handle);
     btnExit = Button(btnExitHandle);
-    btnExit.align(*this, LV_ALIGN_IN_BOTTOM_LEFT, 10, -10);
+    btnExit.align(*this, LV_ALIGN_BOTTOM_LEFT, 10, -10);
   }
   
   return *this;
@@ -32,7 +32,7 @@ AppPage& AppPage::addSettingsButton(WidgetAction onSettingsBtnClick)
 {
   lv_obj_t *btnSettingsHandle = wf_add_setup_button(this->handle(), NULL, NULL);
   btnSettings = Button(btnSettingsHandle).clicked(onSettingsBtnClick);
-  btnSettings.align(*this, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -10);
+  btnSettings.align(*this, LV_ALIGN_BOTTOM_RIGHT, -10, -10);
 
   return *this;
 }
@@ -41,7 +41,7 @@ AppPage& AppPage::addRefreshButton(WidgetAction onRefreshBtnClick)
 {
     lv_obj_t *btnRefreshHandle = wf_add_refresh_button(this->handle(), NULL, NULL);
   btnRefresh = Button(btnRefreshHandle).clicked(onRefreshBtnClick);
-  btnRefresh.align(*this, LV_ALIGN_IN_TOP_RIGHT, -10, 10);
+  btnRefresh.align(*this, LV_ALIGN_TOP_RIGHT, -10, 10);
 
   return *this;
 }
@@ -50,7 +50,7 @@ AppPage& AppPage::addAppButton(const lv_img_dsc_t& image, WidgetAction onBtnClic
 {
   log_d("New button");
   btnApp = Button(this, image, onBtnClick);
-  btnApp.align(*this, LV_ALIGN_IN_BOTTOM_MID, 0, -10);
+  btnApp.align(*this, LV_ALIGN_BOTTOM_MID, 0, -10);
 
   return *this;
 }

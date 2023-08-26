@@ -92,17 +92,17 @@ void display_settings_tile_setup( void ) {
     setup_hide_indicator( display_setup_icon );
 
     header_1 = wf_add_settings_header( display_settings_tile_1, "display settings", exit_display_setup_event_cb );
-    lv_obj_align_to( header_1, display_settings_tile_1, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+    lv_obj_align_to( header_1, display_settings_tile_1, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
     /**
      * add page 2 header if a tile 2 exist
      */
     if ( display_settings_tile_2 ) {
         header_2 = wf_add_settings_header( display_settings_tile_2, "display settings", exit_display_setup_event_cb );
-        lv_obj_align_to( header_2, display_settings_tile_2, LV_ALIGN_IN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
+        lv_obj_align_to( header_2, display_settings_tile_2, LV_ALIGN_TOP_LEFT, 10, STATUSBAR_HEIGHT + 10 );
 
         lv_obj_t *down_btn_1 = wf_add_down_button( display_settings_tile_1, down_display_setup_event_cb, SETUP_STYLE );
-        lv_obj_align_to( down_btn_1, display_settings_tile_1, LV_ALIGN_IN_TOP_RIGHT, -10, STATUSBAR_HEIGHT + 10 );
+        lv_obj_align_to( down_btn_1, display_settings_tile_1, LV_ALIGN_TOP_RIGHT, -10, STATUSBAR_HEIGHT + 10 );
     }
 
     lv_obj_t *brightness_cont = lv_obj_create( display_settings_tile_1, NULL );
@@ -115,11 +115,11 @@ void display_settings_tile_setup( void ) {
     lv_obj_add_style( display_brightness_slider, LV_SLIDER_PART_KNOB, ws_get_slider_style() );
     lv_slider_set_range( display_brightness_slider, DISPLAY_MIN_BRIGHTNESS, DISPLAY_MAX_BRIGHTNESS );
     lv_obj_set_size( display_brightness_slider, lv_disp_get_hor_res( NULL ) - 100 , 10 );
-    lv_obj_align_to( display_brightness_slider, brightness_cont, LV_ALIGN_IN_RIGHT_MID, -30, 0 );
+    lv_obj_align_to( display_brightness_slider, brightness_cont, LV_ALIGN_RIGHT_MID, -30, 0 );
     lv_obj_set_event_cb( display_brightness_slider, display_brightness_setup_event_cb );
-    lv_obj_t *brightness_icon = lv_img_create( brightness_cont, NULL );
+    lv_obj_t *brightness_icon = lv_img_create( brightness_cont );
     lv_img_set_src( brightness_icon, &brightness_32px );
-    lv_obj_align_to( brightness_icon, brightness_cont, LV_ALIGN_IN_LEFT_MID, 15, 0 );
+    lv_obj_align_to( brightness_icon, brightness_cont, LV_ALIGN_LEFT_MID, 15, 0 );
 
     lv_obj_t *timeout_cont = lv_obj_create( display_settings_tile_1, NULL );
     lv_obj_set_size( timeout_cont, lv_disp_get_hor_res( NULL ) , 58 );
@@ -131,7 +131,7 @@ void display_settings_tile_setup( void ) {
     lv_obj_add_style( display_timeout_slider, LV_SLIDER_PART_KNOB, ws_get_slider_style() );
     lv_slider_set_range( display_timeout_slider, DISPLAY_MIN_TIMEOUT, DISPLAY_MAX_TIMEOUT );
     lv_obj_set_size(display_timeout_slider, lv_disp_get_hor_res( NULL ) - 100 , 10 );
-    lv_obj_align_to( display_timeout_slider, timeout_cont, LV_ALIGN_IN_TOP_RIGHT, -30, 10 );
+    lv_obj_align_to( display_timeout_slider, timeout_cont, LV_ALIGN_TOP_RIGHT, -30, 10 );
     lv_obj_set_event_cb( display_timeout_slider, display_timeout_setup_event_cb );
     display_timeout_slider_label = lv_label_create( timeout_cont, NULL );
     lv_obj_add_style( display_timeout_slider_label, LV_PART_MAIN, SETUP_STYLE );
@@ -139,7 +139,7 @@ void display_settings_tile_setup( void ) {
     lv_obj_align_to( display_timeout_slider_label, display_timeout_slider, LV_ALIGN_OUT_BOTTOM_MID, 0, -5 );
     lv_obj_t *timeout_icon = lv_img_create( timeout_cont, NULL );
     lv_img_set_src( timeout_icon, &time_32px );
-    lv_obj_align_to( timeout_icon, timeout_cont, LV_ALIGN_IN_LEFT_MID, 15, 0 );
+    lv_obj_align_to( timeout_icon, timeout_cont, LV_ALIGN_LEFT_MID, 15, 0 );
 
     lv_obj_t *rotation_cont = wf_add_labeled_list( display_settings_tile_1, "rotation", &display_rotation_list, "0°\n90°\n180°\n270°", display_rotation_event_handler, SETUP_STYLE );
     lv_obj_align_to( rotation_cont, timeout_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );

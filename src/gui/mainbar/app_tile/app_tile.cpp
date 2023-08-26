@@ -87,7 +87,7 @@ void app_tile_setup( void ) {
         lv_obj_reset_style_list( app_entry[ app ].icon_cont, LV_PART_MAIN );
         lv_obj_add_style( app_entry[ app ].icon_cont, LV_PART_MAIN, APP_ICON_STYLE );
         lv_obj_set_size( app_entry[ app ].icon_cont, APP_ICON_X_SIZE, APP_ICON_Y_SIZE );
-        lv_obj_align_to( app_entry[ app ].icon_cont , app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ], LV_ALIGN_IN_TOP_LEFT, app_entry[ app ].x, app_entry[ app ].y );
+        lv_obj_align_to( app_entry[ app ].icon_cont , app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ], LV_ALIGN_TOP_LEFT, app_entry[ app ].x, app_entry[ app ].y );
         /*
          * create app label
          */
