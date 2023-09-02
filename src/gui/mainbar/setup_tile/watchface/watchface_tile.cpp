@@ -69,7 +69,7 @@
 /**
  * watchface task and states
  */
-lv_task_t *watchface_tile_task;
+lv_timer_t *watchface_tile_task;
 volatile bool watchface_active = false;
 volatile bool watchface_tile_block_show_messages = false;
 volatile bool watchface_test = false;
@@ -124,7 +124,7 @@ LV_FONT_DECLARE(LCD_72px);
 
 void watchface_app_tile_update( void );
 static void exit_watchface_app_tile_event_cb( lv_obj_t * obj, lv_event_t event );
-void watchface_app_tile_update_task( lv_task_t *task );
+void watchface_app_tile_update_task( lv_timer_t *task );
 bool watchface_rtcctl_event_cb( EventBits_t event, void *arg );
 bool watchface_powermgm_event_cb( EventBits_t event, void *arg );
 void watchface_avtivate_cb( void );
@@ -156,9 +156,9 @@ void watchface_tile_setup( void ) {
     lv_style_set_bg_opa( &watchface_app_image_style, LV_PART_MAIN, LV_OPA_0 );
     lv_style_set_border_width( &watchface_app_image_style, LV_PART_MAIN, 0 );
 
-    lv_obj_t *watchface_cont = lv_obj_create( watchface_app_tile, NULL );
+    lv_obj_t *watchface_cont = lv_obj_create( watchface_app_tile );
     lv_obj_set_size( watchface_cont, 240, 240 );
-    lv_obj_add_style( watchface_cont, LV_PART_MAIN, &watchface_app_tile_style );
+    lv_obj_add_style( watchface_cont, &watchface_app_tile_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_cont, watchface_app_tile, LV_ALIGN_CENTER, 0, 0 );
     /**
      * alloc default dial
@@ -176,8 +176,8 @@ void watchface_tile_setup( void ) {
         watchface_app_label_style[ i ] = (lv_style_t *)MALLOC_ASSERT( sizeof( lv_style_t), "watchface_app_label_style[ %d ] alloc failed", i );
 
         lv_style_copy( watchface_app_label_style[ i ], ws_get_mainbar_style() );
-        lv_style_set_text_font( watchface_app_label_style[ i ], LV_PART_MAIN, watchface_get_font( watchface_theme_config->dial.label[ i ].font, watchface_theme_config->dial.label[ i ].font_size ) );
-        lv_style_set_text_color( watchface_app_label_style[ i ], LV_PART_MAIN, watchface_get_color( watchface_theme_config->dial.label[ i ].font_color ) );
+        lv_style_set_text_font( watchface_app_label_style[ i ], watchface_get_font( watchface_theme_config->dial.label[ i ].font, watchface_theme_config->dial.label[ i ].font_size ) );
+        lv_style_set_text_color( watchface_app_label_style[ i ], watchface_get_color( watchface_theme_config->dial.label[ i ].font_color ) );
         /**
          * alloc and setup label container
          */
@@ -190,13 +190,13 @@ void watchface_tile_setup( void ) {
             lv_obj_add_flag( watchface_label_cont, LV_OBJ_FLAG_HIDDEN );
         else
             lv_obj_clear_flag( watchface_label_cont, LV_OBJ_FLAG_HIDDEN );
-        lv_obj_add_style( watchface_label_cont, LV_PART_MAIN, &watchface_app_tile_style );
+        lv_obj_add_style( watchface_label_cont, &watchface_app_tile_style, LV_PART_MAIN );
         /**
          * alloc and setup label
          */
-        watchface_label[ i ] = lv_label_create( watchface_label_cont, NULL );
+        watchface_label[ i ] = lv_label_create( watchface_label_cont );
         lv_label_set_text( watchface_label[ i ], (const char*)watchface_theme_config->dial.label[ i ].label );
-        lv_obj_add_style( watchface_label[ i ], LV_PART_MAIN, watchface_app_label_style[ i ] );
+        lv_obj_add_style( watchface_label[ i ], watchface_app_label_style[ i ], LV_PART_MAIN );
         lv_obj_align_to( watchface_label[ i ], lv_obj_get_parent( watchface_label[ i ] ), watchface_get_align( watchface_theme_config->dial.label[ i ].align ), 0, 0 );
         /**
          * free font
@@ -210,7 +210,7 @@ void watchface_tile_setup( void ) {
         /**
          * alloc and setup image container
          */
-        lv_obj_t *watchface_image_cont = lv_cont_create( watchface_cont, NULL );
+        lv_obj_t *watchface_image_cont = lv_cont_create( watchface_cont );
         lv_obj_set_width( watchface_image_cont, watchface_theme_config->dial.image[ i ].x_size );
         lv_obj_set_height( watchface_image_cont, watchface_theme_config->dial.image[ i ].y_size );
         lv_obj_set_pos( watchface_image_cont, watchface_theme_config->dial.image[ i ].x_offset, watchface_theme_config->dial.image[ i ].y_offset );
@@ -219,13 +219,13 @@ void watchface_tile_setup( void ) {
         else
             lv_obj_clear_flag( watchface_image_cont, LV_OBJ_FLAG_HIDDEN );
         
-        lv_obj_add_style( watchface_image_cont, LV_PART_MAIN, &watchface_app_image_style );
+        lv_obj_add_style( watchface_image_cont, &watchface_app_image_style, LV_PART_MAIN );
         /**
          * alloc and setup image
          */
         watchface_image[ i ] = lv_img_create( watchface_image_cont );
         lv_img_set_src( watchface_image[ i ], watchface_theme_config->dial.image[ i ].file );
-        lv_obj_add_style( watchface_image[ i ], LV_PART_MAIN, &watchface_app_image_style );
+        lv_obj_add_style( watchface_image[ i ], &watchface_app_image_style, LV_PART_MAIN );
         lv_obj_align_to( watchface_image[ i ], watchface_image_cont, LV_ALIGN_CENTER, 0, 0 );
         lv_img_set_pivot( watchface_image[ i ], watchface_theme_config->dial.image[ i ].rotation_x_origin, watchface_theme_config->dial.image[ i ].rotation_y_origin );
         lv_img_set_angle( watchface_image[ i ], watchface_theme_config->dial.image[ i ].rotation_start );
@@ -267,9 +267,9 @@ void watchface_tile_setup( void ) {
     lv_obj_set_width( watchface_btn, lv_disp_get_hor_res( NULL ) );
     lv_obj_set_height( watchface_btn, lv_disp_get_ver_res( NULL ) );
     lv_obj_add_protect( watchface_btn, LV_PROTECT_CLICK_FOCUS );
-    lv_obj_add_style( watchface_btn, LV_PART_MAIN, &watchface_app_tile_style );
+    lv_obj_add_style( watchface_btn, &watchface_app_tile_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_btn, watchface_app_tile, LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_set_event_cb( watchface_btn, exit_watchface_app_tile_event_cb );
+    lv_obj_add_event_cb_cb( watchface_btn, exit_watchface_app_tile_event_cb, LV_EVENT_ALL, NULL );
     /**
      * setup activate and hibernate callback function
      */
@@ -282,7 +282,7 @@ void watchface_tile_setup( void ) {
     /**
      * setup watchface background task
      */
-    watchface_tile_task = lv_task_create( watchface_app_tile_update_task, 1000, LV_TASK_PRIO_MID, NULL );
+    watchface_tile_task = lv_timer_create( watchface_app_tile_update_task, 1000, NULL );
     /**
      * reload and setup theme config
      */
@@ -565,18 +565,18 @@ void watchface_reload_theme( void ) {
                 /**
                  * set new font
                  */
-                lv_style_set_text_font( watchface_app_label_style[ i ], LV_PART_MAIN, watchface_custom_font[ i ] );
+                lv_style_set_text_font( watchface_app_label_style[ i ], watchface_custom_font[ i ] );
             }
             else {
                 /**
                  * set default font if load failed
                  */
                 log_e("load font failed");                
-                lv_style_set_text_font( watchface_app_label_style[ i ], LV_PART_MAIN, watchface_get_font( watchface_theme_config->dial.label[ i ].font, watchface_theme_config->dial.label[ i ].font_size ) );
+                lv_style_set_text_font( watchface_app_label_style[ i ], watchface_get_font( watchface_theme_config->dial.label[ i ].font, watchface_theme_config->dial.label[ i ].font_size ) );
             }
         }
         else {
-            lv_style_set_text_font( watchface_app_label_style[ i ], LV_PART_MAIN, watchface_get_font( watchface_theme_config->dial.label[ i ].font, watchface_theme_config->dial.label[ i ].font_size ) );
+            lv_style_set_text_font( watchface_app_label_style[ i ], watchface_get_font( watchface_theme_config->dial.label[ i ].font, watchface_theme_config->dial.label[ i ].font_size ) );
         }
         lv_style_set_text_color( watchface_app_label_style[ i ], LV_PART_MAIN, watchface_get_color( watchface_theme_config->dial.label[ i ].font_color ) );
         /**
@@ -589,13 +589,13 @@ void watchface_reload_theme( void ) {
             lv_obj_add_flag( lv_obj_get_parent( watchface_label[ i ] ), LV_OBJ_FLAG_HIDDEN );
         else
             lv_obj_add_flag( lv_obj_get_parent( watchface_label[ i ] ), LV_OBJ_FLAG_HIDDEN );
-        lv_obj_add_style( lv_obj_get_parent( watchface_label[ i ] ), LV_PART_MAIN, &watchface_app_tile_style );
+        lv_obj_add_style( lv_obj_get_parent( watchface_label[ i ] ), &watchface_app_tile_style, LV_PART_MAIN );
         /**
          * alloc and setup label
          */
         lv_label_set_text( watchface_label[ i ], (const char*)watchface_theme_config->dial.label[ i ].label );
-        lv_obj_reset_style_list( watchface_label[ i ], LV_PART_MAIN );
-        lv_obj_add_style( watchface_label[ i ], LV_PART_MAIN, watchface_app_label_style[ i ] );
+        lv_obj_remove_style_all( watchface_label[ i ]);
+        lv_obj_add_style( watchface_label[ i ], watchface_app_label_style[ i ], LV_PART_MAIN );
         lv_obj_align_to( watchface_label[ i ], lv_obj_get_parent( watchface_label[ i ] ), watchface_get_align( watchface_theme_config->dial.label[ i ].align ), 0, 0 );
     }
     /**
@@ -1058,7 +1058,7 @@ void watchface_app_label_update( tm &info ) {
     }
 }
 
-void watchface_app_tile_update_task( lv_task_t *task ) {
+void watchface_app_tile_update_task( lv_timer_t *task ) {
     watchface_app_tile_update();
 }
 

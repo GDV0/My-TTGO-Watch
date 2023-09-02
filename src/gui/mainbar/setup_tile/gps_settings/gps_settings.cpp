@@ -58,7 +58,7 @@ void gps_settings_tile_setup( void ) {
     gps_tile_num = mainbar_add_setup_tile( 1, 1, "gps settings" );
     gps_settings_tile = mainbar_get_tile_obj( gps_tile_num );
 
-    lv_obj_add_style( gps_settings_tile, LV_PART_MAIN, SETUP_STYLE );
+    lv_obj_add_style( gps_settings_tile, SETUP_STYLE, LV_PART_MAIN );
 
     icon_t *gps_setup_icon = setup_register( "gps", &gps_64px, enter_gps_setup_event_cb );
     setup_hide_indicator( gps_setup_icon );
@@ -91,8 +91,8 @@ void gps_settings_tile_setup( void ) {
     lv_obj_t *gps_port_cont = wf_add_labeled_list( gps_settings_tile, "gps port (need reboot)", &gps_port_list, "PORT.A\nPORT.B\nPORT.C\nNONE", gps_port_list_event_handler, SETUP_STYLE );
     lv_obj_align_to( gps_port_cont, fakegps_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
-    gps_latlon_label = lv_label_create( gps_settings_tile, NULL);
-    lv_obj_add_style( gps_latlon_label, LV_PART_MAIN, ws_get_mainbar_style()  );
+    gps_latlon_label = lv_label_create( gps_settings_tile);
+    lv_obj_add_style( gps_latlon_label, ws_get_mainbar_style(), LV_PART_MAIN  );
     lv_label_set_text( gps_latlon_label, "fix: - lat: - lon: -");
     lv_obj_align_to( gps_latlon_label, gps_settings_tile, LV_ALIGN_BOTTOM_MID, 0, -5 );
 
@@ -174,21 +174,21 @@ bool gps_settings_latlon_update_cb( EventBits_t event, void *arg ) {
 }
 
 static void enter_gps_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_to_tilenumber( gps_tile_num, LV_ANIM_OFF );
                                         break;
     }
 }
 
 static void exit_gps_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_back();
                                         break;
     }
 }
 
 static void gps_port_list_event_handler( lv_obj_t *obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ):
             uint16_t port = lv_dropdown_get_selected( obj );
             switch( port ) {
@@ -206,25 +206,25 @@ static void gps_port_list_event_handler( lv_obj_t *obj, lv_event_t event ) {
 }
 
 static void autoon_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  gpsctl_set_autoon( lv_switch_get_state( obj ) );
     }
 }
 
 static void enable_on_standby_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  gpsctl_set_enable_on_standby( lv_switch_get_state( obj ) );
     }
 }
 
 static void app_use_gps_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  gpsctl_set_app_use_gps( lv_switch_get_state( obj ) );
     }
 }
 
 static void fakegps_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  gpsctl_set_gps_over_ip( lv_switch_get_state( obj ) );
     }
 }

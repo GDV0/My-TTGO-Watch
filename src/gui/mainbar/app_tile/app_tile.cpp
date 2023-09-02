@@ -82,19 +82,19 @@ void app_tile_setup( void ) {
         /*
          * create app icon container
          */
-        app_entry[ app ].icon_cont = lv_obj_create( app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ], NULL );
+        app_entry[ app ].icon_cont = lv_obj_create( app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ] );
         mainbar_add_slide_element( app_entry[ app ].icon_cont);
-        lv_obj_reset_style_list( app_entry[ app ].icon_cont, LV_PART_MAIN );
-        lv_obj_add_style( app_entry[ app ].icon_cont, LV_PART_MAIN, APP_ICON_STYLE );
+        lv_obj_remove_style_all( app_entry[ app ].icon_cont );
+        lv_obj_add_style( app_entry[ app ].icon_cont, APP_ICON_STYLE, LV_PART_MAIN );
         lv_obj_set_size( app_entry[ app ].icon_cont, APP_ICON_X_SIZE, APP_ICON_Y_SIZE );
         lv_obj_align_to( app_entry[ app ].icon_cont , app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ], LV_ALIGN_TOP_LEFT, app_entry[ app ].x, app_entry[ app ].y );
         /*
          * create app label
          */
-        app_entry[ app ].label = lv_label_create( app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ], NULL );
+        app_entry[ app ].label = lv_label_create( app_cont[ app / ( MAX_APPS_ICON_HORZ * MAX_APPS_ICON_VERT ) ] );
         mainbar_add_slide_element(app_entry[ app ].label);
-        lv_obj_reset_style_list( app_entry[ app ].label, LV_PART_MAIN );
-        lv_obj_add_style( app_entry[ app ].label, LV_PART_MAIN, APP_ICON_LABEL_STYLE );
+        lv_obj_remove_style_all( app_entry[ app ].label );
+        lv_obj_add_style( app_entry[ app ].label, APP_ICON_LABEL_STYLE, LV_PART_MAIN );
         lv_obj_set_size( app_entry[ app ].label, APP_LABEL_X_SIZE, APP_LABEL_Y_SIZE );
         lv_obj_align_to( app_entry[ app ].label , app_entry[ app ].icon_cont, LV_ALIGN_OUT_BOTTOM_MID, 3, 0 );
         lv_obj_add_flag( app_entry[ app ].icon_cont, LV_OBJ_FLAG_HIDDEN );

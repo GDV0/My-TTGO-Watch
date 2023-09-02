@@ -72,15 +72,15 @@ LV_IMG_DECLARE(down_32px);
 LV_FONT_DECLARE(Ubuntu_16px);
 LV_FONT_DECLARE(Ubuntu_32px);
 
-static void bluetooth_media_activate_cb( void );
+static lv_event_cb_t bluetooth_media_activate_cb( void );
 static bool bluetooth_media_event_cb( EventBits_t event, void *arg );
-static void enter_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event );
-static void exit_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event );
-static void bluetooth_media_volume_up_event_cb( lv_obj_t * obj, lv_event_t event );
-static void bluetooth_media_volume_down_event_cb( lv_obj_t * obj, lv_event_t event );
-static void bluetooth_media_play_event_cb( lv_obj_t * obj, lv_event_t event );
-static void bluetooth_media_next_event_cb( lv_obj_t * obj, lv_event_t event );
-static void bluetooth_media_prev_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t enter_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t exit_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t bluetooth_media_volume_up_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t bluetooth_media_volume_down_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t bluetooth_media_play_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t bluetooth_media_next_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t bluetooth_media_prev_event_cb( lv_obj_t * obj, lv_event_t event );
 static bool bluetooth_media_queue_msg( BluetoothJsonRequest &doc );
 
 void bluetooth_media_tile_setup( void ) {
@@ -130,7 +130,7 @@ void bluetooth_media_tile_setup( void ) {
     bluetooth_media_app = app_register( "media\nplayer", &play_64px, enter_bluetooth_media_cb );
 }
 
-static void bluetooth_media_activate_cb( void ) {
+static lv_event_cb_t bluetooth_media_activate_cb( void ) {
     wf_image_button_fade_in( bluetooth_exit_btn, 300, 0 );
     if( !lv_obj_get_hidden( bluetooth_media_play ) )
         wf_image_button_fade_in( bluetooth_media_play, 300, 0 );
@@ -143,8 +143,8 @@ static void bluetooth_media_activate_cb( void ) {
     wf_image_button_fade_in( bluetooth_media_volume_up, 300, 200 );
 }
 
-static void enter_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t enter_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       
             mainbar_jump_to_tilenumber( bluetooth_media_tile_num, LV_ANIM_OFF, true );
              break;
@@ -154,16 +154,16 @@ static void enter_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event ) {
     }    
 }
 
-static void exit_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t exit_bluetooth_media_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       
             mainbar_jump_back();
             break;
     }    
 }
 
-static void bluetooth_media_play_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t bluetooth_media_play_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             if( bluetooth_media_play_state == true ) {
                 lv_obj_add_flag( bluetooth_media_play, LV_OBJ_FLAG_HIDDEN );
@@ -181,32 +181,32 @@ static void bluetooth_media_play_event_cb( lv_obj_t * obj, lv_event_t event ) {
     }
 }
 
-static void bluetooth_media_volume_up_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t bluetooth_media_volume_up_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             gadgetbridge_send_msg( (char*)"\r\n{t:\"music\", n:\"volumeup\"}\r\n" );
             break;
     }
 }
 
-static void bluetooth_media_volume_down_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t bluetooth_media_volume_down_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             gadgetbridge_send_msg( (char*)"\r\n{t:\"music\", n:\"volumedown\"}\r\n" );
             break;
     }
 }
 
-static void bluetooth_media_next_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t bluetooth_media_next_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             gadgetbridge_send_msg( (char*)"\r\n{t:\"music\", n:\"next\"}\r\n" );
             break;
     }
 }
 
-static void bluetooth_media_prev_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t bluetooth_media_prev_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             gadgetbridge_send_msg( (char*)"\r\n{t:\"music\", n:\"previous\"}\r\n" );
             break;

@@ -44,9 +44,8 @@ public:
 
   TextArea& autoKeyboard(bool enable);
   
-  /*GDV Not allowed in LVGL >=v8
-  TextArea& alignText(lv_label_align_t mode);
-  */
+  TextArea& alignText(lv_text_align_t mode);
+  
   TextArea& digitsMode(bool onlyDigits, const char* filterDigitsList = "+-.,0123456789");
 
   static const uint16_t IsDigitsOnlyMode = 2;

@@ -87,7 +87,7 @@ void notify_settings_tile_setup( void ) {
 }
 
 static void notify_wakeup_switch_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): blectl_set_wakeup_on_notification( lv_switch_get_state( obj ) );
                                         break;
     }
@@ -95,35 +95,35 @@ static void notify_wakeup_switch_event_handler( lv_obj_t * obj, lv_event_t event
 
 
 static void notify_show_switch_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): blectl_set_show_notification( lv_switch_get_state( obj ) );
                                         break;
     }
 }
 
 static void notify_vibe_switch_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): blectl_set_vibe_notification( lv_switch_get_state( obj ) );
                                         break;
     }
 }
 
 static void notify_sound_switch_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): blectl_set_sound_notification( lv_switch_get_state( obj ) );
                                         break;
     }
 }
 
 static void notify_media_switch_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): blectl_set_media_notification( lv_switch_get_state( obj ) );
                                         break;
     }
 }
 
 static void notify_enter_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_to_tilenumber( notify_settings_tile_num, LV_ANIM_OFF );
                                         break;
     }
@@ -131,7 +131,7 @@ static void notify_enter_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
 }
 
 static void notify_exit_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_back();
                                         break;
     }

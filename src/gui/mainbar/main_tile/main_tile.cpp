@@ -95,9 +95,9 @@ LV_FONT_DECLARE(Ubuntu_16px);
     lv_font_t *icon_font = &Ubuntu_16px;
 #endif
 
-lv_task_t * main_tile_task;
+lv_timer_t * main_tile_task;
 
-static void main_tile_update_task( lv_task_t * task );
+static void main_tile_update_task( lv_timer_t * task );
 static bool mainbar_blectl_event_cb( EventBits_t event, void *arg );
 static bool mainbar_wifictl_event_cb( EventBits_t event, void *arg );
 static bool mainbar_pmu_event_cb( EventBits_t event, void *arg );
@@ -120,48 +120,52 @@ void main_tile_setup( void ) {
     main_cont = mainbar_get_tile_obj( main_tile_num );
     style = ws_get_mainbar_style();
 
-    lv_style_copy( &timestyle, style);
-    lv_style_set_text_font( &timestyle, LV_STATE_DEFAULT, time_font );
+    lv_style_init( &timestyle);
+    lv_style_set_text_font( &timestyle, time_font );
 
-    lv_style_copy( &datestyle, style);
-    lv_style_set_text_font( &datestyle, LV_STATE_DEFAULT, date_font );
+    lv_style_init( &datestyle);
+    lv_style_set_text_font( &datestyle, date_font );
 
-    lv_style_copy( &infostyle, style);
-    lv_style_set_text_font( &infostyle, LV_STATE_DEFAULT, info_font );
+    lv_style_init( &infostyle);
+    lv_style_set_text_font( &infostyle, info_font );
 
-    lv_style_copy( &tempstyle, style);
-    lv_style_set_text_font( &tempstyle, LV_STATE_DEFAULT, temp_font );
+    lv_style_init( &tempstyle);
+    lv_style_set_text_font( &tempstyle, temp_font );
 
-    lv_style_copy( &iconstyle, style);
-    lv_style_set_text_font( &iconstyle, LV_STATE_DEFAULT, icon_font );
+    lv_style_init( &iconstyle);
+    lv_style_set_text_font( &iconstyle, icon_font );
 
     clock_cont = mainbar_obj_create( main_cont );
     lv_obj_set_size( clock_cont, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) / 2 );
-    lv_obj_add_style( clock_cont, LV_PART_MAIN, style );
+    lv_obj_add_style( clock_cont, style, LV_PART_MAIN );
     lv_obj_align_to( clock_cont, main_cont, LV_ALIGN_CENTER, 0, 0 );
     
-    timelabel = lv_label_create( clock_cont , NULL);
+    timelabel = lv_label_create( clock_cont);
     lv_label_set_text(timelabel, "00:00");
-    lv_obj_reset_style_list( timelabel, LV_PART_MAIN );
-    lv_obj_add_style( timelabel, LV_PART_MAIN, &timestyle );
+    lv_obj_remove_style_all( timelabel );
+    lv_obj_add_style( timelabel, style, LV_PART_MAIN );
+    lv_obj_add_style( timelabel, &timestyle, LV_PART_MAIN );
     lv_obj_align_to(timelabel, NULL, LV_ALIGN_CENTER, 0, 0);
 
-    datelabel = lv_label_create( clock_cont , NULL);
+    datelabel = lv_label_create( clock_cont);
     lv_label_set_text(datelabel, "1.Jan 1970");
-    lv_obj_reset_style_list( datelabel, LV_PART_MAIN );
-    lv_obj_add_style( datelabel, LV_PART_MAIN, &datestyle );
+    lv_obj_remove_style_all( datelabel );
+    lv_obj_add_style( datelabel, style, LV_PART_MAIN );
+    lv_obj_add_style( datelabel, &datestyle, LV_PART_MAIN );
     lv_obj_align_to( datelabel, clock_cont, LV_ALIGN_BOTTOM_MID, 0, 0 );
 
-    infolabel = lv_label_create( clock_cont , NULL);
+    infolabel = lv_label_create( clock_cont);
     lv_label_set_text(infolabel, "battery: n/a");
-    lv_obj_reset_style_list( infolabel, LV_PART_MAIN );
-    lv_obj_add_style( infolabel, LV_PART_MAIN, &infostyle );
+    lv_obj_remove_style_all( infolabel );
+    lv_obj_add_style( infolabel, style, LV_PART_MAIN );
+    lv_obj_add_style( infolabel, &infostyle, LV_PART_MAIN );
     lv_obj_align_to( infolabel, datelabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
 
-    templabel = lv_label_create( clock_cont , NULL);
+    templabel = lv_label_create( clock_cont);
     lv_label_set_text(templabel, "temp/humidity: n/a");
-    lv_obj_reset_style_list( templabel, LV_PART_MAIN );
-    lv_obj_add_style( templabel, LV_PART_MAIN, &tempstyle );
+    lv_obj_remove_style_all( templabel );
+    lv_obj_add_style( templabel, style, LV_PART_MAIN );
+    lv_obj_add_style( templabel, &tempstyle, LV_PART_MAIN );
     lv_obj_align_to( templabel, infolabel, LV_ALIGN_OUT_TOP_MID, 0, 0 );
     
     if ( !sensor_get_available() )
@@ -173,22 +177,22 @@ void main_tile_setup( void ) {
         widget_entry[ widget ].active = false;
 
         widget_entry[ widget ].icon_cont = mainbar_obj_create( main_cont );
-        lv_obj_reset_style_list( widget_entry[ widget ].icon_cont, LV_PART_MAIN );
-        lv_obj_add_style( widget_entry[ widget ].icon_cont, LV_PART_MAIN, style );
+        lv_obj_remove_style_all( widget_entry[ widget ].icon_cont );
+        lv_obj_add_style( widget_entry[ widget ].icon_cont, style, LV_PART_MAIN );
         lv_obj_set_size( widget_entry[ widget ].icon_cont, WIDGET_X_SIZE, WIDGET_Y_SIZE );
         lv_obj_add_flag( widget_entry[ widget ].icon_cont, LV_OBJ_FLAG_HIDDEN );
         // create app label
-        widget_entry[ widget ].label = lv_label_create( widget_entry[ widget ].icon_cont , NULL );
+        widget_entry[ widget ].label = lv_label_create( widget_entry[ widget ].icon_cont );
         mainbar_add_slide_element( widget_entry[ widget ].label);
-        lv_obj_reset_style_list( widget_entry[ widget ].label, LV_PART_MAIN );
-        lv_obj_add_style( widget_entry[ widget ].label, LV_PART_MAIN, &iconstyle );
+        lv_obj_remove_style_all( widget_entry[ widget ].label );
+        lv_obj_add_style( widget_entry[ widget ].label, &iconstyle, LV_PART_MAIN );
         lv_obj_set_size( widget_entry[ widget ].label, WIDGET_X_SIZE, WIDGET_LABEL_Y_SIZE );
         lv_obj_align_to( widget_entry[ widget ].label , widget_entry[ widget ].icon_cont, LV_ALIGN_BOTTOM_MID, 0, 0 );
         // create app label
         widget_entry[ widget ].ext_label = lv_label_create( widget_entry[ widget ].icon_cont );
         mainbar_add_slide_element( widget_entry[ widget ].ext_label);
-        lv_obj_reset_style_list( widget_entry[ widget ].ext_label, LV_PART_MAIN );
-        lv_obj_add_style( widget_entry[ widget ].ext_label, LV_PART_MAIN, &iconstyle );
+        lv_obj_remove_style_all( widget_entry[ widget ].ext_label );
+        lv_obj_add_style( widget_entry[ widget ].ext_label, &iconstyle, LV_PART_MAIN );
         lv_obj_set_size( widget_entry[ widget ].ext_label, WIDGET_X_SIZE, WIDGET_LABEL_Y_SIZE );
         lv_obj_align_to( widget_entry[ widget ].ext_label , widget_entry[ widget ].label, LV_ALIGN_OUT_TOP_MID, 0, 0 );
         // create img and indicator
@@ -204,7 +208,7 @@ void main_tile_setup( void ) {
 
     info_cont = mainbar_obj_create( clock_cont );
     lv_obj_set_size( info_cont, lv_disp_get_hor_res( NULL ) , 16 );
-    lv_obj_add_style( info_cont, LV_PART_MAIN, style );
+    lv_obj_add_style( info_cont, style, LV_PART_MAIN );
     lv_obj_align_to( info_cont, clock_cont, LV_ALIGN_TOP_MID, 0, 8 );
 
     batteryicon = lv_img_create( info_cont );
@@ -221,16 +225,16 @@ void main_tile_setup( void ) {
 
     batterylabel = lv_label_create( info_cont );
     lv_label_set_text(batterylabel, "100%" );
-    lv_obj_reset_style_list( batterylabel, LV_PART_MAIN );
-    lv_obj_add_style( batterylabel, LV_PART_MAIN, &datestyle );
+    lv_obj_remove_style_all( batterylabel );
+    lv_obj_add_style( batterylabel, &datestyle, LV_PART_MAIN );
     lv_obj_align_to(batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0);
 
-    lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
-    lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
+    lv_obj_set_style_local_image_recolor( wifiicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
+    lv_obj_set_style_local_image_recolor( bluetoothicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
     lv_obj_add_flag( wifiicon, LV_OBJ_FLAG_HIDDEN );
     lv_obj_add_flag( bluetoothicon, LV_OBJ_FLAG_HIDDEN );
 
-    main_tile_task = lv_task_create( main_tile_update_task, 500, LV_TASK_PRIO_MID, NULL );
+    main_tile_task = lv_timer_create( main_tile_update_task, 500, NULL );
 
     pmu_register_cb( PMUCTL_STATUS, mainbar_pmu_event_cb, "mainbar pmu");
     blectl_register_cb( BLECTL_CONNECT | BLECTL_DISCONNECT | BLECTL_ON | BLECTL_OFF, mainbar_blectl_event_cb, "mainbar bluetooth" );
@@ -259,11 +263,11 @@ static bool mainbar_pmu_event_cb( EventBits_t event, void *arg ) {
                 wf_label_printf( batterylabel, "%d%%", percent );
                 lv_obj_align_to(batterylabel, batteryicon, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0);
                 if( pmu_info & PMUCTL_STATUS_CHARGING ) {
-                    lv_obj_set_style_local_image_recolor( batteryicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN );
+                    lv_obj_set_style_local_image_recolor( batteryicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN );
                     lv_img_set_src( batteryicon, LV_SYMBOL_CHARGE );
                 }
                 else {
-                    lv_obj_set_style_local_image_recolor( batteryicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE );
+                    lv_obj_set_style_local_image_recolor( batteryicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE );
                     if ( percent >= 75 ) { 
                         lv_img_set_src( batteryicon, LV_SYMBOL_BATTERY_FULL );
                     } else if( percent >=50 && percent < 74) {
@@ -272,10 +276,10 @@ static bool mainbar_pmu_event_cb( EventBits_t event, void *arg ) {
                         lv_img_set_src( batteryicon, LV_SYMBOL_BATTERY_2 );
                     } else if( percent >=15 && percent < 34) {
                         lv_img_set_src( batteryicon, LV_SYMBOL_BATTERY_1 );
-                        lv_obj_set_style_local_image_recolor( batteryicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW );
+                        lv_obj_set_style_local_image_recolor( batteryicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW );
                     } else if( percent >=0 && percent < 14) {
                         lv_img_set_src( batteryicon, LV_SYMBOL_BATTERY_EMPTY );
-                        lv_obj_set_style_local_image_recolor( batteryicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
+                        lv_obj_set_style_local_image_recolor( batteryicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
                     }
                 }
                 break;
@@ -292,16 +296,16 @@ static bool mainbar_blectl_event_cb( EventBits_t event, void *arg ) {
         case BLECTL_ON:
             blectl_state = true;
             lv_obj_clear_flag( bluetoothicon, LV_OBJ_FLAG_HIDDEN );
-            lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
+            lv_obj_set_style_local_image_recolor( bluetoothicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
             break;
         case BLECTL_OFF:
             blectl_state = false;
             lv_obj_add_flag( bluetoothicon, LV_OBJ_FLAG_HIDDEN );
-            lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
+            lv_obj_set_style_local_image_recolor( bluetoothicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
             break;
         case BLECTL_CONNECT:
             if( blectl_state )
-                lv_obj_set_style_local_image_recolor( bluetoothicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE );
+                lv_obj_set_style_local_image_recolor( bluetoothicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE );
             break;
         case BLECTL_DISCONNECT:
             if( blectl_state )
@@ -319,20 +323,20 @@ static bool mainbar_wifictl_event_cb( EventBits_t event, void *arg ) {
         case WIFICTL_ON:
             wifictl_state = true;
             lv_obj_clear_flag( wifiicon, LV_OBJ_FLAG_HIDDEN );
-            lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
+            lv_obj_set_style_local_image_recolor( wifiicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
             break;
         case WIFICTL_OFF:
             wifictl_state = false;
             lv_obj_add_flag( wifiicon, LV_OBJ_FLAG_HIDDEN );
-            lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
+            lv_obj_set_style_local_image_recolor( wifiicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED );
             break;
         case WIFICTL_CONNECT:
             if( wifictl_state )
-                lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE );
+                lv_obj_set_style_local_image_recolor( wifiicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE );
             break;
         case WIFICTL_DISCONNECT:
             if( wifictl_state )
-                lv_obj_set_style_local_image_recolor( wifiicon, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
+                lv_obj_set_style_local_image_recolor( wifiicon, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY );
             break;
     }
     main_tile_align_widgets();
@@ -344,19 +348,19 @@ static bool main_tile_style_event_cb( EventBits_t event, void *arg ){
         case STYLE_CHANGE:     style = ws_get_mainbar_style();
 
                                 lv_style_copy( &timestyle, style);
-                                lv_style_set_text_font( &timestyle, LV_STATE_DEFAULT, time_font );
+                                lv_style_set_text_font( &timestyle, time_font );
 
                                 lv_style_copy( &datestyle, style);
-                                lv_style_set_text_font( &datestyle, LV_STATE_DEFAULT, date_font );
+                                lv_style_set_text_font( &datestyle, date_font );
 
                                 lv_style_copy( &infostyle, style);
-                                lv_style_set_text_font( &infostyle, LV_STATE_DEFAULT, info_font );
+                                lv_style_set_text_font( &infostyle, info_font );
 
                                 lv_style_copy( &tempstyle, style);
-                                lv_style_set_text_font( &tempstyle, LV_STATE_DEFAULT, temp_font );
+                                lv_style_set_text_font( &tempstyle, temp_font );
 
                                 lv_style_copy( &iconstyle, style);
-                                lv_style_set_text_font( &iconstyle, LV_STATE_DEFAULT, icon_font );
+                                lv_style_set_text_font( &iconstyle, icon_font );
                                 break;
     }
     return( true );
@@ -576,7 +580,7 @@ void main_tile_update_time( bool force ) {
     }
 }
 
-static void main_tile_update_task( lv_task_t * task ) {
+static void main_tile_update_task( lv_timer_t * task ) {
     /*
      * check if maintile alread initialized
      */

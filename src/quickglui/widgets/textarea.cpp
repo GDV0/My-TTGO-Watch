@@ -42,7 +42,7 @@ TextArea& TextArea::text(const char * txt) {
 const char* TextArea::text() {
   return lv_textarea_get_text(native);
 }
-TextArea& TextArea::alignText(lv_label_align_t mode) {
+TextArea& TextArea::alignText(lv_text_align_t mode) {
   lv_obj_set_style_text_align(native, mode, 0);
   return *this;
 }
@@ -68,7 +68,7 @@ void TextArea::Action(lv_obj_t * obj, lv_event_t event) {
     
     if (!autoKeyboard) return; //Nothing to do for now
 
-    switch (lv_event_get_code(event)) {
+    switch (event.code) {
         case LV_EVENT_CLICKED:
             if (digitsOnlyMode)
                 num_keyboard_set_textarea(obj);

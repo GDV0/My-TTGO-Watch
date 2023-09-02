@@ -95,42 +95,42 @@ void watchface_setup_tile_setup( uint32_t tile_num ) {
     /**
      * btn container
      */
-    lv_obj_t *watchface_btn_cont = lv_obj_create( watchface_setup_tile, NULL );
+    lv_obj_t *watchface_btn_cont = lv_obj_create( watchface_setup_tile );
     lv_obj_set_size( watchface_btn_cont, lv_disp_get_hor_res( NULL ) - THEME_ICON_PADDING * 2, 90 );
-    lv_obj_add_style( watchface_btn_cont, LV_PART_MAIN, SETUP_STYLE );
+    lv_obj_add_style( watchface_btn_cont, SETUP_STYLE, LV_PART_MAIN );
     lv_obj_align_to( watchface_btn_cont, watchface_onoff_show_notifications_cont, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_ICON_PADDING );
 
-    lv_obj_t *watchface_reload_and_test_btn = lv_btn_create( watchface_btn_cont, NULL );
+    lv_obj_t *watchface_reload_and_test_btn = lv_btn_create( watchface_btn_cont );
     lv_obj_set_size( watchface_reload_and_test_btn, lv_disp_get_hor_res( NULL ) / 2 - THEME_ICON_PADDING * 2, 40 );
-    lv_obj_add_style( watchface_reload_and_test_btn, LV_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( watchface_reload_and_test_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( watchface_reload_and_test_btn, watchface_btn_cont, LV_ALIGN_TOP_LEFT, 0, 0 );
-    lv_obj_set_event_cb( watchface_reload_and_test_btn, watchface_setup_reload_and_test_cb );
-    lv_obj_t *watchface_reload_and_test_btn_label = lv_label_create( watchface_reload_and_test_btn, NULL );
+    lv_obj_add_event_cb_cb( watchface_reload_and_test_btn, watchface_setup_reload_and_test_cb, LV_EVENT_ALL, NULL );
+    lv_obj_t *watchface_reload_and_test_btn_label = lv_label_create( watchface_reload_and_test_btn );
     lv_label_set_text( watchface_reload_and_test_btn_label, "reload and test");
 
-    lv_obj_t *watchface_decompress_btn = lv_btn_create( watchface_btn_cont, NULL );
+    lv_obj_t *watchface_decompress_btn = lv_btn_create( watchface_btn_contL );
     lv_obj_set_size( watchface_decompress_btn, lv_disp_get_hor_res( NULL ) / 2 - THEME_ICON_PADDING * 2, 40 );
-    lv_obj_add_style( watchface_decompress_btn, LV_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( watchface_decompress_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( watchface_decompress_btn, watchface_btn_cont, LV_ALIGN_BOTTOM_LEFT, 0, 0 );
-    lv_obj_set_event_cb( watchface_decompress_btn,watchface_setup_decompress_cb );
-    lv_obj_t *watchface_decompress_btn_label = lv_label_create( watchface_decompress_btn, NULL );
+    lv_obj_add_event_cb_cb( watchface_decompress_btn,watchface_setup_decompress_cb, LV_EVENT_ALL, NULL );
+    lv_obj_t *watchface_decompress_btn_label = lv_label_create( watchface_decompress_btn );
     lv_label_set_text( watchface_decompress_btn_label, "install theme");
 
-    lv_obj_t *watchface_default_btn = lv_btn_create( watchface_btn_cont, NULL );
+    lv_obj_t *watchface_default_btn = lv_btn_create( watchface_btn_cont );
     lv_obj_set_size( watchface_default_btn, lv_disp_get_hor_res( NULL ) / 2 - THEME_ICON_PADDING * 2, 90 );
-    lv_obj_add_style( watchface_default_btn, LV_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( watchface_default_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( watchface_default_btn, watchface_btn_cont, LV_ALIGN_RIGHT_MID, 0, 0 );
-    lv_obj_set_event_cb( watchface_default_btn, watchface_setup_default_cb );
-    lv_obj_t *watchface_default_btn_label = lv_label_create( watchface_default_btn, NULL );
+    lv_obj_add_event_cb_cb( watchface_default_btn, watchface_setup_default_cb, LV_EVENT_ALL, NULL );
+    lv_obj_t *watchface_default_btn_label = lv_label_create( watchface_default_btn );
     lv_label_set_text( watchface_default_btn_label , "default");
     /**
      * infobox container
      */
-    lv_obj_t *watchface_info_cont = lv_obj_create( watchface_setup_tile, NULL );
+    lv_obj_t *watchface_info_cont = lv_obj_create( watchface_setup_tile );
     lv_obj_set_size( watchface_info_cont, lv_disp_get_hor_res( NULL ) , 30 );
-    lv_obj_add_style( watchface_info_cont, LV_PART_MAIN, SETUP_STYLE );
+    lv_obj_add_style( watchface_info_cont, SETUP_STYLE, LV_PART_MAIN );
     lv_obj_align_to( watchface_info_cont, watchface_btn_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
-    watchface_info_label = lv_label_create( watchface_info_cont, NULL );
+    watchface_info_label = lv_label_create( watchface_info_cont );
     lv_obj_align_to( watchface_info_label, watchface_info_cont, LV_ALIGN_CENTER, 0,0 );
     lv_label_set_text( watchface_info_label, "" );
 

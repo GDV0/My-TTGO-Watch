@@ -46,24 +46,24 @@ icon_t *setup_register( const char* setupname, const lv_img_dsc_t *icon, lv_even
     lv_label_set_text( setup->label, setupname );
     lv_obj_align_to( setup->label , setup->icon_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_set_style_text_align(setup->label, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_add_style( setup->label, LV_PART_MAIN, SYSTEM_ICON_LABEL_STYLE );
+    lv_obj_add_style( setup->label, SYSTEM_ICON_LABEL_STYLE, LV_PART_MAIN );
     lv_obj_clear_flag( setup->icon_cont, LV_OBJ_FLAG_HIDDEN );
     lv_obj_clear_flag( setup->label, LV_OBJ_FLAG_HIDDEN );
     // setup icon and set event callback
     setup->icon_img = lv_imgbtn_create( setup->icon_cont );
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_RELEASED, icon);
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_PRESSED, icon);
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_RELEASED, icon);
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_PRESSED, icon);
-    lv_obj_add_style( setup->icon_img, LV_PART_MAIN, SYSTEM_ICON_STYLE );
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_RELEASED, icon, NULL, NULL);
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_PRESSED, icon, NULL, NULL);
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_RELEASED, icon, NULL, NULL);
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_PRESSED, icon, NULL, NULL);
+    lv_obj_add_style( setup->icon_img, SYSTEM_ICON_STYLE, LV_PART_MAIN );
     lv_obj_align_to( setup->icon_img , setup->icon_cont, LV_ALIGN_TOP_LEFT, 0, 0 );
-    lv_obj_set_event_cb( setup->icon_img, event_cb );
+    lv_obj_add_event_cb( setup->icon_img, event_cb, LV_EVENT_ALL, NULL );
     // setup icon indicator
     setup->icon_indicator = lv_img_create( setup->icon_cont );
     lv_img_set_src( setup->icon_indicator, &info_ok_16px );
     lv_obj_align_to( setup->icon_indicator, setup->icon_cont, LV_ALIGN_TOP_RIGHT, 0, 0 );
     lv_obj_add_flag( setup->icon_indicator, LV_OBJ_FLAG_HIDDEN );
-    lv_obj_add_style( setup->icon_indicator, LV_PART_MAIN, MAINBAR_STYLE );
+    lv_obj_add_style( setup->icon_indicator, MAINBAR_STYLE, LV_PART_MAIN );
     mainbar_add_slide_element( setup->icon_img );
     
     lv_obj_invalidate( lv_scr_act() );
@@ -123,11 +123,11 @@ void setup_set_icon( icon_t *setup, lv_obj_t *icon ) {
         return;
     }
 
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_RELEASED, icon);
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_PRESSED, icon);
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_RELEASED, icon);
-    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_PRESSED, icon);
-    lv_obj_reset_style_list( setup->icon_img, LV_PART_MAIN );
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_RELEASED, icon, NULL, NULL);
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_PRESSED, icon, NULL, NULL);
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_RELEASED, icon, NULL, NULL);
+    lv_imgbtn_set_src( setup->icon_img, LV_IMGBTN_STATE_CHECKED_PRESSED, icon, NULL, NULL);
+    lv_obj_remove_style_all( setup->icon_img );
     lv_obj_align_to( setup->icon_img , setup->icon_cont, LV_ALIGN_TOP_LEFT, 0, 0 );
     lv_obj_invalidate( lv_scr_act() );
 }

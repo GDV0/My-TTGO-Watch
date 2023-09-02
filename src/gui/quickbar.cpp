@@ -61,17 +61,17 @@ LV_IMG_DECLARE(bluetooth_64px);
 LV_IMG_DECLARE(wifi_64px);
 LV_FONT_DECLARE(Ubuntu_48px);
 
-lv_task_t * quickbar_task;
+lv_timer_t * quickbar_task;
 static uint32_t quickbar_counter = 0;
 
 /**
  * quickbar icon events
  */
-static void quickbar_maintile_event_cb( lv_obj_t *obj, lv_event_t event );
-static void quickbar_setup_event_cb( lv_obj_t *obj, lv_event_t event );
-static void quickbar_screenshot_event_cb( lv_obj_t *obj, lv_event_t event );
-static void quickbar_wifi_event_cb( lv_obj_t *obj, lv_event_t event );
-static void quickbar_bluetooth_event_cb( lv_obj_t *obj, lv_event_t event );
+static lv_event_cb_t quickbar_maintile_event_cb( lv_obj_t *obj, lv_event_t event );
+static lv_event_cb_t quickbar_setup_event_cb( lv_obj_t *obj, lv_event_t event );
+static lv_event_cb_t quickbar_screenshot_event_cb( lv_obj_t *obj, lv_event_t event );
+static lv_event_cb_t quickbar_wifi_event_cb( lv_obj_t *obj, lv_event_t event );
+static lv_event_cb_t quickbar_bluetooth_event_cb( lv_obj_t *obj, lv_event_t event );
 /**
  * quickbar external events
  */
@@ -79,7 +79,7 @@ static bool quickbar_blectl_event_cb( EventBits_t event, void *arg );
 static bool quickbar_wifictl_event_cb( EventBits_t event, void *arg );
 static bool quickbar_button_event_cb( EventBits_t event, void *arg );
 static bool quickbar_powermgm_event_cb( EventBits_t event, void *arg );
-static void quickbar_counter_task( lv_task_t * task );
+static void quickbar_counter_task( lv_timer_t * task );
 
 void quickbar_setup( void ){
     /*
@@ -92,62 +92,62 @@ void quickbar_setup( void ){
 
     /*Copy a built-in style to initialize the new style*/
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ] );
-    lv_style_set_text_font( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_STATE_DEFAULT, &Ubuntu_48px);
-    lv_style_set_radius( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, 0 );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_bg_opa( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, LV_OPA_80 );
-    lv_style_set_border_width( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, 0 );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_radius( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, 16 );
-    lv_style_set_image_recolor( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN, LV_COLOR_WHITE );
+    lv_style_set_text_font( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], &Ubuntu_48px);
+    lv_style_set_radius( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], 0 );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_COLOR_WHITE );
+    lv_style_set_bg_opa( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_OPA_80 );
+    lv_style_set_border_width( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], 0 );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_COLOR_WHITE );
+    lv_style_set_radius( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], 16 );
+    lv_obj_set_style_img_recolor( &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_COLOR_WHITE, LV_PART_MAIN );
 
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ] );
     lv_style_copy( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], &quickbarstyle[ QUICKBAR_STYLE_NORMAL ] );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_bg_opa( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_PART_MAIN, LV_OPA_0 );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_image_recolor( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_IMGBTN_PART_MAIN, LV_COLOR_WHITE );
-    lv_style_set_image_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_IMGBTN_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_COLOR_WHITE );
+    lv_style_set_bg_opa( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_OPA_0 );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_COLOR_WHITE );
+    lv_obj_set_style_img_recolor( &quickbarstyle[ QUICKBAR_STYLE_LIGHT ], LV_COLOR_WHITE, LV_PART_MAIN );
+    lv_obj_set_style_img_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_OPA_COVER, LV_PART_MAIN );
 
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_DARK ] );
     lv_style_copy( &quickbarstyle[ QUICKBAR_STYLE_DARK ], &quickbarstyle[ QUICKBAR_STYLE_LIGHT ] );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_image_recolor( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_IMGBTN_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_image_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_IMGBTN_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_COLOR_BLACK );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_COLOR_BLACK );
+    lv_obj_set_style_img_recolor( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_COLOR_BLACK, LV_PART_MAIN );
+    lv_obj_set_style_img_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_OPA_COVER, LV_PART_MAIN );
 
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_GREEN ] );
     lv_style_copy( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], &quickbarstyle[ QUICKBAR_STYLE_LIGHT ]  );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_image_recolor( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_IMGBTN_PART_MAIN, LV_COLOR_GREEN );
-    lv_style_set_image_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_IMGBTN_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_COLOR_BLACK );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_COLOR_BLACK );
+    lv_obj_set_style_img_recolor( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_COLOR_GREEN, LV_PART_MAIN );
+    lv_obj_set_style_img_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_GREEN ], LV_PART_MAIN, LV_OPA_COVER );
 
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_RED ] );
     lv_style_copy( &quickbarstyle[ QUICKBAR_STYLE_RED ], &quickbarstyle[ QUICKBAR_STYLE_LIGHT ]  );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_image_recolor( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_IMGBTN_PART_MAIN, LV_COLOR_RED );
-    lv_style_set_image_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_IMGBTN_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_COLOR_BLACK );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_COLOR_BLACK );
+    lv_obj_set_style_img_recolor( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_COLOR_RED, LV_PART_MAIN );
+    lv_obj_set_style_img_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_OPA_COVER, LV_PART_MAIN );
 
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_GRAY ] );
     lv_style_copy( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], &quickbarstyle[ QUICKBAR_STYLE_LIGHT ]  );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_image_recolor( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_IMGBTN_PART_MAIN, LV_COLOR_GRAY );
-    lv_style_set_image_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_IMGBTN_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_COLOR_BLACK );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_COLOR_BLACK );
+    lv_obj_set_style_img_recolor( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_COLOR_GRAY, LV_PART_MAIN );
+    lv_obj_set_style_img_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_OPA_COVER, LV_PART_MAIN );
 
     lv_style_init( &quickbarstyle[ QUICKBAR_STYLE_TRANS ] );
     lv_style_copy( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], &quickbarstyle[ QUICKBAR_STYLE_LIGHT ]  );
-    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_bg_opa( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_PART_MAIN, LV_OPA_TRANSP );
-    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_image_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_IMGBTN_PART_MAIN, LV_OPA_COVER );
+    lv_style_set_bg_color( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_COLOR_BLACK );
+    lv_style_set_bg_opa( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_OPA_TRANSP );
+    lv_style_set_text_color( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_COLOR_BLACK );
+    lv_obj_set_style_img_recolor_opa( &quickbarstyle[ QUICKBAR_STYLE_TRANS ], LV_OPA_COVER, LV_PART_MAIN );
 
-    quickbar = lv_cont_create( lv_scr_act(), NULL );
+    quickbar = lv_obj_create( lv_scr_act() );
     lv_obj_set_width( quickbar, 48 * 3 );
-    lv_obj_reset_style_list( quickbar, LV_PART_MAIN );
-    lv_obj_add_style( quickbar, LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_NORMAL ] );
+    lv_obj_remove_style_all( quickbar );
+    lv_obj_add_style( quickbar, &quickbarstyle[ QUICKBAR_STYLE_NORMAL ], LV_PART_MAIN );
     
     #if defined( ROUND_DISPLAY )
         lv_obj_set_height( quickbar, 48 * 2 + 64 );
@@ -157,10 +157,10 @@ void quickbar_setup( void ){
         lv_obj_align_to( quickbar, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0 );
     #endif
 
-    quickbar_time_label = lv_label_create( quickbar , NULL);
+    quickbar_time_label = lv_label_create( quickbar );
     lv_label_set_text( quickbar_time_label, "00:00");
-    lv_obj_reset_style_list( quickbar_time_label, LV_PART_MAIN );
-    lv_obj_add_style( quickbar_time_label, LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_DARK ]  );
+    lv_obj_remove_style_all( quickbar_time_label );
+    lv_obj_add_style( quickbar_time_label, &quickbarstyle[ QUICKBAR_STYLE_DARK ], LV_PART_MAIN  );
     lv_obj_align_to( quickbar_time_label, NULL, LV_ALIGN_TOP_MID, 0, 0);
 
     quickbar_setup_btn = wf_add_image_button( quickbar, setup_32px, quickbar_setup_event_cb, &quickbarstyle[ QUICKBAR_STYLE_DARK ] );
@@ -340,7 +340,7 @@ void quickbar_hide( bool hide ) {
     }
 }
 
-static void quickbar_maintile_event_cb( lv_obj_t *obj, lv_event_t event ) {
+static lv_event_cb_t quickbar_maintile_event_cb( lv_obj_t *obj, lv_event_t event ) {
     /*
      * check if quickar already initialized
      */
@@ -349,7 +349,7 @@ static void quickbar_maintile_event_cb( lv_obj_t *obj, lv_event_t event ) {
         return;
     }
     
-    switch ( event ) {
+    switch ( event.code ) {
         case ( LV_EVENT_CLICKED ):
             quickbar_hide( true );
             mainbar_jump_to_maintile( LV_ANIM_OFF );
@@ -357,7 +357,7 @@ static void quickbar_maintile_event_cb( lv_obj_t *obj, lv_event_t event ) {
     }
 }
 
-static void quickbar_setup_event_cb( lv_obj_t *obj, lv_event_t event ) {
+static lv_event_cb_t quickbar_setup_event_cb( lv_obj_t *obj, lv_event_t event ) {
     /*
      * check if quickar already initialized
      */
@@ -366,7 +366,7 @@ static void quickbar_setup_event_cb( lv_obj_t *obj, lv_event_t event ) {
         return;
     }
     
-    switch ( event ) {
+    switch ( event.code ) {
         case ( LV_EVENT_CLICKED ):
             quickbar_hide( true );
             mainbar_jump_to_tilenumber( setup_get_tile_num(), LV_ANIM_OFF );
@@ -374,7 +374,7 @@ static void quickbar_setup_event_cb( lv_obj_t *obj, lv_event_t event ) {
     }
 }
 
-static void quickbar_screenshot_event_cb( lv_obj_t *obj, lv_event_t event ) {
+static lv_event_cb_t quickbar_screenshot_event_cb( lv_obj_t *obj, lv_event_t event ) {
     /*
      * check if quickar already initialized
      */
@@ -383,52 +383,52 @@ static void quickbar_screenshot_event_cb( lv_obj_t *obj, lv_event_t event ) {
         return;
     }
     
-    switch ( event ) {
+    switch ( event.code ) {
         case ( LV_EVENT_CLICKED ):
             quickbar_hide( true );
             lv_disp_trig_activity( NULL );
             lv_task_handler();
             quickbar_counter = 3;
-            quickbar_task = lv_task_create( quickbar_counter_task, 1000, LV_TASK_PRIO_MID, NULL );
+            quickbar_task = lv_timer_create( quickbar_counter_task, 1000, NULL );
             break;
     }
 }
 
-static void quickbar_wifi_event_cb( lv_obj_t *obj, lv_event_t event ) {
-    switch ( event ) {
+static lv_event_cb_t quickbar_wifi_event_cb( lv_obj_t *obj, lv_event_t event ) {
+    switch ( event.code ) {
         case ( LV_EVENT_CLICKED ):
             if( wifistate ) {
                 wifictl_off();
-                lv_obj_reset_style_list( lv_obj_get_child( obj, NULL ), LV_PART_MAIN );
-                lv_obj_add_style( lv_obj_get_child( obj, NULL ), LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_RED ] );
+                lv_obj_remove_style_all( lv_obj_get_child( obj, NULL ) );
+                lv_obj_add_style( lv_obj_get_child( obj, NULL ), &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_PART_MAIN );
             }
             else {
                 wifictl_on();
-                lv_obj_reset_style_list( lv_obj_get_child( obj, NULL ), LV_PART_MAIN );
-                lv_obj_add_style( lv_obj_get_child( obj, NULL ), LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_GRAY ] );
+                lv_obj_remove_style_all( lv_obj_get_child( obj, NULL ) );
+                lv_obj_add_style( lv_obj_get_child( obj, NULL ), &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_PART_MAIN );
             }
             break;
     }
 }
 
-static void quickbar_bluetooth_event_cb( lv_obj_t *obj, lv_event_t event ) {
-    switch ( event ) {
+static lv_event_cb_t quickbar_bluetooth_event_cb( lv_obj_t *obj, lv_event_t event ) {
+    switch ( event.code) {
         case ( LV_EVENT_CLICKED ):
             if( bluetoothstate ) {
                 blectl_off();
-                lv_obj_reset_style_list( lv_obj_get_child( obj, NULL ), LV_PART_MAIN );
-                lv_obj_add_style( lv_obj_get_child( obj, NULL ), LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_RED ] );
+                lv_obj_remove_style_all( lv_obj_get_child( obj, NULL ) );
+                lv_obj_add_style( lv_obj_get_child( obj, NULL ), &quickbarstyle[ QUICKBAR_STYLE_RED ], LV_PART_MAIN );
             }
             else {
                 blectl_on();
-                lv_obj_reset_style_list( lv_obj_get_child( obj, NULL ), LV_PART_MAIN );
-                lv_obj_add_style( lv_obj_get_child( obj, NULL ), LV_PART_MAIN, &quickbarstyle[ QUICKBAR_STYLE_GRAY ] );
+                lv_obj_remove_style_all( lv_obj_get_child( obj, NULL ) );
+                lv_obj_add_style( lv_obj_get_child( obj, NULL ), &quickbarstyle[ QUICKBAR_STYLE_GRAY ], LV_PART_MAIN );
             }
             break;
     }
 }
 
-static void quickbar_counter_task( lv_task_t * task ) {
+static lv_event_cb_t quickbar_counter_task( lv_timer_t * task ) {
     /*
      * check if quickar already initialized
      */
@@ -441,6 +441,6 @@ static void quickbar_counter_task( lv_task_t * task ) {
     if ( quickbar_counter == 0 ) {
         screenshot_take();
         screenshot_save();
-        lv_task_del( quickbar_task );
+        lv_timer_del( quickbar_task );
     }
 }

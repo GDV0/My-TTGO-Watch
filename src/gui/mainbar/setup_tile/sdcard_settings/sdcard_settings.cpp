@@ -55,7 +55,7 @@ void sdcard_settings_tile_setup(void)
     sdcard_settings_tile_num = mainbar_add_setup_tile(1, 1, "SD card setup");
     sdcard_settings_tile = mainbar_get_tile_obj(sdcard_settings_tile_num);
     lv_style_copy(&sdcard_settings_style, ws_get_setup_tile_style());
-    lv_obj_add_style(sdcard_settings_tile, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_add_style(sdcard_settings_tile, &sdcard_settings_style, LV_PART_MAIN);
 
     icon_t *utilities_setup_icon = setup_register("SD card", &sdcard_settings_64px, enter_sdcard_settings_event_cb);
     setup_hide_indicator(utilities_setup_icon);
@@ -72,30 +72,30 @@ void sdcard_settings_tile_setup(void)
                                                                      
     lv_obj_align_to( sdcard_fs_browser_enable_cont, header, LV_ALIGN_OUT_BOTTOM_MID, -5, 10 );
 
-    lv_obj_t *sd_infos_cont = lv_obj_create(sdcard_settings_tile, NULL);
+    lv_obj_t *sd_infos_cont = lv_obj_create(sdcard_settings_tile);
     lv_obj_set_size(sd_infos_cont, lv_disp_get_hor_res(NULL), 15);
-    lv_obj_add_style(sd_infos_cont, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_add_style(sd_infos_cont, &sdcard_settings_style, LV_PART_MAIN);
     lv_obj_align_to(sd_infos_cont, sdcard_fs_browser_enable_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    lv_obj_t *sd_infos_label = lv_label_create(sd_infos_cont, NULL);
-    lv_obj_add_style(sd_infos_label, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_t *sd_infos_label = lv_label_create(sd_infos_cont);
+    lv_obj_add_style(sd_infos_label, &sdcard_settings_style, LV_PART_MAIN);
     lv_label_set_text(sd_infos_label, "SD information");
     lv_obj_align_to(sd_infos_label, sd_infos_cont, LV_ALIGN_LEFT_MID, 15, 0);
 
-    lv_obj_t *sd_type_cont = lv_obj_create(sdcard_settings_tile, NULL);
+    lv_obj_t *sd_type_cont = lv_obj_create(sdcard_settings_tile);
     lv_obj_set_size(sd_type_cont, lv_disp_get_hor_res(NULL), 15);
-    lv_obj_add_style(sd_type_cont, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_add_style(sd_type_cont, &sdcard_settings_style, LV_PART_MAIN);
     lv_obj_align_to(sd_type_cont, sd_infos_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
-    lv_obj_t *sd_type_label = lv_label_create(sd_type_cont, NULL);
-    lv_obj_add_style(sd_type_label, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_t *sd_type_label = lv_label_create(sd_type_cont);
+    lv_obj_add_style(sd_type_label, &sdcard_settings_style, LV_PART_MAIN);
     lv_label_set_text(sd_type_label, "SD card type:");
     lv_obj_align_to(sd_type_label, sd_type_cont, LV_ALIGN_LEFT_MID, 15, 0);
 
-    lv_obj_t *sd_size_cont = lv_obj_create(sdcard_settings_tile, NULL);
+    lv_obj_t *sd_size_cont = lv_obj_create(sdcard_settings_tile);
     lv_obj_set_size(sd_size_cont, lv_disp_get_hor_res(NULL), 15);
-    lv_obj_add_style(sd_size_cont, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_add_style(sd_size_cont, &sdcard_settings_style, LV_PART_MAIN);
     lv_obj_align_to(sd_size_cont, sd_type_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
-    lv_obj_t *sd_size_label = lv_label_create(sd_size_cont, NULL);
-    lv_obj_add_style(sd_size_label, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_t *sd_size_label = lv_label_create(sd_size_cont);
+    lv_obj_add_style(sd_size_label, &sdcard_settings_style, LV_PART_MAIN);
     lv_label_set_text(sd_size_label, "SD card size:");
     lv_obj_align_to(sd_size_label, sd_size_cont, LV_ALIGN_LEFT_MID, 15, 0);
 
@@ -120,8 +120,8 @@ void sdcard_settings_tile_setup(void)
     default:
         sdCardType = "UNKNOWN";
     }
-    lv_obj_t *sd_type_val = lv_label_create(sd_type_cont, NULL);
-    lv_obj_add_style(sd_type_val, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_t *sd_type_val = lv_label_create(sd_type_cont);
+    lv_obj_add_style(sd_type_val, &sdcard_settings_style, LV_PART_MAIN);
     lv_label_set_text(sd_type_val, sdCardType.c_str());
     lv_obj_align_to(sd_type_val, sd_type_cont, LV_ALIGN_RIGHT_MID, -5, 0);
 
@@ -129,8 +129,8 @@ void sdcard_settings_tile_setup(void)
     uint64_t cardSize = SD.cardSize() / (1024 * 1024);
     char sdCardSize[25]; //enough to hold all numbers up to 64-bits
     sprintf(sdCardSize, "%lluMB\n", cardSize);
-    lv_obj_t *sd_size_val = lv_label_create(sd_size_cont, NULL);
-    lv_obj_add_style(sd_size_val, LV_PART_MAIN, &sdcard_settings_style);
+    lv_obj_t *sd_size_val = lv_label_create(sd_size_cont);
+    lv_obj_add_style(sd_size_val, &sdcard_settings_style, LV_PART_MAIN);
     lv_label_set_text(sd_size_val, sdCardSize);
     lv_obj_align_to(sd_size_val, sd_size_cont, LV_ALIGN_RIGHT_MID, -5, 8);
 #endif
@@ -138,7 +138,7 @@ void sdcard_settings_tile_setup(void)
 }
 
 static void enter_sdcard_settings_event_cb(lv_obj_t *obj, lv_event_t event) {
-    switch (event) {
+    switch (event.code) {
         case (LV_EVENT_CLICKED):
             mainbar_jump_to_tilenumber( sdcard_settings_tile_num, LV_ANIM_OFF );
             break;
@@ -146,7 +146,7 @@ static void enter_sdcard_settings_event_cb(lv_obj_t *obj, lv_event_t event) {
 }
 
 static void exit_sdcard_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_back();
                                         break;
     }
@@ -154,7 +154,7 @@ static void exit_sdcard_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
 
 static void sdcard_fs_browser_onoff_event_handler(lv_obj_t *obj, lv_event_t event)
 {
-    if (event == LV_EVENT_VALUE_CHANGED)
+    if (event.code == LV_EVENT_VALUE_CHANGED)
     {
         if (lv_switch_get_state(obj))
         {

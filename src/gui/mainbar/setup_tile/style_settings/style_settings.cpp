@@ -52,7 +52,7 @@ void style_settings_tile_setup( void ) {
     style_tile_num = mainbar_add_setup_tile( 1, 1, "style settings" );
     style_settings_tile = mainbar_get_tile_obj( style_tile_num );
 
-    lv_obj_add_style( style_settings_tile, LV_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( style_settings_tile, ws_get_setup_tile_style(), LV_PART_MAIN );
 
     icon_t *style_setup_icon = setup_register( "themes", &style_64px, enter_style_setup_event_cb );
     setup_hide_indicator( style_setup_icon );

@@ -54,7 +54,7 @@ void move_settings_tile_setup( void ) {
     move_tile_num = mainbar_add_setup_tile( 1, 1, "move settings" );
     move_settings_tile = mainbar_get_tile_obj( move_tile_num );
 
-    lv_obj_add_style( move_settings_tile, LV_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( move_settings_tile, ws_get_setup_tile_style(), LV_PART_MAIN );
 
     icon_t *move_setup_icon = setup_register( "move", &move_64px, enter_move_setup_event_cb );
     setup_hide_indicator( move_setup_icon );
@@ -77,39 +77,39 @@ void move_settings_tile_setup( void ) {
 
 
 static void enter_move_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_to_tilenumber( move_tile_num, LV_ANIM_OFF );
                                         break;
     }
 }
 
 static void exit_move_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_back();
                                         break;
     }
 }
 
 static void stepcounter_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  bma_set_config( BMA_STEPCOUNTER, lv_switch_get_state( obj ) );
     }
 }
 
 static void doubleclick_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code) {
         case( LV_EVENT_VALUE_CHANGED):  bma_set_config( BMA_DOUBLECLICK, lv_switch_get_state( obj ) );
     }
 }
 
 static void tilt_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  bma_set_config( BMA_TILT, lv_switch_get_state( obj ) );
     }
 }
 
 static void daily_stepcounter_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED):  bma_set_config( BMA_DAILY_STEPCOUNTER, lv_switch_get_state( obj ) );
     }
 }

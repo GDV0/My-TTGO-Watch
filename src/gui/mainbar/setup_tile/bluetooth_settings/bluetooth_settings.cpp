@@ -74,12 +74,12 @@ void bluetooth_settings_tile_setup( void ) {
         bluetooth_tile_num_2 = bluetooth_tile_num_1 + 1;
         bluetooth_settings_tile_1 = mainbar_get_tile_obj( bluetooth_tile_num_1 );
         bluetooth_settings_tile_2 = mainbar_get_tile_obj( bluetooth_tile_num_2 );
-        lv_obj_add_style( bluetooth_settings_tile_1, LV_PART_MAIN, ws_get_setup_tile_style() );
-        lv_obj_add_style( bluetooth_settings_tile_2, LV_PART_MAIN, ws_get_setup_tile_style() );
+        lv_obj_add_style( bluetooth_settings_tile_1, ws_get_setup_tile_style(), LV_PART_MAIN );
+        lv_obj_add_style( bluetooth_settings_tile_2 ws_get_setup_tile_style(), LV_PART_MAIN, );
     #else
         bluetooth_tile_num_1 = mainbar_add_setup_tile( 1, 1, "bluetooth setup" );
         bluetooth_settings_tile_1 = mainbar_get_tile_obj( bluetooth_tile_num_1 );
-        lv_obj_add_style( bluetooth_settings_tile_1, LV_PART_MAIN, ws_get_setup_tile_style() );
+        lv_obj_add_style( bluetooth_settings_tile_1, ws_get_setup_tile_style(), LV_PART_MAIN );
     #endif
 
     bluettoth_setup_icon = setup_register( "bluetooth", &bluetooth_64px, enter_bluetooth_setup_event_cb );
@@ -147,14 +147,14 @@ bool blectl_onoff_event_cb( EventBits_t event, void *arg ) {
 }
 
 static void enter_bluetooth_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_to_tilenumber( bluetooth_tile_num_1, LV_ANIM_OFF );
                                         break;
     }
 }
 
 static void down_bluetooth_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       lv_dropdown_close( txpower_list );
                                         mainbar_jump_to_tilenumber( bluetooth_tile_num_2, LV_ANIM_ON );
                                         break;
@@ -163,7 +163,7 @@ static void down_bluetooth_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
 }
 
 static void up_bluetooth_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       lv_dropdown_close( txpower_list );
                                         mainbar_jump_back();
                                         break;
@@ -172,20 +172,20 @@ static void up_bluetooth_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
 }
 
 static void bluetooth_enable_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case ( LV_EVENT_VALUE_CHANGED): blectl_set_autoon( lv_switch_get_state( obj ) );
     }
 }
 
 
 static void bluetooth_advertising_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case ( LV_EVENT_VALUE_CHANGED): blectl_set_advertising( lv_switch_get_state( obj ) );
     }
 }
 
 static void bluetooth_standby_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case ( LV_EVENT_VALUE_CHANGED): blectl_set_enable_on_standby( lv_switch_get_state( obj ) );
                                         if( lv_switch_get_state( obj ) ) {
                                             setup_set_indicator( bluettoth_setup_icon, ICON_INDICATOR_FAIL );        
@@ -198,13 +198,13 @@ static void bluetooth_standby_onoff_event_handler(lv_obj_t * obj, lv_event_t eve
 }
 
 static void bluetooth_stayon_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case ( LV_EVENT_VALUE_CHANGED): blectl_set_disable_only_disconnected( lv_switch_get_state( obj ) );
     }
 }
 
 static void bluetooth_txpower_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+    switch( event.code ) {
         case ( LV_EVENT_VALUE_CHANGED): blectl_set_txpower( lv_dropdown_get_selected( obj ) );
                                         break;
     }

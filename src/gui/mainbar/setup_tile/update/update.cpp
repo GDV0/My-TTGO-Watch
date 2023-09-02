@@ -64,7 +64,7 @@
     TaskHandle_t _update_Task;
 #endif
 
-lv_task_t *_update_progress_task;
+lv_timer_t *_update_progress_task;
 void update_Task( void * pvParameters );
 
 icon_t *update_setup_icon = NULL;
@@ -81,16 +81,16 @@ lv_obj_t *update_progressbar = NULL;
 
 static bool reset = false;
 
-static void enter_update_setup_setup_event_cb( lv_obj_t * obj, lv_event_t event );
-static void enter_update_setup_event_cb( lv_obj_t * obj, lv_event_t event );
-static void update_event_handler(lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t enter_update_setup_setup_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t enter_update_setup_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t update_event_handler(lv_obj_t * obj, lv_event_t event );
 
 bool update_http_ota_event_cb( EventBits_t event, void *arg );
 bool update_wifictl_event_cb( EventBits_t event, void *arg );
 
 void update_update_activate_cb( void );
 void update_update_hibernate_cb( void );
-void update_progress_task( lv_task_t *task );
+void update_progress_task( lv_timer_t *task );
 
 LV_IMG_DECLARE(update_64px);
 LV_IMG_DECLARE(info_1_16px);
@@ -103,7 +103,7 @@ void update_tile_setup( void ) {
 
     update_setup_tile_setup( update_tile_num + 1 );
 
-    lv_obj_add_style( update_settings_tile, LV_PART_MAIN, SETUP_STYLE );
+    lv_obj_add_style( update_settings_tile, SETUP_STYLE, LV_PART_MAIN );
 
     update_setup_icon = setup_register( "update", &update_64px, enter_update_setup_event_cb );
     setup_hide_indicator( update_setup_icon );
@@ -120,21 +120,21 @@ void update_tile_setup( void ) {
     lv_obj_t *update_firmware_version_cont = wf_add_label( update_settings_tile, __FIRMWARE__ , SETUP_STYLE );
     lv_obj_align_to( update_firmware_version_cont, update_version_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 8 );
 
-    update_btn = lv_btn_create( update_settings_tile, NULL);
-    lv_obj_set_event_cb( update_btn, update_event_handler );
-    lv_obj_add_style( update_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
+    update_btn = lv_btn_create( update_settings_tile);
+    lv_obj_add_event_cb_cb( update_btn, update_event_handler, LV_EVENT_ALL, NULL );
+    lv_obj_add_style( update_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( update_btn, update_firmware_version_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
-    update_btn_label = lv_label_create( update_btn, NULL );
+    update_btn_label = lv_label_create( update_btn );
     lv_label_set_text( update_btn_label, "update");
 
-    update_status_label = lv_label_create( update_settings_tile, NULL);
-    lv_obj_add_style( update_status_label, LV_PART_MAIN, SETUP_STYLE  );
+    update_status_label = lv_label_create( update_settings_tile);
+    lv_obj_add_style( update_status_label, SETUP_STYLE, LV_PART_MAIN  );
     lv_label_set_text( update_status_label, "" );
     lv_obj_align_to( update_status_label, update_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
 
-    update_progressbar = lv_bar_create( update_settings_tile, NULL );
+    update_progressbar = lv_bar_create( update_settings_tile );
     lv_obj_set_size( update_progressbar, lv_disp_get_hor_res( NULL ) - 80, 20 );
-    lv_obj_add_style( update_progressbar, LV_PART_MAIN, SETUP_STYLE );
+    lv_obj_add_style( update_progressbar, SETUP_STYLE, LV_PART_MAIN );
     lv_obj_align_to( update_progressbar, update_status_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
     lv_bar_set_anim_time( update_progressbar, 2000 );
     lv_bar_set_value( update_progressbar, 0, LV_ANIM_ON );
@@ -156,14 +156,14 @@ void update_tile_setup( void ) {
 }
 
 void update_update_activate_cb( void ) {
-    _update_progress_task = lv_task_create( update_progress_task, 250,  LV_TASK_PRIO_LOWEST, NULL );
+    _update_progress_task = lv_timer_create( update_progress_task, 250, NULL );
 }
 
 void update_update_hibernate_cb( void ) {
-    lv_task_del( _update_progress_task );
+    lv_timer_del( _update_progress_task );
 }
 
-void update_progress_task( lv_task_t *task ) {
+void update_progress_task( lv_timer_t *task ) {
     if ( progress > 0 ) {
         char msg[16]="";
         lv_bar_set_value( update_progressbar, progress, LV_ANIM_ON );
@@ -220,7 +220,7 @@ bool update_wifictl_event_cb( EventBits_t event, void *arg ) {
     return( true );
 }
 
-static void enter_update_setup_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static lv_event_cb_t enter_update_setup_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):
             mainbar_jump_to_tilenumber( update_tile_num + 1, LV_ANIM_OFF );
@@ -228,7 +228,7 @@ static void enter_update_setup_setup_event_cb( lv_obj_t * obj, lv_event_t event 
     }
 }
 
-static void enter_update_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static lv_event_cb_t enter_update_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       
             mainbar_jump_to_tilenumber( update_tile_num, LV_ANIM_OFF );
@@ -236,7 +236,7 @@ static void enter_update_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
     }
 }
 
-static void update_event_handler(lv_obj_t * obj, lv_event_t event) {
+static lv_event_cb_t update_event_handler(lv_obj_t * obj, lv_event_t event) {
     if( event == LV_EVENT_CLICKED ) {
 
     #ifdef NATIVE_64BIT

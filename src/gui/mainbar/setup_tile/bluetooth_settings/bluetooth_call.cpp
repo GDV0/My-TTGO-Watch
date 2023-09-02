@@ -67,16 +67,17 @@ void bluetooth_call_tile_setup( void ) {
     bluetooth_call_tile_num = mainbar_add_app_tile( 1, 1, "bluetooth call" );
     bluetooth_call_tile = mainbar_get_tile_obj( bluetooth_call_tile_num );
 
-    lv_style_copy( &bluetooth_call_style, APP_STYLE );
-    lv_style_set_text_font( &bluetooth_call_style, LV_STATE_DEFAULT, caller_font );
-    lv_obj_add_style( bluetooth_call_tile, LV_PART_MAIN, &bluetooth_call_style );
+//GDV    lv_style_copy( &bluetooth_call_style, APP_STYLE );
+    lv_style_set_text_font( &bluetooth_call_style, caller_font );
+    lv_obj_add_style( bluetooth_call_tile, APP_STYLE, LV_PART_MAIN );
+    lv_obj_add_style( bluetooth_call_tile, &bluetooth_call_style, LV_PART_MAIN );
 
     bluetooth_call_img = lv_img_create( bluetooth_call_tile );
     lv_img_set_src( bluetooth_call_img, &call_ok_128px );
     lv_obj_align_to( bluetooth_call_img, bluetooth_call_tile, LV_ALIGN_CENTER, 0, 0 );
 
     bluetooth_call_number_label = lv_label_create( bluetooth_call_tile );
-    lv_obj_add_style( bluetooth_call_number_label, LV_PART_MAIN, &bluetooth_call_style  );
+    lv_obj_add_style( bluetooth_call_number_label, &bluetooth_call_style, LV_PART_MAIN  );
     lv_label_set_text( bluetooth_call_number_label, "foo bar");
     lv_obj_align_to( bluetooth_call_number_label, bluetooth_call_img, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
@@ -90,7 +91,7 @@ void bluetooth_call_tile_setup( void ) {
 bool bluetooth_call_style_change_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case STYLE_CHANGE:  lv_style_copy( &bluetooth_call_style, APP_STYLE );
-                            lv_style_set_text_font( &bluetooth_call_style, LV_STATE_DEFAULT, caller_font );
+                            lv_style_set_text_font( &bluetooth_call_style, caller_font );
                             break;
     }
     return( true );

@@ -72,9 +72,9 @@ void touch_calibration_tile_setup( void ) {
 
     lv_style_copy( &touch_calibration_style, ws_get_app_opa_style() );
     lv_style_set_bg_color( &touch_calibration_style, LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_obj_add_style( touch_calibration_tile, LV_PART_MAIN, &touch_calibration_style );
+    lv_obj_add_style( touch_calibration_tile, &touch_calibration_style, LV_PART_MAIN );
 
-    touch_location_done_arc = lv_arc_create( touch_calibration_tile, NULL);
+    touch_location_done_arc = lv_arc_create( touch_calibration_tile);
     lv_arc_set_bg_angles( touch_location_done_arc, 0, 0 );
     lv_arc_set_angles( touch_location_done_arc, 0, 360 );
     lv_arc_set_rotation( touch_location_done_arc, 90 );
@@ -82,7 +82,7 @@ void touch_calibration_tile_setup( void ) {
     lv_obj_align_to( touch_location_done_arc, NULL, LV_ALIGN_CENTER, 0, 0 );
     lv_style_copy( &touch_calibration_arc_style, ws_get_app_opa_style() );
     lv_style_set_bg_opa( &touch_calibration_style, LV_ARC_PART_INDIC, LV_OPA_TRANSP );
-    lv_obj_add_style( touch_location_done_arc, LV_ARC_PART_BG, &touch_calibration_arc_style );
+    lv_obj_add_style( touch_location_done_arc, &touch_calibration_arc_style, LV_ARC_PART_BG );
 
     touch_location_done_icon = wf_add_image( touch_calibration_tile, check_32px );
     lv_obj_align_to( touch_location_done_icon, touch_calibration_tile, LV_ALIGN_CENTER, 0, 0 );

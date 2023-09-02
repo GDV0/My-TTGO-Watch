@@ -62,7 +62,7 @@
     TaskHandle_t _watchface_manager_app_task;
 #endif
 
-lv_task_t *_watchface_manager_theme_install_task;   
+lv_timer_t *_watchface_manager_theme_install_task;   
 static volatile uint32_t watchface_manager_display_timeout = 15;    
 static volatile bool watchface_manager_wifi_init = false;          
  /*
@@ -101,7 +101,7 @@ LV_IMG_DECLARE(t_watch_2020_240px);
 
 watchface_theme_t watchface_theme;
 
-void watchface_manager_theme_install_task( lv_task_t * task );
+void watchface_manager_theme_install_task( lv_timer_t * task );
 void watchface_manager_app_Task( void * pvParameters );
 bool watchface_manager_wifictl_event_cb( EventBits_t event, void *arg );
 static void watchface_manager_theme_menu_event_cb( lv_obj_t * obj, lv_event_t event );
@@ -149,66 +149,66 @@ void watchface_manager_app_setup( uint32_t tile_num ) {
      * get and set main style
      */
     lv_style_copy( &watchface_manager_style, ws_get_app_opa_style() );
-    lv_style_set_text_font( &watchface_manager_style, LV_STATE_DEFAULT, &Ubuntu_12px);
-    lv_style_set_bg_color( &watchface_manager_style, LV_PART_MAIN, LV_COLOR_BLACK );
-    lv_obj_add_style( watchface_manager_app_tile, LV_PART_MAIN, &watchface_manager_style );
+    lv_style_set_text_font( &watchface_manager_style, &Ubuntu_12px);
+    lv_style_set_bg_color( &watchface_manager_style, LV_COLOR_BLACK );
+    lv_obj_add_style( watchface_manager_app_tile, &watchface_manager_style, LV_PART_MAIN );
 
     lv_style_copy( &watchface_manager_trans_button_style, ws_get_mainbar_style() );
-    lv_style_set_text_font( &watchface_manager_trans_button_style, LV_STATE_DEFAULT, &Ubuntu_12px);
-    lv_style_set_bg_color( &watchface_manager_trans_button_style, LV_PART_MAIN, LV_COLOR_BLACK );
+    lv_style_set_text_font( &watchface_manager_trans_button_style, &Ubuntu_12px);
+    lv_style_set_bg_color( &watchface_manager_trans_button_style, LV_COLOR_BLACK );
     lv_style_set_image_recolor( &watchface_manager_trans_button_style, LV_PART_MAIN, LV_COLOR_WHITE );
     lv_style_set_image_recolor_opa( &watchface_manager_trans_button_style, LV_PART_MAIN, LV_OPA_100 );
     /**
      * create global watchface manager container
      */
-    lv_obj_t *watchface_manager_app_cont = lv_obj_create( watchface_manager_app_tile, NULL );
+    lv_obj_t *watchface_manager_app_cont = lv_obj_create( watchface_manager_app_tile );
     lv_obj_set_size( watchface_manager_app_cont, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) );
-    lv_obj_add_style( watchface_manager_app_cont, LV_PART_MAIN, &watchface_manager_style );
+    lv_obj_add_style( watchface_manager_app_cont, &watchface_manager_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_manager_app_cont, watchface_manager_app_tile, LV_ALIGN_CENTER, 0, 0 );
     /**
      * create theme name container
      */
-    lv_obj_t *watchface_manager_app_name_cont = lv_obj_create( watchface_manager_app_cont, NULL );
+    lv_obj_t *watchface_manager_app_name_cont = lv_obj_create( watchface_manager_app_cont );
     lv_obj_set_size( watchface_manager_app_name_cont, ( lv_disp_get_hor_res( NULL ) / 3 ) * 2 , lv_disp_get_ver_res( NULL ) / 4 );
-    lv_obj_add_style( watchface_manager_app_name_cont, LV_PART_MAIN, &watchface_manager_style );
+    lv_obj_add_style( watchface_manager_app_name_cont, &watchface_manager_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_manager_app_name_cont, watchface_manager_app_cont, LV_ALIGN_TOP_MID, 0, 0 );
     watchface_manager_app_theme_name_label = wf_add_label( watchface_manager_app_name_cont, watchface_theme.watchface_manager_theme_name.c_str() );
     lv_obj_align_to( watchface_manager_app_theme_name_label, watchface_manager_app_name_cont, LV_ALIGN_CENTER, 0, 4 );
     /**
      * create watchface preview container
      */
-    lv_obj_t *watchface_manager_app_preview_cont = lv_obj_create( watchface_manager_app_cont, NULL );
+    lv_obj_t *watchface_manager_app_preview_cont = lv_obj_create( watchface_manager_app_cont );
     lv_obj_set_size( watchface_manager_app_preview_cont, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) / 2 );
-    lv_obj_add_style( watchface_manager_app_preview_cont, LV_PART_MAIN, &watchface_manager_style );
+    lv_obj_add_style( watchface_manager_app_preview_cont, &watchface_manager_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_manager_app_preview_cont, watchface_manager_app_name_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     watchface_manager_prev_btn = wf_add_left_button( watchface_manager_app_preview_cont, watchface_manager_prev_theme_event_cb, &watchface_manager_trans_button_style );
     lv_obj_align_to( watchface_manager_prev_btn, watchface_manager_app_preview_cont, LV_ALIGN_LEFT_MID, 10, 0 );
     watchface_manager_next_btn = wf_add_right_button( watchface_manager_app_preview_cont, watchface_manager_next_theme_event_cb, &watchface_manager_trans_button_style );
     lv_obj_align_to( watchface_manager_next_btn, watchface_manager_app_preview_cont, LV_ALIGN_RIGHT_MID, -10, 0 );
-    watchface_manager_preview_img = lv_img_create( watchface_manager_app_preview_cont, NULL );
+    watchface_manager_preview_img = lv_img_create( watchface_manager_app_preview_cont );
     lv_img_set_src( watchface_manager_preview_img, &download_32px );
     lv_obj_align_to( watchface_manager_preview_img, watchface_manager_app_preview_cont, LV_ALIGN_CENTER, 0, 0 );
-    watchface_manager_download_btn = lv_btn_create( watchface_manager_app_preview_cont, NULL );
+    watchface_manager_download_btn = lv_btn_create( watchface_manager_app_preview_cont );
     lv_obj_set_width( watchface_manager_download_btn, lv_disp_get_hor_res( NULL ) / 2 );
     lv_obj_set_height( watchface_manager_download_btn, lv_disp_get_ver_res( NULL ) / 2 );
     lv_obj_add_protect( watchface_manager_download_btn, LV_PROTECT_CLICK_FOCUS );
-    lv_obj_add_style( watchface_manager_download_btn, LV_PART_MAIN, &watchface_manager_trans_button_style );
+    lv_obj_add_style( watchface_manager_download_btn, &watchface_manager_trans_button_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_manager_download_btn, watchface_manager_app_preview_cont, LV_ALIGN_CENTER, 0, 0 );
-    lv_obj_set_event_cb( watchface_manager_download_btn, download_watchface_manager_app_event_cb );
+    lv_obj_add_event_cb_cb( watchface_manager_download_btn, download_watchface_manager_app_event_cb, LV_EVENT_ALL, NULL );
     /**
      * create watchface info container
      * + info label and progress bar
      */
-    lv_obj_t *watchface_manager_app_progress_cont = lv_obj_create( watchface_manager_app_cont, NULL );
+    lv_obj_t *watchface_manager_app_progress_cont = lv_obj_create( watchface_manager_app_cont );
     lv_obj_set_size( watchface_manager_app_progress_cont, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) / 4 );
-    lv_obj_add_style( watchface_manager_app_progress_cont, LV_PART_MAIN, &watchface_manager_style );
+    lv_obj_add_style( watchface_manager_app_progress_cont, &watchface_manager_style, LV_PART_MAIN );
     lv_obj_align_to( watchface_manager_app_progress_cont, watchface_manager_app_preview_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
-    watchface_manager_app_info_progressbar = lv_bar_create( watchface_manager_app_progress_cont, NULL);
+    watchface_manager_app_info_progressbar = lv_bar_create( watchface_manager_app_progress_cont);
     lv_obj_set_size( watchface_manager_app_info_progressbar, lv_disp_get_hor_res( NULL ) / 2, 24 );
     lv_obj_align_to( watchface_manager_app_info_progressbar, watchface_manager_app_progress_cont, LV_ALIGN_CENTER, 0, 0 );
     lv_bar_set_anim_time( watchface_manager_app_info_progressbar, 1000 );
     lv_bar_set_value( watchface_manager_app_info_progressbar, 0, LV_ANIM_OFF );
-    lv_obj_add_style( watchface_manager_app_info_progressbar, LV_BAR_PART_BG, &watchface_manager_style );
+    lv_obj_add_style( watchface_manager_app_info_progressbar, &watchface_manager_style, LV_BAR_PART_BG );
     watchface_manager_app_progress_label = wf_add_label( watchface_manager_app_progress_cont, "" );
     lv_obj_align_to( watchface_manager_app_progress_label, watchface_manager_app_progress_cont, LV_ALIGN_CENTER, 0, -2 );
     /**
@@ -216,7 +216,7 @@ void watchface_manager_app_setup( uint32_t tile_num ) {
      */
     lv_obj_t *watchface_manager_menu_btn = wf_add_menu_button( watchface_manager_app_cont, watchface_manager_theme_menu_event_cb, &watchface_manager_trans_button_style );
     lv_obj_align_to( watchface_manager_menu_btn, watchface_manager_app_cont, LV_ALIGN_TOP_LEFT, +10, +10 );
-    watchface_manager_theme_menu = lv_list_create( watchface_manager_app_tile, NULL );
+    watchface_manager_theme_menu = lv_list_create( watchface_manager_app_tile );
     lv_obj_set_size( watchface_manager_theme_menu, 190, 240 );
     lv_obj_align_to( watchface_manager_theme_menu, watchface_manager_app_tile, LV_ALIGN_RIGHT_MID, 0, 0);
     lv_obj_add_flag( watchface_manager_theme_menu, LV_OBJ_FLAG_HIDDEN );
@@ -248,7 +248,7 @@ void watchface_manager_app_setup( uint32_t tile_num ) {
 #else
     watchface_manager_app_event_handle = xEventGroupCreate();
 #endif
-    _watchface_manager_theme_install_task = lv_task_create( watchface_manager_theme_install_task, 3000, LV_TASK_PRIO_MID, NULL );
+    _watchface_manager_theme_install_task = lv_timer_create( watchface_manager_theme_install_task, 3000, NULL );
     /**
      * register wifictl call back
      */
@@ -264,7 +264,7 @@ bool watchface_manager_wifictl_event_cb( EventBits_t event, void *arg ) {
     return( true );
 }
 
-void watchface_manager_theme_install_task( lv_task_t * task ) {
+void watchface_manager_theme_install_task( lv_timer_t * task ) {
     /**
      * install watchface theme from tar.gz work only from main task/lv_task
      */
@@ -645,7 +645,7 @@ void watchface_manager_gen_theme_menu( watchface_theme_t *watchface_theme, lv_ob
             if ( doc[ i ]["name"] ) {
                 String watchface_manager_theme_name = doc[ i ][ "name" ];
                 list_btn = lv_list_add_btn( theme_list, NULL, watchface_manager_theme_name.c_str() );
-                lv_obj_set_event_cb( list_btn, watchface_manager_theme_menu_select_event_cb );
+                lv_obj_add_event_cb_cb( list_btn, watchface_manager_theme_menu_select_event_cb, LV_EVENT_ALL, NULL );
             }
             else {
                 break;

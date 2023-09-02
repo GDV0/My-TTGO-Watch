@@ -225,15 +225,15 @@ void bluetooth_message_tile_setup( void ) {
     bluetooth_message_tile = mainbar_get_tile_obj( bluetooth_message_tile_num );
 
     lv_style_copy( &bluetooth_message_style, APP_STYLE );
-    lv_style_set_text_font( &bluetooth_message_style, LV_STATE_DEFAULT, message_font );
-    lv_obj_add_style( bluetooth_message_tile, LV_PART_MAIN, &bluetooth_message_style );
+    lv_style_set_text_font( &bluetooth_message_style, message_font );
+    lv_obj_add_style( bluetooth_message_tile, &bluetooth_message_style, LV_PART_MAIN );
 
     lv_style_copy( &bluetooth_message_sender_style, &bluetooth_message_style );
-    lv_style_set_text_font( &bluetooth_message_sender_style, LV_STATE_DEFAULT, message_title_font );
+    lv_style_set_text_font( &bluetooth_message_sender_style, message_title_font );
 
-    lv_obj_t *bluettoth_message_img_cont = lv_cont_create( bluetooth_message_tile, NULL );
+    lv_obj_t *bluettoth_message_img_cont = lv_cont_create( bluetooth_message_tile );
     lv_obj_set_size( bluettoth_message_img_cont, THEME_ICON_SIZE, THEME_ICON_SIZE );
-    lv_obj_add_style( bluettoth_message_img_cont, LV_PART_MAIN, APP_STYLE  );
+    lv_obj_add_style( bluettoth_message_img_cont, APP_STYLE, LV_PART_MAIN  );
     lv_obj_align_to( bluettoth_message_img_cont, bluetooth_message_tile, LV_ALIGN_TOP_LEFT, 0, 0 );
 
     bluetooth_message_img = lv_img_create( bluettoth_message_img_cont );
@@ -241,30 +241,30 @@ void bluetooth_message_tile_setup( void ) {
     lv_obj_align_to( bluetooth_message_img, bluettoth_message_img_cont, LV_ALIGN_CENTER, 0, 0 );
 
     bluetooth_message_notify_source_label = lv_label_create( bluetooth_message_tile );
-    lv_obj_add_style( bluetooth_message_notify_source_label, LV_PART_MAIN, &bluetooth_message_sender_style  );
+    lv_obj_add_style( bluetooth_message_notify_source_label, &bluetooth_message_sender_style, LV_PART_MAIN  );
     lv_label_set_text( bluetooth_message_notify_source_label, "E-Mail" );
     lv_obj_align_to( bluetooth_message_notify_source_label, bluettoth_message_img_cont, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0 );
 
     bluetooth_message_time_label = lv_label_create( bluetooth_message_tile );
-    lv_obj_add_style( bluetooth_message_time_label, LV_PART_MAIN, &bluetooth_message_style  );
+    lv_obj_add_style( bluetooth_message_time_label, &bluetooth_message_style, LV_PART_MAIN  );
     lv_label_set_text( bluetooth_message_time_label, "23:42");
     lv_obj_align_to( bluetooth_message_time_label, bluettoth_message_img_cont, LV_ALIGN_OUT_BOTTOM_LEFT, THEME_PADDING, THEME_PADDING );
 
     bluetooth_message_sender_label = lv_label_create( bluetooth_message_tile );
-    lv_obj_add_style( bluetooth_message_sender_label, LV_PART_MAIN, &bluetooth_message_style  );
+    lv_obj_add_style( bluetooth_message_sender_label, &bluetooth_message_style, LV_PART_MAIN  );
     lv_label_set_text( bluetooth_message_sender_label, "foo");
     lv_obj_align_to( bluetooth_message_sender_label, bluetooth_message_time_label, LV_ALIGN_OUT_RIGHT_MID, THEME_PADDING, 0 );
 
     bluetooth_message_page = lv_obj_create( bluetooth_message_tile);
     lv_obj_set_size( bluetooth_message_page, lv_disp_get_hor_res( NULL ) - ( 2 + THEME_PADDING), lv_disp_get_ver_res( NULL ) - ( 3 * THEME_ICON_SIZE ) );
-    lv_obj_add_style( bluetooth_message_page, LV_PART_MAIN, &bluetooth_message_style );
+    lv_obj_add_style( bluetooth_message_page, &bluetooth_message_style, LV_PART_MAIN );
     lv_page_set_scrlbar_mode( bluetooth_message_page, LV_SCRLBAR_MODE_DRAG );
     lv_obj_align_to( bluetooth_message_page, bluetooth_message_time_label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_PADDING );
 
     bluetooth_message_msg_label = lv_label_create( bluetooth_message_page );
     lv_label_set_long_mode( bluetooth_message_msg_label, LV_LABEL_LONG_BREAK );
     lv_obj_set_width( bluetooth_message_msg_label, lv_page_get_width_fit ( bluetooth_message_page ) );
-    lv_obj_add_style( bluetooth_message_msg_label, LV_PART_MAIN, &bluetooth_message_style );
+    lv_obj_add_style( bluetooth_message_msg_label, &bluetooth_message_style, LV_PART_MAIN );
     lv_label_set_text( bluetooth_message_msg_label, "Test message from bar.");
 
 
@@ -281,7 +281,7 @@ void bluetooth_message_tile_setup( void ) {
     lv_obj_align_to( bluetooth_message_trash_msg_btn, bluetooth_message_prev_msg_btn, LV_ALIGN_OUT_RIGHT_MID, 0, 0 );
 
     bluetooth_message_entrys_label = lv_label_create( bluetooth_message_tile );
-    lv_obj_add_style( bluetooth_message_entrys_label, LV_PART_MAIN, &bluetooth_message_sender_style );
+    lv_obj_add_style( bluetooth_message_entrys_label, &bluetooth_message_sender_style, LV_PART_MAIN );
     lv_label_set_text( bluetooth_message_entrys_label, "1/1");
     lv_obj_align_to( bluetooth_message_entrys_label, bluetooth_message_next_msg_btn, LV_ALIGN_OUT_LEFT_MID, 0, 0 );
 
@@ -329,16 +329,16 @@ static void bluetooth_message_hibernate_cb( void ) {
 static bool bluetooth_message_style_change_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case STYLE_CHANGE:  lv_style_copy( &bluetooth_message_style, APP_STYLE );
-                            lv_style_set_text_font( &bluetooth_message_style, LV_STATE_DEFAULT, message_font );
+                            lv_style_set_text_font( &bluetooth_message_style, message_font );
                             lv_style_copy( &bluetooth_message_sender_style, &bluetooth_message_style );
-                            lv_style_set_text_font( &bluetooth_message_sender_style, LV_STATE_DEFAULT, message_title_font );
+                            lv_style_set_text_font( &bluetooth_message_sender_style, message_title_font );
                             break;
     }
     return( true );
 }
 
 static void enter_bluetooth_messages_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       
             if ( msg_chain_get_entrys( bluetooth_msg_chain ) > 0 ) {
                 bluetooth_message_show_msg( msg_chain_get_entrys( bluetooth_msg_chain ) - 1 );
@@ -351,7 +351,7 @@ static void enter_bluetooth_messages_cb( lv_obj_t * obj, lv_event_t event ) {
 }
 
 static void bluetooth_prev_message_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             if ( bluetooth_current_msg > 0 ) {
                 bluetooth_current_msg--;
@@ -362,7 +362,7 @@ static void bluetooth_prev_message_event_cb( lv_obj_t * obj, lv_event_t event ) 
 }
 
 static void bluetooth_next_message_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             if ( bluetooth_current_msg < ( msg_chain_get_entrys( bluetooth_msg_chain ) - 1 ) ) {
                 bluetooth_current_msg++;

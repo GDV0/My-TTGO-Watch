@@ -22,7 +22,7 @@ Widget::Widget(const Widget* parent)
 }
 
 void Widget::createObject(lv_obj_t* parent){
-  assign(lv_obj_create(parent, NULL));
+  assign(lv_obj_create(parent ));
 }
 
 void Widget::assign(lv_obj_t* newHandle)
@@ -64,8 +64,8 @@ Widget& Widget::style(const Style& addStyle, uint8_t part, bool resetStyleList){
 }
 Widget& Widget::style(lv_style_t* addStyle, uint8_t part, bool resetStyleList){
   if (resetStyleList)
-    lv_obj_reset_style_list(native, part);
-  lv_obj_add_style(native, part, addStyle);
+    lv_obj_remove_style_all(native);
+  lv_obj_add_style(native, addStyle, part);
   return *this;
 }
 

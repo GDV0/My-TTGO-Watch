@@ -35,28 +35,28 @@ lv_style_t* Style::handle() const {
 }
 
 Style& Style::background(lv_color_t color, lv_opa_t opacity) {
-  lv_style_set_bg_color(&native, LV_PART_MAIN, color);
-  lv_style_set_bg_opa(&native, LV_PART_MAIN, opacity);
+  lv_style_set_bg_color(&native, color);
+  lv_style_set_bg_opa(&native, opacity);
   return *this;
 }
 
 Style& Style::border(int width) {
-  lv_style_set_border_width(&native, LV_PART_MAIN, 0);
+  lv_style_set_border_width(&native, 0);
   return *this;
 }
 
 Style& Style::border(int width, lv_color_t color, lv_opa_t opacity) {
-  lv_style_set_border_width(&native, LV_PART_MAIN, 0);
-  lv_style_set_border_color(&native, LV_PART_MAIN, color);
-  lv_style_set_border_opa(&native, LV_PART_MAIN, opacity);
+  lv_style_set_border_width(&native, 0);
+  lv_style_set_border_color(&native, color);
+  lv_style_set_border_opa(&native, opacity);
   return *this;
 }
 
 Style& Style::padding(int top, int right, int bottom, int left) {
-  lv_style_set_pad_top(&native, LV_STATE_DEFAULT, top);
-  lv_style_set_pad_bottom(&native, LV_STATE_DEFAULT, bottom);
-  lv_style_set_pad_left(&native, LV_STATE_DEFAULT, left);
-  lv_style_set_pad_right(&native, LV_STATE_DEFAULT, right);
+  lv_style_set_pad_top(&native, top);
+  lv_style_set_pad_bottom(&native, bottom);
+  lv_style_set_pad_left(&native, left);
+  lv_style_set_pad_right(&native, right);
   return *this;
 }
 
@@ -66,11 +66,11 @@ Style& Style::paddingInner(int inner) {
 }
 
 Style& Style::textFont(lv_font_t* font) {
-  lv_style_set_text_font(&native, LV_STATE_DEFAULT, font);
+  lv_style_set_text_font(&native, font);
   return *this;
 }
 
 Style& Style::textOpacity(lv_opa_t value) {
-  lv_style_set_text_opa(&native, LV_PART_MAIN, value);
+  lv_style_set_text_opa(&native, value);
   return *this;
 }

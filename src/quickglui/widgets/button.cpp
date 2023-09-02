@@ -22,10 +22,10 @@ Button::Button(lv_obj_t * btn){
 Button::Button(const Widget* parent, const lv_img_dsc_t& image, WidgetAction onClick){
   assign(lv_imgbtn_create(parent->handle()));
   
-  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_RELEASED, &image);
-  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_PRESSED, &image);
-  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_CHECKED_RELEASED, &image);
-  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_CHECKED_PRESSED, &image);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_RELEASED, &image, NULL, NULL);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_PRESSED, &image, NULL, NULL);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_CHECKED_RELEASED, &image, NULL, NULL);
+  lv_imgbtn_set_src(native, LV_IMGBTN_STATE_CHECKED_PRESSED, &image, NULL, NULL);
   
   if (onClick != nullptr)
     clicked(onClick);
@@ -58,14 +58,14 @@ Button& Button::clicked(WidgetAction onClick){
 }
 
 void Button::createObject(lv_obj_t* parent){
-  assign(lv_obj_create(parent, NULL));
+  assign(lv_obj_create(parent));
 }
 
 void Button::assign(lv_obj_t* newHandle)
 {
     Widget::assign(newHandle);
     if (lv_obj_get_event_cb(native) == NULL)
-      lv_obj_set_event_cb(native, &Button::Action);
+      lv_obj_add_event_cb_cb(native, &Button::Action, LV_EVENT_ALL, NULL);
 }
 
 // void Button::size(uint16_t width, uint16_t height){
@@ -89,7 +89,7 @@ void Button::Action(lv_obj_t* obj, lv_event_t event)
 {
     auto handle = DefaultWidgetManager.GetIfExists(obj);
     Widget target(obj);
-    switch (event) {
+    switch (event.code) {
         case LV_EVENT_CLICKED:
             if (handle->Action != NULL)
               handle->Action(target);

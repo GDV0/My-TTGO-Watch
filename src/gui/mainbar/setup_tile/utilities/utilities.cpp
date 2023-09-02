@@ -90,48 +90,48 @@ void utilities_tile_setup( void ) {
     //Add button for reformat spiffs
 
     //Add button for SPIFFS format
-    format_spiffs_btn = lv_btn_create( utilities_tile, NULL);
-    lv_obj_set_event_cb( format_spiffs_btn, format_SPIFFS_utilities_event_cb );
+    format_spiffs_btn = lv_btn_create( utilities_tile);
+    lv_obj_add_event_cb_cb( format_spiffs_btn, format_SPIFFS_utilities_event_cb, LV_EVENT_ALL, NULL );
     lv_obj_set_size( format_spiffs_btn, lv_disp_get_hor_res( NULL ) / 3, 60);
-    lv_obj_add_style( format_spiffs_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( format_spiffs_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( format_spiffs_btn, utilities_tile, LV_ALIGN_LEFT_MID, THEME_ICON_PADDING, -15);
-    lv_obj_t *format_spiffs_btn_label = lv_label_create( format_spiffs_btn, NULL );
+    lv_obj_t *format_spiffs_btn_label = lv_label_create( format_spiffs_btn );
     lv_label_set_text( format_spiffs_btn_label, "Format\nSPIFFS");
     
-    gps_test_data_btn = lv_btn_create( utilities_tile, NULL);
-    lv_obj_set_event_cb( gps_test_data_btn, gps_test_data_utilities_event_cb );
+    gps_test_data_btn = lv_btn_create( utilities_tile);
+    lv_obj_add_event_cb_cb( gps_test_data_btn, gps_test_data_utilities_event_cb, LV_EVENT_ALL, NULL );
     lv_obj_set_size( gps_test_data_btn, lv_disp_get_hor_res( NULL ) / 3, 60);
-    lv_obj_add_style( gps_test_data_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_style( gps_test_data_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( gps_test_data_btn, utilities_tile, LV_ALIGN_RIGHT_MID, -THEME_ICON_PADDING, -15);
-    gps_test_data_btn_label = lv_label_create( gps_test_data_btn, NULL );
+    gps_test_data_btn_label = lv_label_create( gps_test_data_btn );
     lv_label_set_text( gps_test_data_btn_label, "send GPS\ntest data");
 
     //Add button for reboot
-    reboot_btn = lv_btn_create( utilities_tile, NULL);
+    reboot_btn = lv_btn_create( utilities_tile);
     lv_obj_set_size(reboot_btn, lv_disp_get_hor_res( NULL ) / 3, 40);
-    lv_obj_set_event_cb( reboot_btn, reboot_utilities_event_cb );
-    lv_obj_add_style( reboot_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_event_cb_cb( reboot_btn, reboot_utilities_event_cb, LV_EVENT_ALL, NULL );
+    lv_obj_add_style( reboot_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( reboot_btn, utilities_tile, LV_ALIGN_BOTTOM_LEFT, THEME_ICON_PADDING, -THEME_ICON_PADDING );
-    lv_obj_t *reboot_btn_label = lv_label_create( reboot_btn, NULL );
+    lv_obj_t *reboot_btn_label = lv_label_create( reboot_btn );
     lv_label_set_text( reboot_btn_label, "Reboot");
 
     // Add button for poweroff, Equivalent to holding the power button till the hard poweroff state,
     // 300uA power consumption!
-    poweroff_btn = lv_btn_create( utilities_tile, NULL);
+    poweroff_btn = lv_btn_create( utilities_tile);
     lv_obj_set_size(poweroff_btn, lv_disp_get_hor_res( NULL ) / 3, 40);
-    lv_obj_set_event_cb( poweroff_btn, poweroff_utilities_event_cb );
-    lv_obj_add_style( poweroff_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_event_cb_cb( poweroff_btn, poweroff_utilities_event_cb, LV_EVENT_ALL, NULL );
+    lv_obj_add_style( poweroff_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_align_to( poweroff_btn, utilities_tile, LV_ALIGN_BOTTOM_RIGHT, -THEME_ICON_PADDING, -THEME_ICON_PADDING );
-    lv_obj_t *poweroff_btn_label = lv_label_create( poweroff_btn, NULL );
+    lv_obj_t *poweroff_btn_label = lv_label_create( poweroff_btn );
     lv_label_set_text( poweroff_btn_label, "Poweroff");
     
-    lv_obj_t *last_reboot_label = lv_label_create( utilities_tile, NULL);
-    lv_obj_add_style( last_reboot_label, LV_PART_MAIN, &utilities_style  );
+    lv_obj_t *last_reboot_label = lv_label_create( utilities_tile);
+    lv_obj_add_style( last_reboot_label, &utilities_style, LV_PART_MAIN  );
     lv_label_set_text( last_reboot_label, "Last Reboot Reason:");
     lv_obj_align_to( last_reboot_label, format_spiffs_btn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, THEME_ICON_PADDING );
     
-    lv_obj_t *last_reason_label = lv_label_create( utilities_tile, NULL);
-    lv_obj_add_style( last_reason_label, LV_PART_MAIN, &utilities_style  );
+    lv_obj_t *last_reason_label = lv_label_create( utilities_tile);
+    lv_obj_add_style( last_reason_label, &utilities_style, LV_PART_MAIN  );
     lv_label_set_text( last_reason_label, "");  
     
     //Get the reason for the last reset, this could be moved into a dedicated function....
@@ -189,7 +189,7 @@ static void enter_utilities_event_cb( lv_obj_t * obj, lv_event_code_t event ) {
     }
 }
 
-static void exit_utilities_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static void exit_utilities_event_cb( lv_obj_t * obj, lv_event_code_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_back();
                                         break;
@@ -198,7 +198,7 @@ static void exit_utilities_event_cb( lv_obj_t * obj, lv_event_t event ) {
 
 //********************************SPIFFS stuff
 
-static void SpiffsWarningBox_event_handler( lv_obj_t * obj, lv_event_t event ){
+static void SpiffsWarningBox_event_handler( lv_obj_t * obj, lv_event_code_t event ){
     if( event == LV_EVENT_DELETE && obj == SpiffsWarningBox ) {
         /* Delete the parent modal background */
         lv_obj_del_async( lv_obj_get_parent( SpiffsWarningBox ) );
@@ -212,19 +212,19 @@ static void SpiffsWarningBox_event_handler( lv_obj_t * obj, lv_event_t event ){
     }
 }
 
-static void format_SPIFFS_utilities_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static void format_SPIFFS_utilities_event_cb( lv_obj_t * obj, lv_event_code_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):           
                                     static const char * btns[] = {"Apply", "Cancel", ""};
     
                                     //Setup shading of background
-                                    lv_style_set_bg_color( &style_modal, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x20,0x20,0x20));
-                                    lv_style_set_bg_opa( &style_modal, LV_STATE_DEFAULT, LV_OPA_80);
+                                    lv_style_set_bg_color( &style_modal, LV_COLOR_MAKE(0x20,0x20,0x20));
+                                    lv_style_set_bg_opa( &style_modal, LV_OPA_80);
             
                                     //The click absorbing screen behind the msgbox
-                                    lv_obj_t *obj = lv_obj_create(lv_scr_act(), NULL);
-                                    lv_obj_reset_style_list( obj, LV_PART_MAIN);
-                                    lv_obj_add_style( obj, LV_PART_MAIN, &style_modal );
+                                    lv_obj_t *obj = lv_obj_create(lv_scr_act());
+                                    lv_obj_remove_style_all( obj );
+                                    lv_obj_add_style( obj, &style_modal, LV_PART_MAIN );
                                     lv_obj_set_pos( obj, 0, 0);
                                     lv_obj_set_size( obj, LV_HOR_RES, LV_VER_RES);
                                     
@@ -237,11 +237,9 @@ static void format_SPIFFS_utilities_event_cb( lv_obj_t * obj, lv_event_t event )
                                         snprintf( temp, sizeof( temp ), "Confirm reformat of SPIFFS, and reset settings?\n(Used bytes: %d)", SPIFFS.usedBytes() );
 #endif
                                     
-                                    SpiffsWarningBox = lv_msgbox_create(obj, NULL);
-                                    lv_msgbox_set_text(SpiffsWarningBox, temp);
-                                    lv_msgbox_add_btns(SpiffsWarningBox, btns);
+                                    SpiffsWarningBox = lv_msgbox_create(obj, NULL, temp, btns, false);
                                     lv_obj_set_width(SpiffsWarningBox, 240);
-                                    lv_obj_set_event_cb(SpiffsWarningBox, SpiffsWarningBox_event_handler);
+                                    lv_obj_add_event_cb_cb(SpiffsWarningBox, SpiffsWarningBox_event_handler, LV_EVENT_ALL, NULL);
                                     lv_obj_align_to(SpiffsWarningBox, NULL, LV_ALIGN_CENTER, 0 ,0);
                                     break;
     }
@@ -270,7 +268,7 @@ static void format_SPIFFS(void){
 #endif
 }
 //********************************Power stuff
-static void reboot_utilities_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static void reboot_utilities_event_cb( lv_obj_t * obj, lv_event_code_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       
 #ifdef NATIVE_64BIT
@@ -289,7 +287,7 @@ static void reboot_utilities_event_cb( lv_obj_t * obj, lv_event_t event ) {
 }
 
 
-static void poweroff_utilities_event_cb( lv_obj_t * obj, lv_event_t event ) {
+static void poweroff_utilities_event_cb( lv_obj_t * obj, lv_event_code_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       
 #ifdef NATIVE_64BIT

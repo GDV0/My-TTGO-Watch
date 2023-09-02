@@ -230,7 +230,7 @@ void time_settings_tile_setup( void ) {
     // get an app tile and copy mainstyle
     time_tile_num = mainbar_add_setup_tile( 1, 1, "time setup" );
     time_settings_tile = mainbar_get_tile_obj( time_tile_num );
-    lv_obj_add_style( time_settings_tile, LV_PART_MAIN, ws_get_setup_tile_style() );
+    lv_obj_add_style( time_settings_tile, ws_get_setup_tile_style(), LV_PART_MAIN );
 
     icon_t *time_setup_icon = setup_register( "time", &time_64px, enter_time_setup_event_cb );
     setup_hide_indicator( time_setup_icon );

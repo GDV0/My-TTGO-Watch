@@ -72,9 +72,9 @@ void mainbar_setup( void ) {
 
     mainbar_history = (mainbar_history_t*)MALLOC_ASSERT( sizeof( mainbar_history_t ), "error while alloc" );
 
-    mainbar = lv_tileview_create( lv_scr_act(), NULL);
+    mainbar = lv_tileview_create( lv_scr_act());
     lv_tileview_set_edge_flash( mainbar, false);
-    lv_obj_add_style( mainbar, LV_PART_MAIN, ws_get_mainbar_style() );
+    lv_obj_add_style( mainbar, ws_get_mainbar_style(), LV_PART_MAIN );
     lv_page_set_scrlbar_mode( mainbar, LV_SCRLBAR_MODE_OFF);
     powermgm_register_cb_with_prio( POWERMGM_STANDBY, mainbar_powermgm_event_cb, "mainbar powermgm", CALL_CB_FIRST );
     powermgm_register_cb_with_prio( POWERMGM_WAKEUP | POWERMGM_SILENCE_WAKEUP, mainbar_powermgm_event_cb, "mainbar powermgm", CALL_CB_LAST );
@@ -94,7 +94,8 @@ bool mainbar_button_event_cb( EventBits_t event, void *arg ) {
     /**
      * get the current tile number
      */
-    lv_tileview_get_tile_act( mainbar, &x, &y );
+    //GDV LVGLv7 lv_tileview_get_tile_act( mainbar, &x, &y );
+    lv_tileview_get_tile_act( mainbar);
     for ( int i = 0 ; i < tile_entrys; i++ ) {
         if ( tile_pos_table[ i ].x == x && tile_pos_table[ i ].y == y ) {
             current_tile = i;
@@ -134,7 +135,8 @@ void mainbar_add_current_tile_to_history( lv_anim_enable_t anim ) {
          * get current tile
          */
         lv_coord_t x,y;
-        lv_tileview_get_tile_act( mainbar, &x, &y );
+//GDV LVGLv7        lv_tileview_get_tile_act( mainbar, &x, &y );
+        lv_tileview_get_tile_act( mainbar );
         /**
          * store tile pos in history
          */
@@ -173,7 +175,8 @@ void mainbar_jump_back( void ) {
         /**
          * get the current tile pos for later use
          */
-        lv_tileview_get_tile_act( mainbar, &x, &y );
+//GDV LVGLv7        lv_tileview_get_tile_act( mainbar, &x, &y );
+        lv_tileview_get_tile_act( mainbar );
         /**
          * jump back
          */
@@ -290,7 +293,7 @@ uint32_t mainbar_add_tile( uint16_t x, uint16_t y, const char *id, lv_style_t *s
     tile_pos_table[ tile_entrys - 1 ].x = x;
     tile_pos_table[ tile_entrys - 1 ].y = y;
 
-    lv_obj_t *my_tile = lv_cont_create( mainbar, NULL);  
+    lv_obj_t *my_tile = lv_cont_create( mainbar);  
     tile[ tile_entrys - 1 ].tile = my_tile;
     tile[ tile_entrys - 1 ].activate_cb_entry_count = 0;
     tile[ tile_entrys - 1 ].activate_cb = NULL;
@@ -301,7 +304,7 @@ uint32_t mainbar_add_tile( uint16_t x, uint16_t y, const char *id, lv_style_t *s
     tile[ tile_entrys - 1 ].y = y;
     tile[ tile_entrys - 1 ].id = id;
     lv_obj_set_size( tile[ tile_entrys - 1 ].tile, lv_disp_get_hor_res( NULL ), LV_VER_RES);
-    lv_obj_add_style( tile[ tile_entrys - 1 ].tile, LV_PART_MAIN, style );
+    lv_obj_add_style( tile[ tile_entrys - 1 ].tile, style, LV_PART_MAIN );
     lv_obj_set_pos( tile[ tile_entrys - 1 ].tile, tile_pos_table[ tile_entrys - 1 ].x * lv_disp_get_hor_res( NULL ) , tile_pos_table[ tile_entrys - 1 ].y * LV_VER_RES );
     lv_tileview_add_element( mainbar, tile[ tile_entrys - 1 ].tile );
     lv_tileview_set_valid_positions( mainbar, tile_pos_table, tile_entrys );
@@ -481,7 +484,7 @@ void mainbar_jump_to_tilenumber( uint32_t tile_number, lv_anim_enable_t anim, bo
     /**
      * get the current tile number
      */
-    lv_tileview_get_tile_act( mainbar, &x, &y );
+    lv_tileview_get_tile_act( mainbar );
     for ( int i = 0 ; i < tile_entrys; i++ ) {
         if ( tile_pos_table[ i ].x == x && tile_pos_table[ i ].y == y ) {
             current_tile = i;
@@ -556,7 +559,7 @@ lv_obj_t * mainbar_obj_create(lv_obj_t *parent) {
      */
     ASSERT( mainbar, "main not initialized" );
 
-    lv_obj_t * child = lv_obj_create( parent, NULL );
+    lv_obj_t * child = lv_obj_create( parent );
     lv_tileview_add_element( mainbar, child );
 
     return child;

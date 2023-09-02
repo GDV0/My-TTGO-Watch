@@ -60,9 +60,9 @@ uint32_t wifi_setup_tile_num;
 lv_obj_t *wifi_onoff=NULL;
 lv_obj_t *wifiname_list=NULL;
 
-static void enter_wifi_settings_event_cb( lv_obj_t * obj, lv_event_t event );
-static void enter_wifi_setup_event_cb( lv_obj_t * obj, lv_event_t event );
-static void wifi_onoff_event_handler(lv_obj_t * obj, lv_event_t event);
+static lv_event_cb_t enter_wifi_settings_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t enter_wifi_setup_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t wifi_onoff_event_handler(lv_obj_t * obj, lv_event_t event);
 void wifi_settings_enter_pass_event_cb( lv_obj_t * obj, lv_event_t event );
 bool wifi_setup_wifictl_event_cb( EventBits_t event, void *arg );
 
@@ -93,14 +93,14 @@ void wlan_settings_tile_setup( void ) {
     /*Copy the first switch and turn it ON*/    
     wifi_onoff = wf_add_switch( wifi_settings_tile, false );
     lv_obj_align_to( wifi_onoff, setup_btn, LV_ALIGN_OUT_LEFT_MID, -THEME_ICON_PADDING, 0 );
-    lv_obj_set_event_cb( wifi_onoff, wifi_onoff_event_handler);
+    lv_obj_add_event_cb_cb( wifi_onoff, wifi_onoff_event_handler, LV_EVENT_ALL, NULL);
 
-    wifiname_list = lv_list_create( wifi_settings_tile, NULL);
+    wifiname_list = lv_list_create( wifi_settings_tile);
     lv_obj_set_size( wifiname_list, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - STATUSBAR_HEIGHT - THEME_ICON_SIZE );
     lv_style_init( &wifi_list_style  );
-    lv_style_set_border_width( &wifi_list_style , LV_PART_MAIN, 0);
-    lv_style_set_radius( &wifi_list_style , LV_PART_MAIN, 0);
-    lv_obj_add_style( wifiname_list, LV_PART_MAIN, &wifi_list_style  );
+    lv_style_set_border_width( &wifi_list_style , 0);
+    lv_style_set_radius( &wifi_list_style, 0);
+    lv_obj_add_style( wifiname_list, &wifi_list_style, LV_PART_MAIN  );
     lv_obj_align_to( wifiname_list, wifi_settings_tile, LV_ALIGN_BOTTOM_MID, 0, 0 );
 
     wlan_password_tile_setup( wifi_password_tile_num );
@@ -116,10 +116,10 @@ uint32_t wifi_get_setup_tile_num( void ) {
 bool wifi_setup_wifictl_event_cb( EventBits_t event, void *arg ) {
     switch( event ) {
         case    WIFICTL_ON:
-                    lv_switch_on( wifi_onoff, LV_ANIM_OFF );
+                    lv_obj_add_state( wifi_onoff, LV_STATE_PRESSED);
                     break;
         case    WIFICTL_OFF:
-                    lv_switch_off( wifi_onoff, LV_ANIM_OFF );
+                    lv_obj_clear_state( wifi_onoff, LV_STATE_PRESSED);
                     while ( lv_list_remove( wifiname_list, 0 ) );
                     break;
         case    WIFICTL_SCAN_DONE:
@@ -127,21 +127,21 @@ bool wifi_setup_wifictl_event_cb( EventBits_t event, void *arg ) {
                     break;
         case    WIFICTL_SCAN_ENTRY:
                     lv_obj_t * wifiname_list_btn = lv_list_add_btn( wifiname_list, wifictl_is_known( (const char*)arg )?&unlock_16px:&lock_16px , (const char*)arg );
-                    lv_obj_set_event_cb( wifiname_list_btn, wifi_settings_enter_pass_event_cb);
+                    lv_obj_add_event_cb( wifiname_list_btn, wifi_settings_enter_pass_event_cb, LV_EVENT_ALL, NULL);
                     break;
     }
     return( true );
 }
 
-static void enter_wifi_settings_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t enter_wifi_settings_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_to_tilenumber( wifi_settings_tile_num, LV_ANIM_OFF );
                                         break;
     }
 }
 
-static void wifi_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
-    switch( event ) {
+static lv_event_cb_t wifi_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): if( lv_switch_get_state( obj ) ) {
                                             wifictl_on();
                                         }
@@ -151,18 +151,18 @@ static void wifi_onoff_event_handler(lv_obj_t * obj, lv_event_t event) {
     }
 }
 
-void wifi_settings_enter_pass_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t wifi_settings_enter_pass_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):   lv_label_set_text( wifi_password_name_label, lv_list_get_btn_text(obj) );
                                     lv_textarea_set_text( wifi_password_pass_textfield, "");
                                     mainbar_jump_to_tilenumber( wifi_password_tile_num, LV_ANIM_ON );
     }
 }
 
-static void exit_wifi_password_event_cb( lv_obj_t * obj, lv_event_t event );
-static void wlan_password_event_cb(lv_obj_t * obj, lv_event_t event);
-static void apply_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event );
-static void delete_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t exit_wifi_password_event_cb( lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t wlan_password_event_cb(lv_obj_t * obj, lv_event_t event);
+static lv_event_cb_t apply_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event );
+static lv_event_cb_t delete_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event );
 
 void wlan_password_tile_setup( uint32_t wifi_password_tile_num ) {
     // get an app tile and copy mainstyle
@@ -173,17 +173,17 @@ void wlan_password_tile_setup( uint32_t wifi_password_tile_num ) {
     
     wifi_password_name_label = wf_get_settings_header_title(header);
 
-    wifi_password_pass_textfield = lv_textarea_create( wifi_password_tile, NULL);
+    wifi_password_pass_textfield = lv_textarea_create( wifi_password_tile);
     lv_textarea_set_text( wifi_password_pass_textfield, "");
     lv_textarea_set_pwd_mode( wifi_password_pass_textfield, false);
     lv_textarea_set_one_line( wifi_password_pass_textfield, true);
     lv_textarea_set_cursor_hidden( wifi_password_pass_textfield, true);
     lv_obj_set_width( wifi_password_pass_textfield, lv_disp_get_hor_res( NULL ) - THEME_ICON_PADDING * 2 );
     lv_obj_align_to( wifi_password_pass_textfield, header, LV_ALIGN_OUT_BOTTOM_MID, THEME_ICON_PADDING, THEME_ICON_PADDING );
-    lv_obj_set_event_cb( wifi_password_pass_textfield, wlan_password_event_cb );
+    lv_obj_add_event_cb_cb( wifi_password_pass_textfield, wlan_password_event_cb, LV_EVENT_ALL, NULL );
 
-    lv_obj_t *mac_label = lv_label_create( wifi_password_tile, NULL);
-    lv_obj_add_style( mac_label, LV_IMGBTN_PART_MAIN, &wifi_password_style );
+    lv_obj_t *mac_label = lv_label_create( wifi_password_tile);
+    lv_obj_add_style( mac_label, &wifi_password_style, LV_IMGBTN_PART_MAIN );
     lv_obj_set_width( mac_label, lv_disp_get_hor_res( NULL ) );
     lv_obj_align_to( mac_label, wifi_password_tile, LV_ALIGN_BOTTOM_LEFT, 0, 0);
 #ifdef NATIVE_64BIT
@@ -199,8 +199,8 @@ void wlan_password_tile_setup( uint32_t wifi_password_tile_num ) {
     lv_obj_align_to( delete_btn, wifi_password_pass_textfield, LV_ALIGN_OUT_BOTTOM_LEFT, 10, 10 );
 }
 
-static void apply_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t apply_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       wifictl_insert_network( lv_label_get_text( wifi_password_name_label ), lv_textarea_get_text( wifi_password_pass_textfield ) );
                                         keyboard_hide();
                                         mainbar_jump_to_tilenumber( wifi_settings_tile_num, LV_ANIM_ON );
@@ -208,8 +208,8 @@ static void apply_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
     }
 }
 
-static void delete_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t delete_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       wifictl_delete_network( lv_label_get_text( wifi_password_name_label ) );
                                         keyboard_hide();
                                         mainbar_jump_to_tilenumber( wifi_settings_tile_num, LV_ANIM_ON );
@@ -217,15 +217,15 @@ static void delete_wifi_password_event_cb(  lv_obj_t * obj, lv_event_t event ) {
     }
 }
 
-static void wlan_password_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t wlan_password_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       keyboard_set_textarea( obj );
                                         break;
     }
 }
 
-static void exit_wifi_password_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+static lv_event_cb_t exit_wifi_password_event_cb( lv_obj_t * obj, lv_event_t event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       keyboard_hide();
                                         mainbar_jump_back();
                                         break;
@@ -264,8 +264,8 @@ void wlan_setup_tile_setup( uint32_t wifi_setup_tile_num ) {
     lv_obj_align_to( wifi_ftpserver_onoff_cont, wifi_webserver_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_ICON_PADDING );
 
     lv_obj_t *wps_btn = lv_btn_create( wifi_setup_tile);
-    lv_obj_set_event_cb( wps_btn, wps_start_event_handler );
-    lv_obj_add_style( wps_btn, LV_BTN_PART_MAIN, ws_get_button_style() );
+    lv_obj_add_event_cb_cb( wps_btn, wps_start_event_handler, LV_EVENT_ALL, NULL );
+    lv_obj_add_style( wps_btn, ws_get_button_style(), LV_PART_MAIN );
     lv_obj_t *wps_btn_label = lv_label_create( wps_btn );
     lv_label_set_text( wps_btn_label, "start WPS");
     lv_obj_align_to( wps_btn, wifi_ftpserver_onoff_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
@@ -282,28 +282,28 @@ void wlan_setup_tile_setup( uint32_t wifi_setup_tile_num ) {
 }
 
 static void wps_start_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       wifictl_start_wps();
                                         break;
     }
 }
 
 static void enter_wifi_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_to_tilenumber( wifi_setup_tile_num, LV_ANIM_ON );
                                         break;
     }
 }
 
 static void wifi_autoon_onoff_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch (event) {
+    switch (event.code) {
         case (LV_EVENT_VALUE_CHANGED):  wifictl_set_autoon( lv_switch_get_state( obj ) );
                                         break;
     }
 }
 
 static void wifi_webserver_onoff_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch (event) {
+    switch (event.code) {
         case (LV_EVENT_VALUE_CHANGED):  wifictl_set_webserver( lv_switch_get_state( obj ) );
                                         #if defined( ENABLE_WEBSERVER )
                                             if ( lv_switch_get_state( obj ) ) {
@@ -318,14 +318,14 @@ static void wifi_webserver_onoff_event_handler( lv_obj_t * obj, lv_event_t event
 }
 
 static void wifi_ftpserver_onoff_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch (event) {
+    switch (event.code) {
         case (LV_EVENT_VALUE_CHANGED):  wifictl_set_ftpserver( lv_switch_get_state( obj ) );
                                         break;
     }
 }
 
 static void wifi_enabled_on_standby_onoff_event_handler( lv_obj_t * obj, lv_event_t event ) {
-    switch (event) {
+    switch (event.code) {
         case (LV_EVENT_VALUE_CHANGED):  wifictl_set_enable_on_standby( lv_switch_get_state( obj ) );
                                         if ( lv_switch_get_state( obj ) ) {
                                             setup_set_indicator( wifi_setup_icon, ICON_INDICATOR_FAIL );

@@ -33,7 +33,7 @@ Label& Label::text(String txt){
   return *this;
 }
 
-Label& Label::alignText(lv_label_align_t mode) {
+Label& Label::alignText(lv_text_align_t mode) {
   lv_obj_set_style_text_align(native, mode, 0);
   return *this;
 }

@@ -173,8 +173,8 @@ static bool wf_anim_enabled = true;
 static void exit_jump_back_event_cb( lv_obj_t * obj, lv_event_t event );
 
 lv_obj_t * wf_add_container(lv_obj_t *parent_tile, lv_layout_t layout, lv_fit_t hor_fit, lv_fit_t ver_fit, bool add_padding, lv_style_t *style ){
-    lv_obj_t *container = lv_cont_create( parent_tile, NULL );
-    lv_obj_add_style( container, LV_PART_MAIN, style?style:APP_STYLE );
+    lv_obj_t *container = lv_obj_create( parent_tile );
+    lv_obj_add_style( container, style?style:APP_STYLE, LV_PART_MAIN );
     lv_cont_set_fit2( container, hor_fit, ver_fit );
     lv_obj_set_style_local_pad_all( container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, add_padding ? CLICKABLE_PADDING : 0 );
     lv_obj_set_style_local_pad_inner( container, LV_CONT_PART_MAIN , LV_STATE_DEFAULT, CONTAINER_INNER_PADDING );
@@ -212,19 +212,19 @@ lv_obj_t * wf_add_tile_footer_container(lv_obj_t *tile, lv_layout_t layout){
 }
 
 lv_obj_t * wf_add_label(lv_obj_t *parent, char const * text ){
-    lv_obj_t *label = lv_label_create( parent, NULL);
+    lv_obj_t *label = lv_label_create( parent);
     lv_label_set_text( label, text);
-    lv_obj_add_style( label, LV_PART_MAIN, ws_get_label_style() );
+    lv_obj_add_style( label, ws_get_label_style(), LV_PART_MAIN );
     return label;
 }
 
 lv_obj_t * wf_add_label(lv_obj_t *parent, char const * text, lv_style_t *style ){
-    lv_obj_t *label = lv_label_create( parent, NULL);
+    lv_obj_t *label = lv_label_create( parent);
     lv_label_set_text( label, text);
     if ( style )
-        lv_obj_add_style( label, LV_PART_MAIN, style );
+        lv_obj_add_style( label, style, LV_PART_MAIN );
     else
-        lv_obj_add_style( label, LV_PART_MAIN, ws_get_label_style() );
+        lv_obj_add_style( label, ws_get_label_style(), LV_PART_MAIN );
     return label;
 }
 
@@ -278,10 +278,10 @@ lv_obj_t * wf_add_label_container(lv_obj_t *parent, char const * text, lv_style_
 }
 
 lv_obj_t * wf_add_roller(lv_obj_t *parent, char const * data, lv_roller_mode_t mode, int row_count){
-    lv_obj_t *roller = lv_roller_create(parent, NULL);
-//    lv_obj_add_style(roller, LV_PART_MAIN, ws_get_mainbar_style() );
-//    lv_obj_add_style(roller, LV_ROLLER_PART_BG, ws_get_mainbar_style() );
-//    lv_obj_add_style(roller, LV_ROLLER_PART_SELECTED, ws_get_mainbar_style() );
+    lv_obj_t *roller = lv_roller_create(parent);
+//    lv_obj_add_style(roller, ws_get_mainbar_style(), LV_PART_MAIN );
+//    lv_obj_add_style(roller, ws_get_mainbar_style(), LV_ROLLER_PART_BG );
+//    lv_obj_add_style(roller, ws_get_mainbar_style(), LV_ROLLER_PART_SELECTED );
     lv_roller_set_auto_fit(roller, false);
     lv_roller_set_align(roller, LV_LABEL_ALIGN_CENTER);
     lv_roller_set_visible_row_count(roller, row_count);
@@ -292,17 +292,17 @@ lv_obj_t * wf_add_roller(lv_obj_t *parent, char const * data, lv_roller_mode_t m
 }
 
 lv_obj_t * wf_add_switch(lv_obj_t *parent, bool on){
-    lv_obj_t *_switch = lv_switch_create( parent, NULL );
+    lv_obj_t *_switch = lv_switch_create( parent );
     //TODO: must it be here?
     lv_obj_add_protect( _switch, LV_PROTECT_CLICK_FOCUS);
 
     if (on) {
-        lv_switch_on( _switch, LV_ANIM_OFF );
+        lv_obj_add_state(_switch, LV_STATE_PRESSED);
     } else {
-        lv_switch_off( _switch, LV_ANIM_OFF );
+        lv_obj_clear_state(_switch, LV_STATE_PRESSED);
     }
 
-    lv_obj_add_style( _switch, LV_SWITCH_PART_INDIC, ws_get_switch_style() );
+    lv_obj_add_style( _switch, ws_get_switch_style(), LV_SWITCH_PART_INDIC );
     #if defined( BIG_THEME )
         lv_obj_set_size( _switch, 70, 35 );
     #elif defined( MID_THEME )
@@ -313,17 +313,17 @@ lv_obj_t * wf_add_switch(lv_obj_t *parent, bool on){
 }
 
 lv_obj_t * wf_add_switch(lv_obj_t *parent, bool on, lv_event_cb_t event_cb ){
-    lv_obj_t *_switch = lv_switch_create( parent, NULL );
+    lv_obj_t *_switch = lv_switch_create( parent );
     //TODO: must it be here?
     lv_obj_add_protect( _switch, LV_PROTECT_CLICK_FOCUS);
 
     if (on) {
-        lv_switch_on( _switch, LV_ANIM_OFF );
+        lv_obj_add_state(_switch, LV_STATE_PRESSED);
     } else {
-        lv_switch_off( _switch, LV_ANIM_OFF );
-    }
+        lv_obj_clear_state(_switch, LV_STATE_PRESSED);
+   }
 
-    lv_obj_add_style( _switch, LV_SWITCH_PART_INDIC, ws_get_switch_style() );
+    lv_obj_add_style( _switch, ws_get_switch_style(), LV_SWITCH_PART_INDIC );
     #if defined( BIG_THEME )
         lv_obj_set_size( _switch, 70, 35 );
     #elif defined( MID_THEME )
@@ -331,7 +331,7 @@ lv_obj_t * wf_add_switch(lv_obj_t *parent, bool on, lv_event_cb_t event_cb ){
     #endif
     lv_obj_set_ext_click_area(_switch, CLICKABLE_PADDING, CLICKABLE_PADDING, CLICKABLE_PADDING, CLICKABLE_PADDING);
 
-    lv_obj_set_event_cb( _switch, event_cb );
+    lv_obj_add_event_cb( _switch, event_cb, LV_EVENT_ALL, NULL );
     return _switch;
 }
 
@@ -346,7 +346,7 @@ lv_obj_t * wf_add_labeled_switch(lv_obj_t *parent, char const * text, lv_obj_t *
     lv_obj_t *container = wf_add_container(parent, LV_LAYOUT_PRETTY_MID, LV_FIT_PARENT, LV_FIT_TIGHT, false, style );
     wf_add_label( container, text, style );
     *ret_switch_obj = wf_add_switch( container, state );
-    lv_obj_set_event_cb( *ret_switch_obj, event_cb );
+    lv_obj_add_event_cb( *ret_switch_obj, event_cb, LV_EVENT_ALL, NULL );
     return container;
 }
 
@@ -354,12 +354,12 @@ lv_obj_t * wf_add_labeled_switch(lv_obj_t *parent, char const * text, lv_obj_t *
     lv_obj_t *container = wf_add_container(parent, LV_LAYOUT_PRETTY_MID, LV_FIT_PARENT, LV_FIT_TIGHT);
     wf_add_label( container, text);
     *ret_switch_obj = wf_add_switch( container, state );
-    lv_obj_set_event_cb( *ret_switch_obj, event_cb );
+    lv_obj_add_event_cb( *ret_switch_obj, event_cb, LV_EVENT_ALL, NULL );
     return container;
 }
 
 lv_obj_t * wf_add_list(lv_obj_t *parent, const char* _options ){
-    lv_obj_t *_list = lv_dropdown_create( parent, NULL );
+    lv_obj_t *_list = lv_dropdown_create( parent );
     lv_dropdown_set_options( _list, _options );
     lv_obj_add_protect( _list, LV_PROTECT_CLICK_FOCUS);
     return _list;
@@ -368,16 +368,16 @@ lv_obj_t * wf_add_list(lv_obj_t *parent, const char* _options ){
 lv_obj_t * wf_add_list(lv_obj_t *parent, const char* _options, lv_style_t *style ){
     lv_obj_t *_list = lv_dropdown_create( parent, NULL );
     if ( style ) {
-        lv_obj_add_style( _list, LV_DROPDOWN_PART_LIST, style );
-        lv_obj_add_style( _list, LV_DROPDOWN_PART_MAIN, style );
-        lv_obj_add_style( _list, LV_PART_MAIN, style );
-        lv_obj_add_style( _list, LV_STATE_DEFAULT, style );
-        lv_obj_add_style( _list, LV_STATE_CHECKED, style );
-        lv_obj_add_style( _list, LV_STATE_DISABLED, style );
-        lv_obj_add_style( _list, LV_STATE_EDITED, style );
-        lv_obj_add_style( _list, LV_STATE_FOCUSED, style );
-        lv_obj_add_style( _list, LV_STATE_HOVERED, style );
-        lv_obj_add_style( _list, LV_STATE_PRESSED, style );
+        lv_obj_add_style( _list, style, LV_DROPDOWN_PART_LIST );
+        lv_obj_add_style( _list, style, LV_DROPDOWN_PART_MAIN );
+        lv_obj_add_style( _list, style, LV_PART_MAIN );
+        lv_obj_add_style( _list, style, LV_STATE_DEFAULT );
+        lv_obj_add_style( _list, style, LV_STATE_CHECKED );
+        lv_obj_add_style( _list, style, LV_STATE_DISABLED );
+        lv_obj_add_style( _list, style, LV_STATE_EDITED );
+        lv_obj_add_style( _list, style, LV_STATE_FOCUSED );
+        lv_obj_add_style( _list, style, LV_STATE_HOVERED );
+        lv_obj_add_style( _list, style, LV_STATE_PRESSED );
     }
     lv_obj_add_protect( _list, LV_PROTECT_CLICK_FOCUS);
     lv_dropdown_set_options( _list, _options );
@@ -390,7 +390,7 @@ lv_obj_t * wf_add_labeled_list(lv_obj_t *parent, char const * text, lv_obj_t ** 
     lv_obj_t *container = wf_add_container(parent, LV_LAYOUT_PRETTY_MID, LV_FIT_PARENT, LV_FIT_TIGHT, false );
     wf_add_label( container, text );
     *ret_list_obj = wf_add_list( container, options );
-    lv_obj_set_event_cb( *ret_list_obj, event_cb );
+    lv_obj_add_event_cb( *ret_list_obj, event_cb, LV_EVENT_ALL, NULL );
     return container;
 }
 /**
@@ -405,7 +405,7 @@ lv_obj_t * wf_add_labeled_list(lv_obj_t *parent, char const * text, lv_obj_t ** 
     else {
         *ret_list_obj = wf_add_list( container, options );
     }
-    lv_obj_set_event_cb( *ret_list_obj, event_cb );
+    lv_obj_add_event_cb( *ret_list_obj, event_cb, LV_EVENT_ALL, NULL );
     return container;
 }
 /**
@@ -415,7 +415,7 @@ lv_obj_t * wf_add_labeled_list(lv_obj_t *parent, char const * text, lv_obj_t ** 
     lv_obj_t *container = wf_add_container(parent, LV_LAYOUT_PRETTY_MID, LV_FIT_PARENT, LV_FIT_TIGHT, style );
     wf_add_label( container, text, style );
     *ret_list_obj = wf_add_list( container, options, dropdown_style );
-    lv_obj_set_event_cb( *ret_list_obj, event_cb );
+    lv_obj_add_event_cb( *ret_list_obj, event_cb, LV_EVENT_ALL, NULL );
     return container;
 }
 /**
@@ -425,7 +425,7 @@ lv_obj_t * wf_add_button(lv_obj_t *parent, char const * label, int width, int he
     lv_obj_t * button = lv_btn_create(parent);
     lv_obj_t * label_obj = lv_label_create(button);
     lv_label_set_text(label_obj, label);
-    lv_obj_add_flag(button, , LV_OBJ_FLAG_CHECKABLE);
+    lv_obj_add_flag(button, LV_OBJ_FLAG_CHECKABLE);
     lv_btn_set_state(button, LV_IMGBTN_STATE_RELEASED);
     lv_btn_toggle(button);
     lv_obj_add_style( button, ws_get_button_style(), LV_PART_MAIN );
@@ -438,7 +438,7 @@ lv_obj_t * wf_add_button(lv_obj_t *parent, char const * label, int width, int he
     }
 
     if( event_cb )
-        lv_obj_set_event_cb( button, event_cb );
+        lv_obj_add_event_cb( button, event_cb, LV_EVENT_ALL, NULL );
 
     return button;
 }
@@ -502,25 +502,25 @@ void wf_image_button_fade_in( lv_obj_t *button, uint32_t duration, uint32_t dela
 }
 
 void wf_image_button_set_style( lv_obj_t *button, lv_style_t *style ) {
-    lv_obj_reset_style_list( lv_obj_get_child( button, NULL ), LV_PART_MAIN );
-    lv_obj_add_style( lv_obj_get_child( button, NULL ), LV_PART_MAIN, style );
+    lv_obj_remove_style_all( lv_obj_get_child( button, NULL ) );
+    lv_obj_add_style( lv_obj_get_child( button, NULL ), style, LV_PART_MAIN );
 }
 
 lv_obj_t * wf_add_image_button_old(lv_obj_t *parent, lv_img_dsc_t const &image, lv_event_cb_t event_cb, lv_style_t *style){
     lv_obj_t * button = lv_imgbtn_create( parent );
-    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_RELEASED, &image );
-    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_PRESSED, &image );
-    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_CHECKED_RELEASED, &image );
-    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_CHECKED_PRESSED, &image );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_RELEASED, &image, NULL, NULL );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_PRESSED, &image, NULL, NULL );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_CHECKED_RELEASED, &image, NULL, NULL );
+    lv_imgbtn_set_src( button, LV_IMGBTN_STATE_CHECKED_PRESSED, &image, NULL, NULL );
 
     if (!style)
         style = ws_get_img_button_style();
 
-    lv_obj_add_style( button, LV_PART_MAIN, style );
+    lv_obj_add_style( button, style, LV_PART_MAIN );
     lv_obj_set_ext_click_area(button, CLICKABLE_PADDING, CLICKABLE_PADDING, CLICKABLE_PADDING, CLICKABLE_PADDING);
 
     if ( event_cb != NULL )
-        lv_obj_set_event_cb( button, event_cb );
+        lv_obj_add_event_cb( button, event_cb, LV_EVENT_ALL, NULL );
 
     return button;
 }
@@ -529,11 +529,11 @@ lv_obj_t * wf_add_image_button_old(lv_obj_t *parent, lv_img_dsc_t const &image, 
  * 
  */
 lv_obj_t * wf_add_image_button(lv_obj_t *parent, lv_img_dsc_t const &image, lv_event_cb_t event_cb, lv_style_t *style){
-    lv_obj_t *button = lv_btn_create( parent, NULL );
+    lv_obj_t *button = lv_btn_create( parent );
     lv_obj_set_width( button, image.header.w + THEME_PADDING * 2 );
     lv_obj_set_height( button, image.header.h + THEME_PADDING * 2 );
     lv_obj_add_protect( button, LV_PROTECT_CLICK_FOCUS );
-    lv_obj_add_style( button, LV_BTN_PART_MAIN, ws_get_img_button_style() );
+    lv_obj_add_style( button, ws_get_img_button_style(), LV_PART_MAIN );
 
     lv_obj_t *button_img = lv_img_create( button );
     lv_img_set_src( button_img, &image );
@@ -544,10 +544,10 @@ lv_obj_t * wf_add_image_button(lv_obj_t *parent, lv_img_dsc_t const &image, lv_e
         style = ws_get_img_button_style();
     }
 
-    lv_obj_add_style( button_img, LV_PART_MAIN, style );
+    lv_obj_add_style( button_img, style, LV_PART_MAIN );
 
     if (event_cb != NULL) {
-        lv_obj_set_event_cb( button, event_cb );
+        lv_obj_add_event_cb( button, event_cb, LV_EVENT_ALL, NULL );
     }
     return button;
 }
@@ -728,7 +728,7 @@ lv_obj_t * wf_add_settings_header(lv_obj_t *parent, char const * title, lv_obj_t
 lv_obj_t * wf_add_settings_header(lv_obj_t *parent, char const * title, lv_event_cb_t event_cb){
     lv_obj_t *exit_btn;
     lv_obj_t *cont = wf_add_settings_header( parent, title, &exit_btn );
-    lv_obj_set_event_cb( exit_btn, event_cb );
+    lv_obj_add_event_cb_cb( exit_btn, event_cb, LV_EVENT_ALL, NULL );
     return cont;
 }
 
@@ -738,7 +738,7 @@ lv_obj_t * wf_add_settings_header(lv_obj_t *parent, char const * title){
 }
 
 static void exit_jump_back_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):
             mainbar_jump_back();
             break;

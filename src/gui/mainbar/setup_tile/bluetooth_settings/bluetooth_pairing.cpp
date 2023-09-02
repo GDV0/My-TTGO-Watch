@@ -63,8 +63,8 @@ void bluetooth_pairing_tile_setup( void ) {
     bluetooth_pairing_tile = mainbar_get_tile_obj( bluetooth_pairing_tile_num );
 
     lv_style_copy( &bluetooth_pairing_style, SETUP_STYLE );
-    lv_style_set_text_font( &bluetooth_pairing_style, LV_STATE_DEFAULT, pin_font );
-    lv_obj_add_style( bluetooth_pairing_tile, LV_PART_MAIN, &bluetooth_pairing_style );
+    lv_style_set_text_font( &bluetooth_pairing_style, pin_font );
+    lv_obj_add_style( bluetooth_pairing_tile, &bluetooth_pairing_style, LV_PART_MAIN );
 
     lv_obj_t *bluetooth_pairing_exit_btn = wf_add_exit_button( bluetooth_pairing_tile, exit_bluetooth_pairing_event_cb );
     lv_obj_align_to( bluetooth_pairing_exit_btn, bluetooth_pairing_tile, LV_ALIGN_TOP_LEFT, THEME_PADDING, THEME_PADDING );
@@ -74,7 +74,7 @@ void bluetooth_pairing_tile_setup( void ) {
     lv_obj_align_to( bluetooth_pairing_img, bluetooth_pairing_tile, LV_ALIGN_CENTER, 0, 0 );
 
     bluetooth_pairing_info_label = lv_label_create( bluetooth_pairing_tile);
-    lv_obj_add_style( bluetooth_pairing_info_label, LV_PART_MAIN, &bluetooth_pairing_style  );
+    lv_obj_add_style( bluetooth_pairing_info_label, &bluetooth_pairing_style, LV_PART_MAIN  );
     lv_label_set_text( bluetooth_pairing_info_label, "");
     lv_obj_align_to( bluetooth_pairing_info_label, bluetooth_pairing_img, LV_ALIGN_OUT_BOTTOM_MID, 0, THEME_PADDING );
 
@@ -85,7 +85,7 @@ void bluetooth_pairing_tile_setup( void ) {
 bool bluetooth_pairing_style_change_event_cb( EventBits_t event, void * arg ) {
     switch( event ) {
         case STYLE_CHANGE:  lv_style_copy( &bluetooth_pairing_style, SETUP_STYLE );
-                            lv_style_set_text_font( &bluetooth_pairing_style, LV_STATE_DEFAULT, pin_font );
+                            lv_style_set_text_font( &bluetooth_pairing_style, pin_font );
                             break;
     }
     return( true );
@@ -118,7 +118,7 @@ bool bluetooth_pairing_event_cb( EventBits_t event, void *arg ) {
 }
 
 static void exit_bluetooth_pairing_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_CLICKED ):       mainbar_jump_back();
                                         break;
     }

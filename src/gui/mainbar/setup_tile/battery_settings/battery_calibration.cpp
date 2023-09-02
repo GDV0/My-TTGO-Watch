@@ -60,7 +60,7 @@ void battery_calibration_tile_setup( uint32_t tile_num ) {
     lv_page_set_scrlbar_mode( battery_calibration_page, LV_SCRLBAR_MODE_DRAG );
     lv_obj_align_to( battery_calibration_page, mainbar_get_tile_obj( battery_calibration_tile_num ), LV_ALIGN_CENTER, 0, THEME_PADDING );
 
-    battery_calibration_info_label = lv_label_create( battery_calibration_page, NULL );
+    battery_calibration_info_label = lv_label_create( battery_calibration_page );
     lv_label_set_long_mode( battery_calibration_info_label, LV_LABEL_LONG_BREAK );
     lv_obj_set_width( battery_calibration_info_label, lv_page_get_width_fit ( battery_calibration_page ) );
     lv_obj_add_style( battery_calibration_info_label, SETUP_STYLE, LV_PART_MAIN );
@@ -77,7 +77,7 @@ void battery_calibration_tile_setup( uint32_t tile_num ) {
 }
 
 static void battery_calibration_store_switch_event_cb( lv_obj_t *obj, lv_event_t event ) {
-    switch( event ) {
+    switch( event.code ) {
         case( LV_EVENT_VALUE_CHANGED ): pmu_battery_calibration_loop( true, lv_switch_get_state( obj ) );
                                         powermgm_set_lightsleep( false );
                                         powermgm_set_normal_mode();

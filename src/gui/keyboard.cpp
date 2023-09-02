@@ -31,16 +31,16 @@ static lv_obj_t *nkb = NULL;
 static lv_obj_t *kb_user_textarea = NULL;
 static bool kb_style_initialized = false;
 
-static void kb_event_cb(lv_obj_t * ta, lv_event_t event);
+static lv_event_cb_t kb_event_cb(lv_obj_t * ta, lv_event_t event);
 
 void keyboard_prelim( void ) {
     if( !kb_style_initialized ) {
-        kb_screen = lv_cont_create( lv_scr_act(), NULL );
-        lv_obj_add_style( kb_screen, LV_PART_MAIN, SETUP_STYLE );
+        kb_screen = lv_obj_create( lv_scr_act() );
+        lv_obj_add_style( kb_screen, SETUP_STYLE, LV_PART_MAIN );
         lv_obj_set_size( kb_screen, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) );
         lv_obj_align_to( kb_screen, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, STATUSBAR_HEIGHT );
         
-        kb_textarea = lv_textarea_create( kb_screen, NULL );
+        kb_textarea = lv_textarea_create( kb_screen );
         lv_obj_add_protect( kb_textarea, LV_PROTECT_CLICK_FOCUS );
         lv_obj_set_size( kb_textarea, lv_disp_get_hor_res( NULL ) - THEME_PADDING, 40 );
         lv_textarea_set_one_line( kb_textarea, true);
@@ -59,13 +59,13 @@ void keyboard_setup( void ) {
 
     keyboard_prelim();
 
-    kb = lv_keyboard_create( kb_screen , NULL);
+    kb = lv_keyboard_create( kb_screen);
     lv_obj_set_size( kb, lv_disp_get_hor_res( NULL ), ( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 ) > 240 ? 240:( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 - 20 )  );
     lv_obj_align_to( kb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, 0 );
-    lv_obj_add_style( kb, LV_OBJ_PART_ALL, SETUP_STYLE );
-    lv_obj_add_style( kb, LV_KEYBOARD_PART_BTN, ws_get_button_style() );
+    lv_obj_add_style( kb, SETUP_STYLE, LV_PART_ANY );
+    lv_obj_add_style( kb, ws_get_button_style(), LV_KEYBOARD_PART_BTN );
     lv_keyboard_set_cursor_manage( kb, true);
-    lv_obj_set_event_cb( kb, kb_event_cb );
+    lv_obj_add_event_cb( kb, kb_event_cb, LV_EVENT_ALL, NULL );
 
     keyboard_hide();
 }
@@ -78,22 +78,22 @@ void num_keyboard_setup( void ) {
         return;
 
     keyboard_prelim();
-    nkb = lv_keyboard_create( kb_screen , NULL);
+    nkb = lv_keyboard_create( kb_screen);
     lv_obj_set_size( nkb, lv_disp_get_hor_res( NULL ), ( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 ) > 200 ? 200:( ( lv_disp_get_ver_res( NULL ) / 4 ) * 3 - 20 ) );
     lv_obj_align_to( nkb, kb_screen, LV_ALIGN_BOTTOM_MID, 0, 0 );
-    lv_obj_add_style( nkb, LV_OBJ_PART_ALL, SETUP_STYLE );
-    lv_obj_add_style( nkb, LV_KEYBOARD_PART_BTN, ws_get_button_style() );
+    lv_obj_add_style( nkb, SETUP_STYLE,LV_PART_ANY );
+    lv_obj_add_style( nkb, ws_get_button_style(), LV_KEYBOARD_PART_BTN );
     lv_keyboard_set_mode( nkb, LV_KEYBOARD_MODE_NUM);
     lv_keyboard_set_cursor_manage( nkb, true);
-    lv_obj_set_event_cb( nkb, kb_event_cb );
+    lv_obj_add_event_cb( nkb, kb_event_cb, LV_EVENT_ALL, NULL );
 
     keyboard_hide();
 }
 
-static void kb_event_cb( lv_obj_t * ta, lv_event_t event ) {
+static lv_event_cb_t kb_event_cb( lv_obj_t * ta, lv_event_t event ) {
 
-    lv_keyboard_def_event_cb( ta, event );
-    switch( event ) {
+    lv_keyboard_def_event_cb( event );
+    switch( event.code ) {
         case( LV_EVENT_CANCEL ):    keyboard_hide();
                                     break;
         case( LV_EVENT_APPLY ):     lv_textarea_set_text( kb_user_textarea, lv_textarea_get_text( kb_textarea ) );
